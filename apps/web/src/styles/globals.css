@@ -1,0 +1,148 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@portfolio/design-tokens/styles";
+@custom-variant dark (&:where(.dark, .dark *));
+@source '../../node_modules/@portfolio/ui/src';
+@source '../../app';
+@source '../../src';
+
+/* Brand typefaces are self-hosted via next/font in app/layout.tsx, which exposes
+   them as CSS variables on <html>. Override the token-package families here so
+   font-display/font-mono resolve to the loaded fonts, keeping @portfolio/design-tokens
+   app-agnostic. */
+@theme {
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-mono: var(--font-dm-mono), Menlo, monospace;
+}
+
+@theme {
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.8s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-drift: drift 20s ease-in-out infinite alternate;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-pulse: pulse-fade 1.6s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 24s linear infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-fade {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translate(-4%, -2%) scale(1);
+    }
+    to {
+      transform: translate(4%, 3%) scale(1.08);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Hides the scrollbar on an otherwise-scrollable element without disabling scroll —
+   used on the page body and any horizontal/vertical scroll container (carousels,
+   dropdown menus, mobile tab bars) where a visible scrollbar breaks the layout. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* The redesign's photo treatment — every content photograph goes through this
+   so it sits back into the warm page instead of on top of it. `filter`
+   composites an element's full rendered output (like `opacity`/`transform`),
+   so this reads correctly whether applied to the <Image> itself or to a
+   `relative` wrapper around a `fill` image. */
+@utility washed {
+  filter: saturate(0.6) contrast(0.85) brightness(1.1) opacity(0.94);
+}
+
+/* The root <html> element is the actual scrolling box in standard mode, but it
+   can't take the no-scrollbar className: next-themes mutates <html>'s class
+   attribute directly (outside React) to toggle "dark"/"light", and a static
+   React-rendered className fights that on every re-render, stripping the theme
+   class. Target it with a plain selector instead. */
+html {
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-drift,
+  .animate-float,
+  .animate-marquee,
+  .animate-spin-slow {
+    animation: none;
+  }
+}

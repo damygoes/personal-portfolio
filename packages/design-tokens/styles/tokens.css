@@ -1,0 +1,408 @@
+/*
+ * @repo/design-tokens — Lagoon + Coral
+ * Tailwind CSS v4. Import AFTER tailwindcss in each app:
+ *
+ *   @import "tailwindcss";
+ *   @import "@repo/design-tokens/tokens.css";
+ *
+ * Light is the default theme; add `.dark` to <html> for dark.
+ * Mirrors colors.ts / spacing.ts / typography.ts / effects.ts (px → rem).
+ */
+
+/* `dark:` variant follows the .dark class, not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Reset defaults — only this system's values generate utilities */
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --font-weight-*: initial;
+  --leading-*: initial;
+  --tracking-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --ease-*: initial;
+  --animate-*: initial;
+
+  /* ─── Raw palette ─────────────────────────────────────────── */
+  /* lagoon = brand primary · coral = spark · sand = paper · ink = text/night */
+
+  --color-lagoon-50: #eafbf9;
+  --color-lagoon-100: #d4f5f1;
+  --color-lagoon-200: #aee8e2;
+  --color-lagoon-300: #7ad7cf;
+  --color-lagoon-400: #46c7ba;
+  --color-lagoon-500: #09a198;
+  --color-lagoon-600: #117f78;
+  --color-lagoon-700: #0b6b66;
+  --color-lagoon-800: #004d49;
+  --color-lagoon-900: #003633;
+  --color-lagoon-950: #00201e;
+
+  --color-coral-50: #fff4f2;
+  --color-coral-100: #fee7e1;
+  --color-coral-200: #fecec3;
+  --color-coral-300: #fdad9b;
+  --color-coral-400: #ff7a5c;
+  --color-coral-500: #e2583e;
+  --color-coral-600: #b8402a;
+  --color-coral-700: #983623;
+  --color-coral-800: #712617;
+  --color-coral-900: #50190f;
+  --color-coral-950: #310d07;
+
+  --color-sand-50: #fbf9f3;
+  --color-sand-100: #f3efe6;
+  --color-sand-200: #e4dfd3;
+  --color-sand-300: #d1cabb;
+  --color-sand-400: #b8b0a0;
+  --color-sand-500: #989282;
+  --color-sand-600: #7a7466;
+  --color-sand-700: #605a4e;
+  --color-sand-800: #464238;
+  --color-sand-900: #312d26;
+  --color-sand-950: #1d1a15;
+
+  --color-ink-50: #f4f8f7;
+  --color-ink-100: #e7ecea;
+  --color-ink-200: #d5dcdb;
+  --color-ink-300: #c3cbc8;
+  --color-ink-400: #949b98;
+  --color-ink-500: #757c7b;
+  --color-ink-600: #5f6664;
+  --color-ink-700: #37403e;
+  --color-ink-800: #212b2a;
+  --color-ink-900: #0f1a19;
+  --color-ink-950: #0b1110;
+
+  --color-success-100: #e1f5e4;
+  --color-success-400: #5bbd74;
+  --color-success-600: #137738;
+  --color-success-900: #102b17;
+  --color-warning-100: #fcecd9;
+  --color-warning-400: #dc932e;
+  --color-warning-600: #895706;
+  --color-warning-900: #331f05;
+  --color-danger-100: #ffe9e7;
+  --color-danger-400: #fd7273;
+  --color-danger-600: #b7162d;
+  --color-danger-900: #391919;
+  --color-info-100: #e1f1ff;
+  --color-info-400: #5eaceb;
+  --color-info-600: #0668a4;
+  --color-info-900: #0c263a;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* ─── Semantic aliases (light) — components use these ─────── */
+  --color-background: var(--color-sand-100);
+  --color-foreground: var(--color-ink-900);
+  --color-foreground-soft: var(--color-ink-700);
+
+  --color-card: var(--color-sand-50);
+  --color-card-foreground: var(--color-ink-900);
+  --color-popover: var(--color-sand-50);
+  --color-popover-foreground: var(--color-ink-900);
+
+  --color-primary: var(--color-lagoon-700);
+  --color-primary-foreground: var(--color-sand-50);
+
+  /* Spark: coral for the dot, arrows and highlights (large text / icons, 3:1).
+     Small coral text uses spark-text. */
+  --color-spark: var(--color-coral-500);
+  --color-spark-foreground: var(--color-ink-900);
+  --color-spark-text: var(--color-coral-600);
+
+  --color-secondary: var(--color-sand-200);
+  --color-secondary-foreground: var(--color-ink-900);
+  --color-muted: var(--color-sand-50);
+  --color-muted-foreground: var(--color-ink-600);
+  /* accent = subtle hover/selected fill (shadcn meaning), not the brand spark */
+  --color-accent: var(--color-sand-200);
+  --color-accent-foreground: var(--color-ink-900);
+
+  --color-border: var(--color-sand-200);
+  --color-divider: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  --color-input: var(--color-sand-600);
+  --color-ring: var(--color-lagoon-700);
+
+  --color-success: var(--color-success-600);
+  --color-success-muted: var(--color-success-100);
+  --color-warning: var(--color-warning-600);
+  --color-warning-muted: var(--color-warning-100);
+  --color-destructive: var(--color-danger-600);
+  --color-destructive-muted: var(--color-danger-100);
+  --color-destructive-foreground: var(--color-sand-50);
+  --color-info: var(--color-info-600);
+  --color-info-muted: var(--color-info-100);
+
+  --color-sidebar: var(--color-sand-50);
+  --color-sidebar-foreground: var(--color-ink-900);
+  --color-sidebar-accent: var(--color-sand-200);
+  --color-sidebar-accent-foreground: var(--color-ink-900);
+  --color-sidebar-border: var(--color-sand-200);
+  --color-sidebar-ring: var(--color-lagoon-700);
+
+  /* ─── Type scale (fixed UI sizes) ─────────────────────────── */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.45;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.45;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1.15;
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1.05;
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 1;
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: 1;
+
+  /* ─── Fluid display sizes (uppercase headlines) ───────────── */
+  --text-display-hero: clamp(3.25rem, 13vw, 11.5rem);
+  --text-display-hero--line-height: 0.86;
+  --text-display-hero--letter-spacing: -0.025em;
+  --text-display-hero--font-weight: 800;
+  --text-display-lg: clamp(2.5rem, 1.6rem + 4.5vw, 6rem);
+  --text-display-lg--line-height: 0.9;
+  --text-display-lg--letter-spacing: -0.025em;
+  --text-display-lg--font-weight: 800;
+  --text-display-md: clamp(2rem, 1.4rem + 3vw, 4rem);
+  --text-display-md--line-height: 1;
+  --text-display-md--letter-spacing: -0.02em;
+  --text-display-md--font-weight: 700;
+  --text-display-sm: clamp(1.75rem, 1.35rem + 2vw, 3rem);
+  --text-display-sm--line-height: 1.05;
+  --text-display-sm--letter-spacing: -0.015em;
+  --text-display-sm--font-weight: 700;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --leading-hero: 0.86;
+  --leading-none: 1;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tighter: -0.025em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.08em;
+  --tracking-widest: 0.15em;
+
+  /* ─── Spacing: one 4px base; p-6 = 1.5rem = 24px ──────────── */
+  --spacing: 0.25rem;
+
+  --spacing-gutter-sm: 1rem;
+  --spacing-gutter-md: 1.5rem;
+  --spacing-gutter-lg: 2rem;
+  --spacing-section-sm: 6rem;
+  --spacing-section-md: 8rem;
+  --spacing-section-lg: 10rem;
+
+  /* ─── Radius (soft) ───────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ─── Layout ──────────────────────────────────────────────── */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  --container-reading: 42.5rem; /* max-w-reading (max-w-prose is Tailwind's built-in 65ch) */
+  --container-content: 75rem;
+  --container-wide: 90rem;
+
+  /* ─── Shadows (ink-tinted; deepened in .dark) ─────────────── */
+  --shadow-sm: 0 1px 2px rgb(15 26 25 / 0.08);
+  --shadow-md: 0 6px 18px rgb(15 26 25 / 0.1);
+  --shadow-lg: 0 24px 60px rgb(15 26 25 / 0.16);
+
+  /* ─── Motion ──────────────────────────────────────────────── */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
+  --animate-shimmer: shimmer 1.8s var(--ease-in-out) infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+}
+
+/*
+ * Font families. `inline` so the utilities read the next/font CSS variables
+ * where they're applied (put the next/font `.variable` classes on <html>).
+ * The quoted names are fallbacks for apps that load fonts another way.
+ */
+@theme inline {
+  --font-display: var(--font-bricolage, 'Bricolage Grotesque'), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter, 'Inter'), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono, 'Geist Mono'), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Durations have no Tailwind namespace — use as duration-(--duration-base). */
+:root {
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+  color-scheme: light;
+}
+
+/* ─── Dark theme ────────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+
+  --color-background: var(--color-ink-950);
+  --color-foreground: var(--color-ink-100);
+  --color-foreground-soft: var(--color-ink-300);
+
+  --color-card: var(--color-ink-900);
+  --color-card-foreground: var(--color-ink-100);
+  --color-popover: var(--color-ink-900);
+  --color-popover-foreground: var(--color-ink-100);
+
+  --color-primary: var(--color-lagoon-400);
+  --color-primary-foreground: var(--color-ink-950);
+
+  --color-spark: var(--color-coral-400);
+  --color-spark-foreground: var(--color-ink-950);
+  --color-spark-text: var(--color-coral-400);
+
+  --color-secondary: var(--color-ink-800);
+  --color-secondary-foreground: var(--color-ink-100);
+  --color-muted: var(--color-ink-900);
+  --color-muted-foreground: var(--color-ink-400);
+  --color-accent: var(--color-ink-800);
+  --color-accent-foreground: var(--color-ink-100);
+
+  --color-border: var(--color-ink-800);
+  --color-input: var(--color-ink-600);
+  --color-ring: var(--color-lagoon-400);
+
+  --color-success: var(--color-success-400);
+  --color-success-muted: var(--color-success-900);
+  --color-warning: var(--color-warning-400);
+  --color-warning-muted: var(--color-warning-900);
+  --color-destructive: var(--color-danger-400);
+  --color-destructive-muted: var(--color-danger-900);
+  --color-destructive-foreground: var(--color-ink-950);
+  --color-info: var(--color-info-400);
+  --color-info-muted: var(--color-info-900);
+
+  --color-sidebar: var(--color-ink-900);
+  --color-sidebar-foreground: var(--color-ink-100);
+  --color-sidebar-accent: var(--color-ink-800);
+  --color-sidebar-accent-foreground: var(--color-ink-100);
+  --color-sidebar-border: var(--color-ink-800);
+  --color-sidebar-ring: var(--color-lagoon-400);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 6px 18px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 24px 60px rgb(0 0 0 / 0.55);
+}
+
+/* ─── Signature utilities ───────────────────────────────────── */
+
+/* Outlined display type — the "BADA" line. */
+@utility text-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px currentColor;
+}
+
+/* Mono uppercase text link with the left-to-right underline sweep
+   ("SELECTED WORK ↗", "DOWNLOAD CV ↓"). */
+@utility link-sweep {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 1.5);
+  padding-bottom: var(--spacing);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::after,
+    ::before {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

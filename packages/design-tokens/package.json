@@ -1,0 +1,20 @@
+{
+  "name": "@portfolio/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./colors": "./src/colors.ts",
+    "./spacing": "./src/spacing.ts",
+    "./typography": "./src/typography.ts",
+    "./effects": "./src/effects.ts",
+    "./tokens.css": "./src/tokens.css",
+    "./styles": "./styles/tokens.css"
+  },
+  "devDependencies": {
+    "@portfolio/typescript-config": "workspace:*"
+  }
+}

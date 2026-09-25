@@ -1,0 +1,10 @@
+{
+  "extends": "@portfolio/typescript-config/react-library.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["vite/client"],
+    "noEmit": true
+  },
+  "include": ["./**/*"]
+}
