@@ -253,6 +253,13 @@
 
   --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
   --animate-shimmer: shimmer 1.8s var(--ease-in-out) infinite;
+  --animate-spin: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
   @keyframes fade-up {
     from {

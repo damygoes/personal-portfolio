@@ -11,7 +11,8 @@
   },
   "devDependencies": {
     "@portfolio/typescript-config": "workspace:*",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "^5.0.1"
   },
   "dependencies": {
     "clsx": "^2.1.1",
