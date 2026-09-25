@@ -15,7 +15,18 @@
     "./grid": "./src/grid/Grid.tsx",
     "./visually-hidden": "./src/visually-hidden/VisuallyHidden.tsx",
     "./divider": "./src/divider/Divider.tsx",
-    "./disclosure": "./src/disclosure/Disclosure.tsx"
+    "./disclosure": "./src/disclosure/Disclosure.tsx",
+    "./img": "./src/img/Img.tsx",
+    "./section-index": "./src/section-index/SectionIndex.tsx",
+    "./fact-list": "./src/fact-list/FactList.tsx",
+    "./chip": "./src/chip/Chip.tsx",
+    "./copy-button": "./src/copy-button/CopyButton.tsx",
+    "./scroll-hint": "./src/scroll-hint/ScrollHint.tsx",
+    "./date-range": "./src/date-range/DateRange.tsx",
+    "./formatted-date": "./src/formatted-date/FormattedDate.tsx",
+    "./reading-time": "./src/reading-time/ReadingTime.tsx",
+    "./work-mode-badge": "./src/work-mode-badge/WorkModeBadge.tsx",
+    "./status-badge": "./src/status-badge/StatusBadge.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
