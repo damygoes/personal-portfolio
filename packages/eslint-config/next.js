@@ -16,6 +16,7 @@ export const nextJsConfig = [
     ".next/**",
     "out/**",
     "build/**",
+    "storybook-static/**",
     "next-env.d.ts",
   ]),
   {
