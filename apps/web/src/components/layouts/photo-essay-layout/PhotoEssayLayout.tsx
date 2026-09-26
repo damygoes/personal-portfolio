@@ -32,15 +32,15 @@ function PhotoEssayLayout({
         photoCountLabel={photoCountLabel}
       />
 
-      <div className="py-8">
+      <Container size="prose" className="py-8">
         <RichTextRenderer
           value={post.body}
           variant="photoEssay"
           labels={richTextLabels}
         />
-      </div>
+      </Container>
 
-      <Container size="prose" className="pb-16">
+      <Container size="wide" className="pb-16">
         <RelatedPosts
           posts={post.related}
           locale={locale}

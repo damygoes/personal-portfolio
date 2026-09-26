@@ -1,13 +1,7 @@
 import type { Hero, Site } from "@portfolio/contracts";
-import {
-  Container,
-  FactList,
-  Heading,
-  ScrollHint,
-  Stack,
-  Text,
-} from "@portfolio/ui";
+import { Container, FactList, Heading, Stack, Text } from "@portfolio/ui";
 import { CtaGroup } from "../../molecules/cta-group/CtaGroup";
+import { ScrollHintOverlay } from "../../molecules/scroll-hint-overlay/ScrollHintOverlay";
 
 export interface HeroSectionProps {
   hero: Hero;
@@ -24,32 +18,52 @@ function HeroSection({
   downloadCvLabel,
   scrollHintLabel,
 }: HeroSectionProps) {
+  // Split "First Last" into two stacked lines — first name solid, last name
+  // outlined — matching the deployed hero treatment.
+  const [firstName, ...rest] = hero.name.split(" ");
+  const lastName = rest.join(" ");
+
   return (
     <section
       data-slot="hero-section"
       data-sanity={hero.editTarget}
-      className="relative flex min-h-screen items-center py-24"
+      className="relative flex min-h-screen items-center py-16 lg:py-20"
     >
       <Container>
-        <Stack gap={6}>
-          <FactList items={facts} />
-          <Heading level={1} size="display-hero">
-            {hero.name}
-          </Heading>
-          <Text size="xl" tone="muted" className="max-w-prose">
-            {hero.intro}
-          </Text>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <Stack gap={6} className="lg:max-w-2xl">
+            <FactList
+              items={facts}
+              className="text-xs uppercase sm:text-sm lg:text-base"
+            />
+            <Heading level={1} size="display-hero" className="leading-none">
+              <span className="block">{firstName}</span>
+              {lastName && (
+                <span
+                  className="block text-transparent"
+                  style={{ WebkitTextStroke: "1.5px var(--color-foreground)" }}
+                >
+                  {lastName}
+                  <span
+                    aria-hidden="true"
+                    className="ml-2 inline-block size-4 rounded-full bg-primary sm:size-6"
+                  />
+                </span>
+              )}
+            </Heading>
+            <Text tone="muted" className="text-balance sm:text-lg lg:text-xl">
+              {hero.intro}
+            </Text>
+          </Stack>
           <CtaGroup
             primary={hero.primaryCta}
             cv={cv}
             downloadCvLabel={downloadCvLabel}
+            className="lg:mt-10"
           />
-        </Stack>
+        </div>
       </Container>
-      <ScrollHint
-        label={scrollHintLabel}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      />
+      <ScrollHintOverlay label={scrollHintLabel} />
     </section>
   );
 }

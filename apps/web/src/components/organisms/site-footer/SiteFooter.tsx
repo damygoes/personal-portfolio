@@ -1,29 +1,27 @@
 import type { Site } from "@portfolio/contracts";
 import { Button, Container, Divider, Link, Stack, Text } from "@portfolio/ui";
-import { SocialLinks } from "../../molecules/social-links/SocialLinks";
 
 export interface SiteFooterProps {
   site: Site;
   backToTopLabel?: string;
+  rightsReservedLabel?: string;
 }
 
-function SiteFooter({ site, backToTopLabel = "Back to top" }: SiteFooterProps) {
+function SiteFooter({
+  site,
+  backToTopLabel = "Back to top",
+  rightsReservedLabel = "All rights reserved.",
+}: SiteFooterProps) {
   return (
     <footer data-slot="site-footer" className="py-16">
       <Container>
         <Divider spacing="lg" />
         <Stack gap={6}>
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <Link href={`mailto:${site.owner.email}`} underline="hover">
-              {site.owner.email}
-            </Link>
-            <SocialLinks links={site.socials} />
-          </div>
-
           <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex flex-wrap items-center gap-4">
               <Text size="sm" tone="muted">
-                © {site.footer.copyrightYear} {site.siteName}
+                © {site.footer.copyrightYear} {site.siteName}.{" "}
+                {rightsReservedLabel}
               </Text>
               {site.legalLinks.map((legal) => (
                 <Link

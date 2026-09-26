@@ -17,7 +17,7 @@ type Story = StoryObj<typeof StatusBadge>;
 export const Live: Story = {};
 
 export const InDevelopment: Story = {
-  args: { status: "in-development", label: "In development" },
+  args: { status: "inDevelopment", label: "In development" },
 };
 
 export const Archived: Story = {
@@ -28,7 +28,7 @@ export const AllStatuses: Story = {
   render: () => (
     <div className="flex gap-2">
       <StatusBadge status="live" label="Live" />
-      <StatusBadge status="in-development" label="In development" />
+      <StatusBadge status="inDevelopment" label="In development" />
       <StatusBadge status="archived" label="Archived" />
     </div>
   ),

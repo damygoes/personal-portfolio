@@ -16,9 +16,9 @@ describe("StatusBadge", () => {
     expect(getByText("Live")).toHaveClass("text-success");
   });
 
-  it("applies the warning tone for an in-development status", () => {
+  it("applies the warning tone for an inDevelopment status", () => {
     const { getByText } = render(
-      <StatusBadge status="in-development" label="In development" />,
+      <StatusBadge status="inDevelopment" label="In development" />,
     );
     expect(getByText("In development")).toHaveClass("text-warning");
   });

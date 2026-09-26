@@ -20,8 +20,8 @@ const nav: Record<Locale, Site["nav"]> = {
 };
 
 const footerTagline: Record<Locale, string> = {
-  en: "Built from scratch, deployed with care.",
-  de: "Von Grund auf gebaut, mit Sorgfalt veröffentlicht.",
+  en: "Built with love from Germany",
+  de: "Mit Liebe aus Deutschland gebaut",
 };
 
 const legalLinks: Record<Locale, Site["legalLinks"]> = {

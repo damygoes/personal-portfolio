@@ -8,6 +8,30 @@ export interface MarqueeProps {
   direction?: "left" | "right";
 }
 
+function MarqueeItems({ items }: { items: string[] }) {
+  return (
+    <>
+      {items.map((item, index) => (
+        <span key={index} className="flex shrink-0 items-center gap-8">
+          <span
+            className={cn(
+              "font-display text-3xl font-extrabold whitespace-nowrap uppercase sm:text-4xl lg:text-5xl",
+              index % 2 === 1
+                ? "text-transparent [-webkit-text-stroke:1.5px_var(--color-foreground)]"
+                : "text-foreground",
+            )}
+          >
+            {item}
+          </span>
+          <span aria-hidden="true" className="text-lg text-primary sm:text-xl">
+            ✦
+          </span>
+        </span>
+      ))}
+    </>
+  );
+}
+
 function MarqueeRow({
   items,
   speed,
@@ -26,14 +50,7 @@ function MarqueeRow({
         )}
         style={{ animationDuration: `${speed}s` }}
       >
-        {items.map((item, index) => (
-          <span
-            key={index}
-            className="font-display text-3xl whitespace-nowrap text-muted-foreground"
-          >
-            {item}
-          </span>
-        ))}
+        <MarqueeItems items={items} />
       </div>
       <div
         aria-hidden="true"
@@ -43,14 +60,7 @@ function MarqueeRow({
         )}
         style={{ animationDuration: `${speed}s` }}
       >
-        {items.map((item, index) => (
-          <span
-            key={index}
-            className="font-display text-3xl whitespace-nowrap text-muted-foreground"
-          >
-            {item}
-          </span>
-        ))}
+        <MarqueeItems items={items} />
       </div>
     </div>
   );

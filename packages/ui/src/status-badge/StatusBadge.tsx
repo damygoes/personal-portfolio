@@ -34,7 +34,7 @@ const statusToneMap: Record<
   NonNullable<VariantProps<typeof statusBadgeVariants>["tone"]>
 > = {
   live: "success",
-  "in-development": "warning",
+  inDevelopment: "warning",
   archived: "muted",
 };
 

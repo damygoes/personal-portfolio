@@ -3,6 +3,7 @@ import {
   HomepageSchema,
   LegalPageSchema,
   PostSchema,
+  ProjectCardSchema,
   ProjectSchema,
   SiteSchema,
 } from "@portfolio/contracts";
@@ -48,6 +49,49 @@ describe.each(locales)("FixtureContentService (%s)", (locale) => {
       expect(project).not.toBeNull();
       expect(ProjectSchema.safeParse(project).success).toBe(true);
     }
+  });
+
+  it("returns all ProjectCards via getProjects", async () => {
+    const cards = await service.getProjects(locale);
+    expect(cards.length).toBe(5);
+    for (const card of cards) {
+      expect(ProjectCardSchema.safeParse(card).success).toBe(true);
+    }
+    expect(cards.map((c) => c.index)).toEqual(["01", "02", "03", "04", "05"]);
+  });
+
+  it("paginates the blog index across 12 posts", async () => {
+    const page1 = await service.getBlogIndex(locale);
+    expect(page1!.posts.length).toBe(6);
+    expect(page1!.pagination).toEqual({
+      page: 1,
+      totalPages: 2,
+      nextHref: "?page=2",
+    });
+
+    const page2 = await service.getBlogIndex(locale, { page: 2 });
+    expect(page2!.posts.length).toBe(6);
+    expect(page2!.pagination.page).toBe(2);
+    expect(page2!.pagination.previousHref).toBe("?page=1");
+    expect(page2!.pagination.nextHref).toBeUndefined();
+
+    expect(await service.getBlogIndex(locale, { page: 3 })).toBeNull();
+  });
+
+  it("filters the blog index by category", async () => {
+    const engineering = await service.getBlogIndex(locale, {
+      category: "engineering",
+    });
+    const photography = await service.getBlogIndex(locale, {
+      category: "photography",
+    });
+    expect(
+      engineering!.categories.find((c) => c.slug === "engineering")!.postCount,
+    ).toBe(8);
+    expect(
+      photography!.categories.find((c) => c.slug === "photography")!.postCount,
+    ).toBe(4);
+    expect(await service.getBlogIndex(locale, { category: "nope" })).toBeNull();
   });
 
   it("returns valid LegalPages", async () => {

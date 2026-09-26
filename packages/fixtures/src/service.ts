@@ -96,6 +96,12 @@ export class FixtureContentService implements ContentService {
     return getProjects(locale).find((p) => p.slug === slug) ?? null;
   }
 
+  async getProjects(locale: Locale) {
+    return getProjects(locale).map((project, i) =>
+      toProjectCard(project, String(i + 1).padStart(2, "0")),
+    );
+  }
+
   async getLegalPage(locale: Locale, slug: string) {
     return getLegalPage(locale, slug);
   }

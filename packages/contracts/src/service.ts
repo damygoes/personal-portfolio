@@ -2,7 +2,7 @@ import type { Locale } from "./common";
 import type { Site } from "./site";
 import type { Homepage } from "./home";
 import type { BlogIndex, Post } from "./blog";
-import type { Project } from "./project";
+import type { Project, ProjectCard } from "./project";
 import type { LegalPage } from "./page";
 
 /**
@@ -26,6 +26,8 @@ export interface ContentService {
   ): Promise<BlogIndex | null>;
   getPost(locale: Locale, slug: string): Promise<Post | null>;
   getProject(locale: Locale, slug: string): Promise<Project | null>;
+  /** All case studies, for the /projects index page. */
+  getProjects(locale: Locale): Promise<ProjectCard[]>;
   getLegalPage(locale: Locale, slug: string): Promise<LegalPage | null>;
 
   /** For generateStaticParams + sitemap. */

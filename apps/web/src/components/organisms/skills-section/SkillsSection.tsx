@@ -15,9 +15,9 @@ function SkillsSection({ section }: SkillsSectionProps) {
       index={section.index}
       heading={section.heading}
     >
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-20">
         <Marquee rows={section.marqueeRows} />
-        <Grid cols={{ base: 1, sm: 2 }} gap={8}>
+        <Grid cols={{ base: 1, sm: 2, lg: 4 }} gap={10}>
           {section.groups.map((group) => (
             <SkillGroup key={group.title} group={group} />
           ))}

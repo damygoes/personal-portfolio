@@ -1,5 +1,5 @@
 import type { SkillGroup as SkillGroupData } from "@portfolio/contracts";
-import { Chip, Heading, Stack } from "@portfolio/ui";
+import { Stack, Text } from "@portfolio/ui";
 
 export interface SkillGroupProps {
   group: SkillGroupData;
@@ -7,15 +7,17 @@ export interface SkillGroupProps {
 
 function SkillGroup({ group }: SkillGroupProps) {
   return (
-    <Stack gap={3} data-slot="skill-group" data-sanity={group.editTarget}>
-      <Heading level={4} size="sm">
+    <Stack gap={2} data-slot="skill-group" data-sanity={group.editTarget}>
+      <Text
+        size="sm"
+        weight="semibold"
+        className="text-primary uppercase tracking-widest"
+      >
         {group.title}
-      </Heading>
-      <div className="flex flex-wrap gap-2">
-        {group.skills.map((skill) => (
-          <Chip key={skill} label={skill} size="md" />
-        ))}
-      </div>
+      </Text>
+      <Text size="sm" tone="muted">
+        {group.skills.join(", ")}
+      </Text>
     </Stack>
   );
 }

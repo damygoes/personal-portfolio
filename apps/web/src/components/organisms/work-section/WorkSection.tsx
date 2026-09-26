@@ -1,13 +1,19 @@
 import type { WorkSection as WorkSectionData } from "@portfolio/contracts";
-import { Grid, Text } from "@portfolio/ui";
+import { Grid, Link, Text } from "@portfolio/ui";
 import { ProjectCard } from "../../molecules/project-card/ProjectCard";
 import { SectionShell } from "../section-shell/SectionShell";
 
 export interface WorkSectionProps {
   section: WorkSectionData;
+  viewAllHref?: string;
+  viewAllLabel?: string;
 }
 
-function WorkSection({ section }: WorkSectionProps) {
+function WorkSection({
+  section,
+  viewAllHref,
+  viewAllLabel = "View all projects",
+}: WorkSectionProps) {
   return (
     <SectionShell
       id={section.id}
@@ -20,11 +26,16 @@ function WorkSection({ section }: WorkSectionProps) {
             {section.intro}
           </Text>
         )}
-        <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={8}>
+        <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={12}>
           {section.projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </Grid>
+        {viewAllHref && (
+          <Link href={viewAllHref} underline="hover" className="self-start">
+            {viewAllLabel}
+          </Link>
+        )}
       </div>
     </SectionShell>
   );

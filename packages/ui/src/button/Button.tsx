@@ -82,6 +82,9 @@ function Button({
   disabled,
   children,
 
+  nativeButton,
+  render,
+
   ...props
 }: ButtonProps) {
   const resolvedSize = (size ?? "default") as NonNullable<ButtonProps["size"]>;
@@ -132,6 +135,8 @@ function Button({
       )}
       disabled={disabled || isLoading}
       aria-busy={isLoading}
+      render={render}
+      nativeButton={nativeButton ?? !render}
       {...props}
     >
       {isIconOnly ? (
