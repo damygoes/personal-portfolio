@@ -1,116 +1,128 @@
 import { describe, expect, it } from "vitest";
-import { BlogIndexSchema } from "./blog";
-import { HomepageSchema } from "./home";
-import { LegalPageSchema } from "./page";
-import { ProjectSchema } from "./project";
-import { PostSchema } from "./blog";
+import {
+  BlogIndexSchema,
+  BodyBlockSchema,
+  CaseSectionSchema,
+  CaseStudySchema,
+  PostCardSchema,
+  ProjectCardSchema,
+  SiteSettingsSchema,
+} from "./index";
 
-const seo = {
+const project = {
+  index: 1,
+  total: 5,
+  slug: "passe",
+  title: "Passe",
+  titleDot: true,
+  kind: "iOS app",
+  summary: "Summary",
+  tech: ["Expo"],
+  tone: "warm",
+  ghost: "01",
+  primaryHref: "/en/work/passe",
+  hasCaseStudy: true,
+  featured: true,
+};
+
+const post = {
+  slug: "post",
+  href: "/en/blog/post",
   title: "Title",
-  description: "Description",
-  canonicalUrl: "https://example.com",
-  noIndex: false,
-  alternates: [],
+  excerpt: "Excerpt",
+  date: "2026-08-30",
+  dateLabel: "Aug 30, 2026",
+  readingMinutes: 7,
+  category: { slug: "programming", title: "Programming" },
+  categories: [{ slug: "programming", title: "Programming" }],
+  tone: "ink",
+  ghost: "Code",
 };
 
-const photo = {
-  src: "https://cdn.example.com/img.jpg",
-  width: 800,
-  height: 600,
-  alt: "alt text",
-};
+describe("contracts", () => {
+  it("parses a project card and rejects an unknown tone", () => {
+    expect(ProjectCardSchema.safeParse(project).success).toBe(true);
+    expect(
+      ProjectCardSchema.safeParse({ ...project, tone: "stone" }).success,
+    ).toBe(false);
+  });
 
-describe("HomepageSchema", () => {
-  it("parses a minimal valid homepage", () => {
-    const result = HomepageSchema.safeParse({
-      seo,
-      hero: {
-        name: "Jane Doe",
-        facts: { location: "Berlin", role: "Developer", yearsOfExperience: 4 },
-        intro: "Intro copy",
-        primaryCta: { label: "Contact", href: "#contact", external: false },
+  it("parses every case-study section type", () => {
+    const base = { label: "Overview", number: "01" };
+    const sections = [
+      { type: "textBlock", ...base, heading: "H", body: [[{ text: "Body" }]] },
+      { type: "stepsGrid", ...base, steps: [{ title: "Create a trip" }] },
+      {
+        type: "featureGrid",
+        ...base,
+        features: [{ title: "Keepsakes", text: "Export" }],
       },
-    });
-
-    expect(result.success).toBe(true);
+      {
+        type: "plans",
+        ...base,
+        plans: [
+          {
+            name: "Free",
+            price: "€0",
+            period: "/ month",
+            features: ["3 trips"],
+          },
+        ],
+      },
+      {
+        type: "architecture",
+        ...base,
+        core: [{ eyebrow: "API", title: "Next.js", isCore: true }],
+        sub: [],
+        notes: [],
+      },
+      { type: "quote", ...base, text: "Quote" },
+    ];
+    for (const section of sections) {
+      expect(CaseSectionSchema.safeParse(section).success).toBe(true);
+    }
   });
-});
 
-describe("PostSchema", () => {
-  it("parses a minimal valid post", () => {
-    const result = PostSchema.safeParse({
-      id: "1",
-      slug: "hello-world",
-      href: "/en/blog/hello-world",
-      title: "Hello World",
-      excerpt: "An excerpt",
-      cover: photo,
-      categories: [
-        {
-          slug: "general",
-          title: "General",
-          href: "/en/blog/category/general",
-        },
+  it("parses a case study with an all-work next link", () => {
+    const result = CaseStudySchema.safeParse({
+      project,
+      caseNumber: "02",
+      titleParts: [
+        { text: "Ellies", outlined: false },
+        { text: "Note", outlined: true },
       ],
-      publishedAt: "2024-01-01T00:00:00.000Z",
-      readingTimeMinutes: 5,
-      layout: "standard",
-      body: [],
-      toc: [],
-      seo,
-      related: [],
+      lede: "Lede",
+      meta: [{ label: "Type", value: "iOS app" }],
+      screens: [],
+      sections: [],
+      next: { kind: "allWork", href: "/en/work", from: 3, total: 5 },
     });
-
     expect(result.success).toBe(true);
   });
-});
 
-describe("ProjectSchema", () => {
-  it("parses a minimal valid project", () => {
-    const result = ProjectSchema.safeParse({
-      id: "1",
-      title: "Ellies Note",
-      summary: "A note-taking app",
-      cover: photo,
-      tech: ["TypeScript", "React"],
-      href: "/en/work/elliesnote",
-      slug: "elliesnote",
-      role: "Fullstack developer",
-      period: { start: "2023-01-01", end: null, isCurrent: true },
-      status: "live",
-      links: [],
-      body: [],
-      toc: [],
-      seo,
-    });
-
-    expect(result.success).toBe(true);
+  it("parses post cards, body blocks and the blog index", () => {
+    expect(PostCardSchema.safeParse(post).success).toBe(true);
+    expect(
+      BodyBlockSchema.safeParse({
+        _type: "heading",
+        _key: "h1",
+        id: "s1",
+        text: "Keep it small",
+      }).success,
+    ).toBe(true);
+    expect(
+      BlogIndexSchema.safeParse({
+        total: 1,
+        categories: [],
+        featured: post,
+        posts: [],
+      }).success,
+    ).toBe(true);
   });
-});
 
-describe("BlogIndexSchema", () => {
-  it("parses a minimal valid blog index", () => {
-    const result = BlogIndexSchema.safeParse({
-      heading: "Blog",
-      categories: [],
-      posts: [],
-      pagination: { page: 1, totalPages: 1 },
-      seo,
-    });
-
-    expect(result.success).toBe(true);
-  });
-});
-
-describe("LegalPageSchema", () => {
-  it("parses a minimal valid legal page", () => {
-    const result = LegalPageSchema.safeParse({
-      title: "Impressum",
-      body: [],
-      updatedAt: "2024-01-01T00:00:00.000Z",
-      seo,
-    });
-
-    expect(result.success).toBe(true);
+  it("requires the site settings fields", () => {
+    expect(
+      SiteSettingsSchema.safeParse({ name: "Damilola Bada" }).success,
+    ).toBe(false);
   });
 });

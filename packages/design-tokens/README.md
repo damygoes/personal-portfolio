@@ -1,56 +1,40 @@
-# @repo/design-tokens
+# @portfolio/design-tokens
 
-Lagoon + Coral design tokens for the damilolabada.com monorepo (web, blog, CMS, mobile).
+Lagoon + Coral design tokens for damilolabada.com. The source of truth is
+`damilolabada-redesign-handoff/design/styles/site.css`.
 
-| File                | Exports                                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `src/colors.ts`     | `colors` (raw hex ramps 50–950 + status), `themes.light` / `themes.dark` (semantic, resolved hex)                       |
-| `src/spacing.ts`    | `spacing`, `borderRadius`, `layout`, `containers`, `breakpoints` (px numbers)                                           |
-| `src/typography.ts` | `fontFamilies`, `fontStacks`, `fontSizes`, `fontWeights`, `lineHeights`, `letterSpacings`, `displaySizes`, `textStyles` |
-| `src/effects.ts`    | `shadows`, `nativeShadows`, `durations`, `easings`                                                                      |
-| `src/tokens.css`    | Tailwind v4 `@theme` + `.dark` overrides + `text-stroke` / `link-sweep` utilities                                       |
+| File                | Exports                                                                |
+| ------------------- | ---------------------------------------------------------------------- |
+| `styles/tokens.css` | Tailwind v4 theme, light/dark variables, type/layout/outline utilities |
+| `src/colors.ts`     | `colors` (raw ramps), `themes.light` / `themes.dark` (semantic hex)    |
+| `src/typography.ts` | font families, weights, `typeScale` (px per mobile/tablet/desktop)     |
+| `src/spacing.ts`    | `spacing`, `borderRadius`, `layout`, `containers`, `breakpoints`       |
+| `src/effects.ts`    | `durations`, `easings`                                                 |
 
-## Web (Next.js + Tailwind v4)
+## Usage
 
 ```css
-/* apps/web/app/globals.css */
 @import "tailwindcss";
-@import "@repo/design-tokens/tokens.css";
-@source "../../../packages/ui"; /* if you have a shared UI package */
+@import "@portfolio/design-tokens/styles";
 ```
 
-```tsx
-// apps/web/app/layout.tsx
-import { Bricolage_Grotesque, Inter, Geist_Mono } from 'next/font/google';
-const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-bricolage' });
-const sans = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' });
+Load the fonts as CSS variables on `<html>`: `--font-bricolage`, `--font-inter`,
+`--font-geist-mono` (next/font in the app, @fontsource in Storybook). Dark mode is
+the `.dark` class on `<html>`.
 
-<html className={`${display.variable} ${sans.variable} ${mono.variable}`}>  {/* add "dark" for dark mode */}
-```
+## Utilities
 
-Put the font variable classes on `<html>`, not `<body>`, so `--font-*` resolves at `:root`.
-
-## React Native / Expo
-
-```ts
-import {
-  themes,
-  spacing,
-  borderRadius,
-  fontSizes,
-  toLineHeight,
-  nativeShadows,
-} from "@repo/design-tokens";
-const t = themes.light;
-const styles = {
-  card: {
-    backgroundColor: t.card,
-    padding: spacing[6],
-    borderRadius: borderRadius.lg,
-    ...nativeShadows.md,
-  },
-};
-```
-
-On native, each font weight is its own family name (`Inter_400Regular` and so on with `@expo-google-fonts/*`). Map `fontWeights` to those names in the app.
+- Colours: `bg-bg`, `text-fg`, `text-fg-soft`, `text-muted`, `text-primary`, `text-spark`,
+  `bg-card`, `border-border`, `border-divider`, `bg-band`, `text-band-fg`, …
+- Type: `type-display` (Bricolage 800 uppercase) and `font-display` (Bricolage), plus the
+  sizes `t-hero`, `cs-title`, `t-xl`, `t-cta`, `t-next`, `t-ftr-mark`, `t-statement`,
+  `t-md`, `t-sm`, `cs-h`, `ph-title`, `t-lede`, `t-post`, `t-body-lg`, `t-body`, `label`,
+  `label-2xs`.
+- Outlined type: `text-outline` (3px mobile / 4px stroke, paint-order), `text-outline-thin`,
+  `text-ghost`. Fill and stroke come from `--outline-fill` / `--outline-line` and
+  `--ghost-fill` / `--ghost-line`, set by `band` and the tones.
+- Tones: `tone-card`, `tone-lagoon`, `tone-warm`, `tone-stone`, `tone-ink`, `cover-warm`.
+- Layout: `wrap` (gutters 20/32/48, max 1440), `sec` (96/128/160), `g12`, `rule`.
+- Links and cards: `sweep`, `sweep-soft`, `arr`, `big-link`, `card-link`, `lift`, `cover-inner`
+  (zooms inside a hovered `group`).
+- Animations: `animate-marquee`, `animate-spin-slow`, `animate-pulse`, `animate-scroll-line`.

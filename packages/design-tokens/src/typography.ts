@@ -41,133 +41,87 @@ export const fontSizes = {
   "3xl": 30,
   "4xl": 36,
   "5xl": 48,
-  "6xl": 60,
-  "7xl": 72,
 } as const;
-
-/** Named line-height multipliers. */
-export const lineHeights = {
-  hero: 0.86,
-  none: 1,
-  tight: 1.1,
-  snug: 1.25,
-  normal: 1.5,
-  relaxed: 1.65,
-} as const;
-
-/** Default line-height paired with each font size (what `text-*` applies). */
-export const fontSizeLineHeights: Record<keyof typeof fontSizes, number> = {
-  "2xs": 1.45,
-  xs: 1.5,
-  sm: 1.5,
-  base: 1.6,
-  lg: 1.55,
-  xl: 1.45,
-  "2xl": 1.3,
-  "3xl": 1.2,
-  "4xl": 1.15,
-  "5xl": 1.05,
-  "6xl": 1,
-  "7xl": 1,
-};
 
 /** Letter spacing in em. widest = the mono uppercase labels and links. */
 export const letterSpacings = {
   tighter: -0.025,
-  tight: -0.01,
+  tight: -0.015,
   normal: 0,
-  wide: 0.08,
   widest: 0.15,
 } as const;
 
-/**
- * Fluid display sizes for the uppercase headlines.
- * Web: clamp(min, preferred, max) in tokens.css (`text-display-*`).
- * Native: pick `min` on phones, `max` on tablets, or interpolate on width.
- */
-export const displaySizes = {
-  hero: {
-    min: 52,
-    max: 184,
-    css: "clamp(3.25rem, 13vw, 11.5rem)",
-    lineHeight: 0.86,
-    letterSpacing: -0.025,
-    fontWeight: 800,
-  },
-  lg: {
-    min: 40,
-    max: 96,
-    css: "clamp(2.5rem, 1.6rem + 4.5vw, 6rem)",
-    lineHeight: 0.9,
-    letterSpacing: -0.025,
-    fontWeight: 800,
-  },
-  md: {
-    min: 32,
-    max: 64,
-    css: "clamp(2rem, 1.4rem + 3vw, 4rem)",
-    lineHeight: 1,
-    letterSpacing: -0.02,
-    fontWeight: 700,
-  },
-  sm: {
-    min: 28,
-    max: 48,
-    css: "clamp(1.75rem, 1.35rem + 2vw, 3rem)",
-    lineHeight: 1.05,
-    letterSpacing: -0.015,
-    fontWeight: 700,
-  },
-} as const;
+type Step = { mobile: number; tablet: number; desktop: number };
 
-/** Composite presets for the recurring roles on the site. */
-export const textStyles = {
-  hero: {
-    fontFamily: "display",
-    fontSize: "display-hero",
-    fontWeight: 800,
-    lineHeight: 0.86,
-    letterSpacing: -0.025,
-    textTransform: "uppercase",
+/**
+ * The design's type roles (site.css), px per layout: mobile < 640,
+ * tablet 640–1023, desktop >= 1024. tokens.css exposes each as a utility
+ * with the same name (`t-hero`, `t-xl`, …).
+ */
+export const typeScale = {
+  "t-hero": { mobile: 64, tablet: 108, desktop: 184, lineHeight: 0.86 },
+  "cs-title": { mobile: 52, tablet: 100, desktop: 184, lineHeight: 0.86 },
+  "t-xl": { mobile: 44, tablet: 72, desktop: 96, lineHeight: 0.9 },
+  "t-cta": { mobile: 48, tablet: 72, desktop: 96, lineHeight: 0.9 },
+  "t-next": { mobile: 40, tablet: 72, desktop: 120, lineHeight: 0.9 },
+  "t-ftr-mark": { mobile: 64, tablet: 84, desktop: 166, lineHeight: 0.86 },
+  "t-statement": {
+    mobile: 34,
+    tablet: 44,
+    desktop: 56,
+    lineHeight: 1.05,
+    fontWeight: 600,
   },
-  heading: {
-    fontFamily: "display",
-    fontSize: "4xl",
+  "t-md": {
+    mobile: 32,
+    tablet: 48,
+    desktop: 64,
+    lineHeight: 1,
     fontWeight: 700,
+  },
+  "t-sm": {
+    mobile: 32,
+    tablet: 40,
+    desktop: 40,
+    lineHeight: 1.05,
+    fontWeight: 700,
+  },
+  "cs-h": {
+    mobile: 32,
+    tablet: 44,
+    desktop: 56,
+    lineHeight: 1.05,
+    fontWeight: 700,
+  },
+  "ph-title": {
+    mobile: 38,
+    tablet: 60,
+    desktop: 88,
+    lineHeight: 1,
+    fontWeight: 700,
+  },
+  "t-lede": {
+    mobile: 22,
+    tablet: 26,
+    desktop: 32,
+    lineHeight: 1.2,
+    fontWeight: 500,
+  },
+  "t-post": {
+    mobile: 24,
+    tablet: 28,
+    desktop: 28,
     lineHeight: 1.15,
-    letterSpacing: -0.02,
+    fontWeight: 700,
   },
-  body: {
-    fontFamily: "sans",
-    fontSize: "base",
-    fontWeight: 400,
-    lineHeight: 1.6,
-    letterSpacing: 0,
-  },
-  prose: {
-    fontFamily: "sans",
-    fontSize: "lg",
-    fontWeight: 400,
-    lineHeight: 1.65,
-    letterSpacing: 0,
-  },
-  label: {
-    fontFamily: "mono",
-    fontSize: "xs",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: 0.15,
-    textTransform: "uppercase",
-  },
-  link: {
-    fontFamily: "mono",
-    fontSize: "xs",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: 0.15,
-    textTransform: "uppercase",
-  },
-} as const;
+  "t-body-lg": { mobile: 16, tablet: 18, desktop: 18, lineHeight: 1.65 },
+  "t-body": { mobile: 16, tablet: 16, desktop: 16, lineHeight: 1.6 },
+  label: { mobile: 12, tablet: 12, desktop: 12, lineHeight: 1.5 },
+  "label-2xs": { mobile: 11, tablet: 11, desktop: 11, lineHeight: 1.45 },
+} as const satisfies Record<
+  string,
+  Step & { lineHeight: number; fontWeight?: number }
+>;
 
 /** RN helpers: relative → absolute px. */
 export const toLineHeight = (fontSize: number, multiplier: number) =>

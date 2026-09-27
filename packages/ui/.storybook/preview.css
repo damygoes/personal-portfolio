@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @import "@portfolio/design-tokens/styles";
+@import "@fontsource-variable/bricolage-grotesque/opsz.css";
+@import "@fontsource-variable/inter/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
+
+@source "../src";
+
+/* The same variables next/font sets in the app. */
+:root {
+  --font-bricolage: "Bricolage Grotesque Variable";
+  --font-inter: "Inter Variable";
+  --font-geist-mono: "Geist Mono Variable";
+}
+
+body {
+  margin: 0;
+}

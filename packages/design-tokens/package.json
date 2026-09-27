@@ -11,7 +11,7 @@
     "./spacing": "./src/spacing.ts",
     "./typography": "./src/typography.ts",
     "./effects": "./src/effects.ts",
-    "./tokens.css": "./src/tokens.css",
+    "./tokens.css": "./styles/tokens.css",
     "./styles": "./styles/tokens.css"
   },
   "devDependencies": {

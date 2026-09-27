@@ -48,31 +48,30 @@ export const spacing = {
   96: 384,
 } as const;
 
-/** Soft corners. md for controls, lg for cards, full for pills/avatars. */
+/** Corners: 12 code/todo boxes, 16 cards, 20 mobile featured covers, 24 featured covers. */
 export const borderRadius = {
   none: 0,
-  xs: 4,
-  sm: 6,
-  md: 8,
-  lg: 12,
-  xl: 16,
+  md: 12,
+  lg: 16,
+  xl: 20,
   "2xl": 24,
   full: 9999,
 } as const;
 
-/** Semantic layout spacing. Each has sm / md / lg steps to pair with breakpoints. */
+/** Semantic layout values per layout (mobile < 640, tablet 640–1023, desktop >= 1024). */
 export const layout = {
-  /** Horizontal page padding. */
-  gutter: { sm: 16, md: 24, lg: 32 },
-  /** Vertical padding between page sections. */
-  sectionY: { sm: 96, md: 128, lg: 160 },
+  /** Horizontal page padding (`wrap`). */
+  gutter: { mobile: 20, tablet: 32, desktop: 48 },
+  /** Vertical section padding (`sec`). */
+  sectionY: { mobile: 96, tablet: 128, desktop: 160 },
+  headerHeight: { mobile: 64, tablet: 72, desktop: 88 },
+  /** 12-column grid gap (`g12`). */
+  columnGap: 24,
 } as const;
 
-/** Max content widths. reading ≈ 68ch of Inter at 16px, for blog posts (Tailwind already owns `max-w-prose` = 65ch). */
+/** Content is capped at 1440 and centred; bands stay full-bleed. */
 export const containers = {
-  reading: 680,
-  content: 1200,
-  wide: 1440,
+  page: 1440,
 } as const;
 
 /** Min-width breakpoints (Tailwind defaults). */

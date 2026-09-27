@@ -1,94 +1,84 @@
 import { z } from "zod";
-import type { PortableTextBlock } from "@portabletext/types";
-import { PhotoSchema } from "./common";
+import { ImageSchema, TextRunSchema } from "./common";
 
 /**
- * Rich text is Portable Text (an open spec, not Sanity-specific) plus custom blocks.
- * The content layer has already:
- *  - resolved every image to `Photo`
- *  - resolved `link` / `internalLink` marks to `{ href, external }` (locale-aware)
- *  - removed empty blocks
- * Heading anchors use the block's `_key`, so the TOC and renderer always agree.
+ * Post body blocks. The content layer converts Portable Text into these, so the
+ * renderer never sees CMS shapes. Heading ids are stable anchors shared with the TOC.
  */
 
-const isTextBlock = (v: unknown): v is PortableTextBlock =>
-  typeof v === "object" &&
-  v !== null &&
-  (v as { _type?: unknown })._type === "block";
+const key = z.string();
 
-export const TextBlockSchema = z.custom<PortableTextBlock>(isTextBlock, {
-  message: "Expected a Portable Text block",
+export const ParagraphBlockSchema = z.object({
+  _type: z.literal("paragraph"),
+  _key: key,
+  children: z.array(TextRunSchema).min(1),
 });
 
-export const FigureBlockSchema = z.object({
-  _type: z.literal("figure"),
-  _key: z.string(),
-  image: PhotoSchema,
-  size: z.enum(["inline", "wide", "fullBleed"]),
-  showExif: z.boolean(),
+export const HeadingBlockSchema = z.object({
+  _type: z.literal("heading"),
+  _key: key,
+  id: z.string(),
+  text: z.string(),
 });
 
-export const GalleryBlockSchema = z.object({
-  _type: z.literal("gallery"),
-  _key: z.string(),
-  layout: z.enum(["grid", "masonry", "carousel"]),
-  caption: z.string().optional(),
-  showExif: z.boolean(),
-  images: z.array(PhotoSchema).min(2),
+export const ListBlockSchema = z.object({
+  _type: z.literal("list"),
+  _key: key,
+  ordered: z.boolean(),
+  items: z.array(z.array(TextRunSchema).min(1)).min(1),
+});
+
+export const PullQuoteBlockSchema = z.object({
+  _type: z.literal("pullQuote"),
+  _key: key,
+  text: z.string(),
 });
 
 export const CodeBlockSchema = z.object({
   _type: z.literal("code"),
-  _key: z.string(),
-  language: z.string(),
+  _key: key,
   code: z.string(),
+  language: z.string(),
+  /** Display name for the code bar ("Markdown"). */
+  languageLabel: z.string().optional(),
   filename: z.string().optional(),
-  highlightedLines: z.array(z.number().int()),
+  /** Pre-highlighted HTML (tokens use the .k / .s / .c classes). */
+  html: z.string().optional(),
 });
 
-export const CalloutBlockSchema = z.object({
-  _type: z.literal("callout"),
-  _key: z.string(),
-  tone: z.enum(["info", "tip", "warning"]),
-  body: z.array(TextBlockSchema),
+export const FigureBlockSchema = z.object({
+  _type: z.literal("figure"),
+  _key: key,
+  image: ImageSchema,
+  caption: z.string().optional(),
 });
 
-export const VideoEmbedBlockSchema = z.object({
-  _type: z.literal("videoEmbed"),
-  _key: z.string(),
-  provider: z.enum(["youtube", "vimeo"]),
-  videoId: z.string(),
-  title: z.string(),
+/** Reserved for the photography layout (not designed yet): renders as figures. */
+export const GalleryBlockSchema = z.object({
+  _type: z.literal("gallery"),
+  _key: key,
+  images: z.array(ImageSchema).min(1),
+  caption: z.string().optional(),
 });
 
-export const RichTextNodeSchema = z.union([
-  TextBlockSchema,
+export const BodyBlockSchema = z.discriminatedUnion("_type", [
+  ParagraphBlockSchema,
+  HeadingBlockSchema,
+  ListBlockSchema,
+  PullQuoteBlockSchema,
+  CodeBlockSchema,
   FigureBlockSchema,
   GalleryBlockSchema,
-  CodeBlockSchema,
-  CalloutBlockSchema,
-  VideoEmbedBlockSchema,
 ]);
-export const RichTextSchema = z.array(RichTextNodeSchema);
-
+export type BodyBlock = z.infer<typeof BodyBlockSchema>;
+export type CodeBlock = z.infer<typeof CodeBlockSchema>;
 export type FigureBlock = z.infer<typeof FigureBlockSchema>;
 export type GalleryBlock = z.infer<typeof GalleryBlockSchema>;
-export type CodeBlock = z.infer<typeof CodeBlockSchema>;
-export type CalloutBlock = z.infer<typeof CalloutBlockSchema>;
-export type VideoEmbedBlock = z.infer<typeof VideoEmbedBlockSchema>;
-export type RichText = z.infer<typeof RichTextSchema>;
 
 export const TocEntrySchema = z.object({
-  /** = heading block `_key` */
   id: z.string(),
   text: z.string(),
-  level: z.union([z.literal(2), z.literal(3)]),
+  /** "01" */
+  number: z.string(),
 });
 export type TocEntry = z.infer<typeof TocEntrySchema>;
-
-/* Portable Text blocks have `_type: string`, so `_type` checks don't narrow. Use these guards. */
-export type RichTextNode = z.infer<typeof RichTextNodeSchema>;
-export const isFigureBlock = (n: RichTextNode): n is FigureBlock =>
-  n._type === "figure";
-export const isGalleryBlock = (n: RichTextNode): n is GalleryBlock =>
-  n._type === "gallery";

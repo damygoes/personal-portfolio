@@ -1,40 +1,25 @@
 import type { Locale } from "./common";
-import type { Site } from "./site";
-import type { Homepage } from "./home";
-import type { BlogIndex, Post } from "./blog";
-import type { Project, ProjectCard } from "./project";
-import type { LegalPage } from "./page";
+import type { BlogIndexDTO, PostDTO } from "./blog";
+import type { AboutPageDTO, HomeDTO, WorkPageDTO } from "./pages";
+import type { CaseStudyDTO } from "./project";
+import type { SiteSettingsDTO } from "./site";
 
 /**
- * The only thing the frontend calls. Two implementations:
- *  - @portfolio/content  → Sanity (production, preview)
- *  - @portfolio/fixtures → static mocks (FE development, Storybook, tests)
- * Returning `null` means "not found" → notFound() in Next.js.
- *
- * A service instance is created per request with `preview` resolved from Next's draftMode().
- * In preview, string fields may contain invisible stega characters (for Visual Editing) and
- * objects carry `editTarget`. Treat all display strings as opaque: render them, never compare them.
- * Invalid draft content throws `ContentValidationError` (from @portfolio/content) instead of rendering.
+ * The only data API the web app uses. Implemented by `@portfolio/fixtures`
+ * (static, Storybook/local dev) and `@portfolio/content` (Sanity). Both return
+ * the same DTOs; `null` means not found.
  */
 export interface ContentService {
-  getSite(locale: Locale): Promise<Site>;
-  getHomepage(locale: Locale): Promise<Homepage>;
-
+  getSiteSettings(locale: Locale): Promise<SiteSettingsDTO>;
+  getHome(locale: Locale): Promise<HomeDTO>;
+  getWorkPage(locale: Locale): Promise<WorkPageDTO>;
+  getCaseStudy(slug: string, locale: Locale): Promise<CaseStudyDTO | null>;
+  getAbout(locale: Locale): Promise<AboutPageDTO>;
   getBlogIndex(
     locale: Locale,
-    opts?: { category?: string; page?: number },
-  ): Promise<BlogIndex | null>;
-  getPost(locale: Locale, slug: string): Promise<Post | null>;
-  getProject(locale: Locale, slug: string): Promise<Project | null>;
-  /** All case studies, for the /projects index page. */
-  getProjects(locale: Locale): Promise<ProjectCard[]>;
-  getLegalPage(locale: Locale, slug: string): Promise<LegalPage | null>;
-
-  /** For generateStaticParams + sitemap. */
-  getRoutes(): Promise<{
-    posts: { locale: Locale; slug: string }[];
-    projects: { locale: Locale; slug: string }[];
-    categories: { locale: Locale; slug: string }[];
-    legalPages: { locale: Locale; slug: string }[];
-  }>;
+    options?: { category?: string },
+  ): Promise<BlogIndexDTO>;
+  getPost(slug: string, locale: Locale): Promise<PostDTO | null>;
+  /** Slugs for static generation. */
+  getRoutes(): Promise<{ caseStudies: string[]; posts: string[] }>;
 }

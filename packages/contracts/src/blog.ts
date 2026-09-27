@@ -1,81 +1,67 @@
 import { z } from "zod";
 import {
   EditTargetSchema,
+  ImageSchema,
   IsoDateSchema,
-  NeighbourSchema,
-  PhotoSchema,
-  SeoSchema,
+  ToneSchema,
 } from "./common";
-import { RichTextSchema, TocEntrySchema } from "./rich-text";
+import { BodyBlockSchema, TocEntrySchema } from "./rich-text";
+import { AuthorSchema } from "./site";
 
-export const CategorySchema = z.object({
+export const CategoryRefSchema = z.object({
   slug: z.string(),
   title: z.string(),
-  description: z.string().optional(),
-  href: z.string(),
 });
-export type Category = z.infer<typeof CategorySchema>;
+export type CategoryRefDTO = z.infer<typeof CategoryRefSchema>;
 
-/** 'photoEssay' → full-bleed layout with galleries and EXIF. */
-export const PostLayoutSchema = z.enum(["standard", "photoEssay"]);
-export type PostLayout = z.infer<typeof PostLayoutSchema>;
+export const CategorySchema = CategoryRefSchema.extend({
+  tone: ToneSchema,
+  /** Number of posts in this category. */
+  count: z.number().int(),
+});
+export type CategoryDTO = z.infer<typeof CategorySchema>;
 
 export const PostCardSchema = z.object({
-  id: z.string(),
   slug: z.string(),
   href: z.string(),
   title: z.string(),
   excerpt: z.string(),
-  cover: PhotoSchema,
-  categories: z.array(CategorySchema).min(1),
-  publishedAt: IsoDateSchema,
-  readingTimeMinutes: z.number().int().min(1),
-  layout: PostLayoutSchema,
+  date: IsoDateSchema,
+  /** EN "Aug 30, 2026" · DE "30. Aug. 2026" */
+  dateLabel: z.string(),
+  readingMinutes: z.number().int(),
+  /** The first category: shown on cards and sets the cover tone. */
+  category: CategoryRefSchema,
+  categories: z.array(CategoryRefSchema).min(1),
+  tone: ToneSchema,
+  cover: ImageSchema.optional(),
+  /** Ghost word drawn on the cover while there is no image. */
+  ghost: z.string(),
+  /** Layout sample from the design — never in production. */
+  sample: z.boolean().optional(),
   editTarget: EditTargetSchema,
 });
-export type PostCard = z.infer<typeof PostCardSchema>;
+export type PostCardDTO = z.infer<typeof PostCardSchema>;
 
 export const PostSchema = PostCardSchema.extend({
-  updatedAt: IsoDateSchema.optional(),
-  body: RichTextSchema,
+  body: z.array(BodyBlockSchema),
   toc: z.array(TocEntrySchema),
-  seo: SeoSchema,
-  /** Only for photoEssay: aggregated from the EXIF of every photo in the post. */
-  photoSummary: z
-    .object({
-      photoCount: z.number().int(),
-      cameras: z.array(z.string()),
-      lenses: z.array(z.string()),
-    })
-    .optional(),
+  author: AuthorSchema,
+  /** Same category first, then latest; max 3. */
   related: z.array(PostCardSchema).max(3),
-  previous: NeighbourSchema.optional(),
-  next: NeighbourSchema.optional(),
 });
-export type Post = z.infer<typeof PostSchema>;
+export type PostDTO = z.infer<typeof PostSchema>;
 
-export const CategoryFilterItemSchema = CategorySchema.extend({
-  postCount: z.number().int(),
-  active: z.boolean(),
-});
-
-export const PaginationSchema = z.object({
-  page: z.number().int().min(1),
-  totalPages: z.number().int().min(1),
-  previousHref: z.string().optional(),
-  nextHref: z.string().optional(),
-});
-
-/** /[locale]/blog and /[locale]/blog/category/[slug] */
 export const BlogIndexSchema = z.object({
-  heading: z.string(),
-  intro: z.string().optional(),
-  activeCategory: CategorySchema.optional(),
-  categories: z.array(CategoryFilterItemSchema),
+  /** Posts across all categories. */
+  total: z.number().int(),
+  /** Year of the oldest post: "Since 2026". */
+  sinceYear: z.number().int().optional(),
+  categories: z.array(CategorySchema),
+  /** Slug from `?category=`; undefined = All. */
+  activeCategory: z.string().optional(),
+  /** Newest post in the current filter. */
+  featured: PostCardSchema.optional(),
   posts: z.array(PostCardSchema),
-  pagination: PaginationSchema,
-  seo: SeoSchema,
 });
-export type BlogIndex = z.infer<typeof BlogIndexSchema>;
-export type CategoryFilterItem = z.infer<typeof CategoryFilterItemSchema>;
-export type Pagination = z.infer<typeof PaginationSchema>;
+export type BlogIndexDTO = z.infer<typeof BlogIndexSchema>;

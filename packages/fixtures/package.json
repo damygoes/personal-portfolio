@@ -15,6 +15,8 @@
     "vitest": "^4.1.11"
   },
   "dependencies": {
-    "@portfolio/contracts": "workspace:*"
+    "@portfolio/contracts": "workspace:*",
+    "@portfolio/i18n": "workspace:*",
+    "@portfolio/utils": "workspace:*"
   }
 }

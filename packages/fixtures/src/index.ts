@@ -1,1 +1,1 @@
-export * from "./service";
+export { FixtureContentService } from "./service";

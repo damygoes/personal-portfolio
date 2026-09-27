@@ -1,0 +1,114 @@
+import type { WorkMode } from "@portfolio/contracts";
+
+type RawExperience = {
+  order: number;
+  role: string;
+  company: string;
+  location: string | null;
+  workMode: WorkMode | null;
+  start: string;
+  end: string | null;
+  summary?: string;
+  bullets?: string[];
+};
+
+/** spec/content-seed.json `experience` */
+export const experience: RawExperience[] = [
+  {
+    order: 1,
+    role: "Software Engineer",
+    company: "adesso SE",
+    location: "Karlsruhe, Germany",
+    workMode: null,
+    start: "2025-11",
+    end: null,
+    summary:
+      "Building tailored software solutions at one of Europe's leading IT service providers — helping companies and public organisations strengthen their core business processes and achieve digital excellence.",
+  },
+  {
+    order: 2,
+    role: "Team Lead",
+    company: "apomap GmbH",
+    location: "Winterberg",
+    workMode: "hybrid",
+    start: "2025-01",
+    end: "2025-09",
+    bullets: [
+      "Mentor and conduct code reviews for a team of 3 developers",
+      "Manage project timelines and ensure quality deliverables",
+      "Implement and maintain CI/CD pipelines to streamline deployments",
+      "Conducted interviews and onboarding for new developers",
+      "Collaborated with product managers to define project requirements",
+    ],
+  },
+  {
+    order: 3,
+    role: "Fullstack Developer",
+    company: "apomap GmbH",
+    location: "Winterberg",
+    workMode: null,
+    start: "2022-11",
+    end: "2024-12",
+    bullets: [
+      "Designed GraphQL APIs for efficient data retrieval",
+      "Developed responsive UIs with React and Tailwind CSS",
+      "Optimized performance for a React-based web application",
+      "Integrated third-party logistics and POS APIs to enhance pharmacy operations",
+    ],
+  },
+  {
+    order: 4,
+    role: "Frontend Developer",
+    company: "MyCodeCareer",
+    location: "Boston",
+    workMode: "remote",
+    start: "2022-09",
+    end: "2022-11",
+    bullets: [
+      "Collaborated with UX designers to enhance UI workflows",
+      "Rebuilt company website using modern React best practices",
+    ],
+  },
+  {
+    order: 5,
+    role: "Frontend Developer (Trainee)",
+    company: "Brainnest GmbH",
+    location: "Bremen",
+    workMode: "remote",
+    start: "2022-06",
+    end: "2022-07",
+    bullets: [
+      "Worked with team members to build UI components",
+      "Reviewed code and provided feedback on frontend implementation",
+      "Applied web development best practices",
+    ],
+  },
+  {
+    order: 6,
+    role: "Self-taught Fullstack Developer",
+    company: "Freelance & personal projects",
+    location: "Germany",
+    workMode: null,
+    start: "2020-06",
+    end: "2022-05",
+    bullets: [
+      "Built and managed websites using WordPress, Elementor, React, and Node.js",
+      "Collaborated with small businesses to improve their online presence",
+      "Practiced fullstack concepts including authentication, APIs, and deployment",
+      "Balanced self-learning with part-time work in logistics and delivery",
+    ],
+  },
+  {
+    order: 7,
+    role: "Career Transition",
+    company: "Personal",
+    location: null,
+    workMode: null,
+    start: "2020-01",
+    end: "2020-05",
+    bullets: [
+      "Researched the tech industry and self-learning opportunities",
+      "Mapped out a long-term goal to transition into software development",
+    ],
+  },
+];
