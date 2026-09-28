@@ -1,12 +1,12 @@
 import { formatMessage } from "@portfolio/utils";
 import type { ReactNode } from "react";
+import { FitText } from "../../atoms/fit-text/FitText";
 import { LocalClock } from "../../atoms/local-clock/LocalClock";
 import { Dot, OutlineText } from "../../atoms/outline-text/OutlineText";
 import { LiveDot } from "../../atoms/pill/Pill";
 import { SweepLink } from "../../atoms/sweep-link/SweepLink";
 import { Anchor } from "../../lib/adapters";
 import { pagePaths, type ChromeProps } from "../../lib/types";
-import { FitText } from "../../atoms/fit-text/FitText";
 
 export interface FooterProps extends Omit<ChromeProps, "alternates"> {
   /** Copyright year; defaults to the current year. */
@@ -57,7 +57,7 @@ function Footer({
   ];
   return (
     <footer data-slot="footer" className="band shrink-0">
-      <div className="wrap pt-16 pb-8 sm:pt-20 lg:pt-24">
+      <div className="wrap pt-16 pb-8 sm:pt-20 lg:pt-24 space-y-24">
         <div className="g12 gap-y-10 sm:gap-y-12">
           <div className="col-span-12 flex flex-col gap-5 lg:col-span-6">
             <p className="type-display text-[26px] leading-none text-band-fg">
