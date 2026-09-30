@@ -62,7 +62,7 @@ function PostCard({
   return (
     <article
       data-slot="post-card"
-      data-sanity={post.editTarget}
+      {...post.editAttrs}
       className={cn(
         "group relative flex flex-col gap-5",
         row &&

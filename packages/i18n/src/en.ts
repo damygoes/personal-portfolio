@@ -24,8 +24,8 @@ export const en = {
     light: "Light mode",
   },
   lang: {
-    en: "EN",
-    de: "DE",
+    // added — switcher labels ("EN") come from LOCALE_META in contracts
+    label: "Language",
   },
   common: {
     localTime: "Local time",

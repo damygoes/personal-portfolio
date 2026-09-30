@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  pickLocale,
   cn,
   compact,
   countWords,
@@ -89,5 +90,47 @@ describe("placeholders", () => {
       { a: 1, number: "01" },
       { a: 2, number: "02" },
     ]);
+  });
+});
+
+describe("pickLocale", () => {
+  const title = [
+    { _key: "en", value: "Work" },
+    { _key: "de", value: "" },
+  ];
+
+  it("takes the first non-empty value along the chain", () => {
+    expect(pickLocale([{ _key: "en", value: "Work" }], ["de", "en"])).toBe(
+      "Work",
+    );
+    expect(
+      pickLocale(
+        [
+          { _key: "en", value: "Work" },
+          { _key: "de", value: "Arbeit" },
+        ],
+        ["de", "en"],
+      ),
+    ).toBe("Arbeit");
+  });
+
+  it("skips empty and placeholder translations", () => {
+    expect(pickLocale(title, ["de", "en"])).toBe("Work");
+    expect(
+      pickLocale(
+        [
+          { _key: "de", value: "[To write]" },
+          { _key: "en", value: "Work" },
+        ],
+        ["de", "en"],
+      ),
+    ).toBe("Work");
+  });
+
+  it("returns undefined when nothing resolves", () => {
+    expect(pickLocale(undefined, ["en"])).toBeUndefined();
+    expect(
+      pickLocale([{ _key: "de", value: "Arbeit" }], ["en"]),
+    ).toBeUndefined();
   });
 });

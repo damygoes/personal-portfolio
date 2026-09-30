@@ -165,7 +165,7 @@ function SectionRow({
 }) {
   return (
     <div
-      data-sanity={section.editTarget}
+      {...section.editAttrs}
       className={cn("g12 gap-y-6", !first && "rule pt-32")}
     >
       <SectionLabel

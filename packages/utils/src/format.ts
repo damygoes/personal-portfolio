@@ -1,6 +1,6 @@
-export type Locale = "en" | "de";
+import { LOCALE_META, type Locale } from "@portfolio/contracts";
 
-const intlLocale: Record<Locale, string> = { en: "en-US", de: "de-DE" };
+const intlLocale = (locale: Locale) => LOCALE_META[locale].intl;
 
 function toDate(iso: string): Date {
   // "2025-11" (month precision) is valid input for experience dates.
@@ -10,7 +10,7 @@ function toDate(iso: string): Date {
 
 /** EN "Aug 30, 2026" · DE "30. Aug. 2026" */
 export function formatDate(iso: string, locale: Locale): string {
-  return new Intl.DateTimeFormat(intlLocale[locale], {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -20,7 +20,7 @@ export function formatDate(iso: string, locale: Locale): string {
 
 /** EN "Nov 2025" · DE "Nov. 2025" */
 export function formatMonthYear(iso: string, locale: Locale): string {
-  return new Intl.DateTimeFormat(intlLocale[locale], {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
     month: "short",
     year: "numeric",
     timeZone: "UTC",

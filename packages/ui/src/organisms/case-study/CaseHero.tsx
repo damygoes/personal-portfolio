@@ -21,7 +21,7 @@ function CaseHero({ study, dict, workHref }: CaseProps & { workHref: string }) {
   return (
     <section
       data-slot="case-hero"
-      data-sanity={study.editTarget}
+      {...study.editAttrs}
       aria-labelledby="cs-title"
       className="wrap flex flex-col gap-8 pt-6 pb-16 sm:gap-12 sm:pt-10 sm:pb-24"
     >

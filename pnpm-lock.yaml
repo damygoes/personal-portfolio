@@ -184,6 +184,10 @@ importers:
         version: 4.1.11(@types/node@26.4.1)(jsdom@30.1.1)(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/i18n:
+    dependencies:
+      '@portfolio/contracts':
+        specifier: workspace:*
+        version: link:../contracts
     devDependencies:
       '@portfolio/typescript-config':
         specifier: workspace:*
@@ -191,6 +195,9 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@26.4.1)(jsdom@30.1.1)(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/typescript-config: {}
 
@@ -296,6 +303,9 @@ importers:
 
   packages/utils:
     dependencies:
+      '@portfolio/contracts':
+        specifier: workspace:*
+        version: link:../contracts
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

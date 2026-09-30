@@ -18,6 +18,7 @@ import type {
   TocEntry,
   WorkPageDTO,
 } from "@portfolio/contracts";
+import { DEFAULT_LOCALE } from "@portfolio/contracts";
 import { getDictionary } from "@portfolio/i18n";
 import {
   compact,
@@ -52,6 +53,12 @@ const domainOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 const heading = (value: string | null) => {
   const h = text(value);
   return h ? splitTitleDot(h).title : undefined;
+};
+
+/** Fixtures hold EN only: every locale is served the default-locale fallback. */
+const fallbackContent = {
+  contentLocale: DEFAULT_LOCALE,
+  availableLocales: [DEFAULT_LOCALE],
 };
 
 function toProjectCard(locale: Locale, slug: string): ProjectCardDTO {
@@ -361,6 +368,7 @@ export class FixtureContentService implements ContentService {
             from: withCase.length + 1,
             total: cards.length,
           },
+      ...fallbackContent,
     };
   }
 
@@ -373,6 +381,7 @@ export class FixtureContentService implements ContentService {
       experienceSince: years.length ? Math.min(...years) : undefined,
       skills: toSkills(),
       skillsIntro,
+      ...fallbackContent,
     };
   }
 
@@ -429,6 +438,7 @@ export class FixtureContentService implements ContentService {
       related: [...sameCategory, ...rest]
         .slice(0, 3)
         .map((p) => toPostCard(locale, p)),
+      ...fallbackContent,
     };
   }
 

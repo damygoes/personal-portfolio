@@ -25,8 +25,8 @@ export const de: Dictionary = {
     light: "Heller Modus",
   },
   lang: {
-    en: "EN",
-    de: "DE",
+    // added
+    label: "Sprache",
   },
   common: {
     localTime: "Ortszeit",

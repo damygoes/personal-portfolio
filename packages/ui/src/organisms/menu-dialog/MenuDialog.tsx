@@ -8,7 +8,10 @@ import { Brand } from "../../atoms/brand/Brand";
 import { LocalClock } from "../../atoms/local-clock/LocalClock";
 import { Anchor } from "../../lib/adapters";
 import { pagePaths, type ChromeProps, type NavKey } from "../../lib/types";
-import { LangSwitch } from "../../molecules/lang-switch/LangSwitch";
+import {
+  LangSwitch,
+  localeOptions,
+} from "../../molecules/lang-switch/LangSwitch";
 
 export interface MenuDialogProps extends ChromeProps {
   active: NavKey | null;
@@ -99,9 +102,10 @@ function MenuDialog({
             className="label-2xs mt-8 flex items-center justify-between text-band-muted"
           >
             <LangSwitch
-              locale={locale}
-              alternates={alternates}
-              labels={dict.lang}
+              current={locale}
+              options={localeOptions(alternates)}
+              label={dict.lang.label}
+              variant="inline"
               className="label-2xs"
               mutedClassName="text-band-muted"
             />

@@ -200,3 +200,19 @@ describe("blog", () => {
     expect(de?.dateLabel).toBe("30. Aug. 2026");
   });
 });
+
+describe("localized documents", () => {
+  it("serves the EN fallback for every locale and says so", async () => {
+    for (const locale of ["en", "de"] as const) {
+      const [post, study, about] = await Promise.all([
+        service.getPost("code-review-team-of-three", locale),
+        service.getCaseStudy("passe", locale),
+        service.getAbout(locale),
+      ]);
+      for (const dto of [post, study, about]) {
+        expect(dto?.contentLocale).toBe("en");
+        expect(dto?.availableLocales).toEqual(["en"]);
+      }
+    }
+  });
+});
