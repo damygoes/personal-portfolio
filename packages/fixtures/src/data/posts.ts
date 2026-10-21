@@ -1,16 +1,4 @@
-import type { BodyBlock } from "@portfolio/contracts";
-
-type RawPost = {
-  sample: true;
-  slug: string;
-  title: string;
-  categories: string[];
-  publishedAt: string;
-  readingMinutes: number;
-  coverWord: string;
-  excerpt: string;
-  body?: BodyBlock[];
-};
+import type { PostRecord } from "@portfolio/content-core";
 
 const codeReviewTemplate = `## What & why
 <!-- One paragraph. Link the ticket. -->
@@ -41,7 +29,7 @@ const codeReviewTemplateHtml = `<span class="k">## What &amp; why</span>
  * The code-review body is the sample article from reference-html/blog-post.html;
  * its figure is a placeholder there, so it is left out.
  */
-export const posts: RawPost[] = [
+export const posts: PostRecord[] = [
   {
     sample: true,
     slug: "shipping-a-react-native-app-solo",

@@ -11,3 +11,5 @@ minimumReleaseAgeExclude:
   - '@turbo/windows-64@2.11.4'
   - '@turbo/windows-arm64@2.11.4'
   - turbo@2.11.4
+  - '@sanity/client@8.10.1'
+  - get-it@9.6.2

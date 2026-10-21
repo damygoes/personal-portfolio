@@ -1,19 +1,7 @@
-import type { WorkMode } from "@portfolio/contracts";
-
-type RawExperience = {
-  order: number;
-  role: string;
-  company: string;
-  location: string | null;
-  workMode: WorkMode | null;
-  start: string;
-  end: string | null;
-  summary?: string;
-  bullets?: string[];
-};
+import type { ExperienceRecord } from "@portfolio/content-core";
 
 /** spec/content-seed.json `experience` */
-export const experience: RawExperience[] = [
+export const experience: ExperienceRecord[] = [
   {
     order: 1,
     role: "Software Engineer",

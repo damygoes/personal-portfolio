@@ -94,20 +94,21 @@ describe("placeholders", () => {
 });
 
 describe("pickLocale", () => {
+  // sanity-plugin-internationalized-array v5 shape: random _key, `language` field
   const title = [
-    { _key: "en", value: "Work" },
-    { _key: "de", value: "" },
+    { _key: "k1", language: "en", value: "Work" },
+    { _key: "k2", language: "de", value: "" },
   ];
 
   it("takes the first non-empty value along the chain", () => {
-    expect(pickLocale([{ _key: "en", value: "Work" }], ["de", "en"])).toBe(
-      "Work",
-    );
+    expect(
+      pickLocale([{ _key: "k1", language: "en", value: "Work" }], ["de", "en"]),
+    ).toBe("Work");
     expect(
       pickLocale(
         [
-          { _key: "en", value: "Work" },
-          { _key: "de", value: "Arbeit" },
+          { _key: "k1", language: "en", value: "Work" },
+          { _key: "k2", language: "de", value: "Arbeit" },
         ],
         ["de", "en"],
       ),
@@ -119,18 +120,24 @@ describe("pickLocale", () => {
     expect(
       pickLocale(
         [
-          { _key: "de", value: "[To write]" },
-          { _key: "en", value: "Work" },
+          { _key: "k1", language: "de", value: "[To write]" },
+          { _key: "k2", language: "en", value: "Work" },
         ],
         ["de", "en"],
       ),
     ).toBe("Work");
   });
 
+  it("accepts the v4 shape (language in _key)", () => {
+    expect(pickLocale([{ _key: "de", value: "Arbeit" }], ["de", "en"])).toBe(
+      "Arbeit",
+    );
+  });
+
   it("returns undefined when nothing resolves", () => {
     expect(pickLocale(undefined, ["en"])).toBeUndefined();
     expect(
-      pickLocale([{ _key: "de", value: "Arbeit" }], ["en"]),
+      pickLocale([{ _key: "k1", language: "de", value: "Arbeit" }], ["en"]),
     ).toBeUndefined();
   });
 });

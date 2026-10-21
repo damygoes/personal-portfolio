@@ -202,17 +202,61 @@ describe("blog", () => {
 });
 
 describe("localized documents", () => {
-  it("serves the EN fallback for every locale and says so", async () => {
-    for (const locale of ["en", "de"] as const) {
-      const [post, study, about] = await Promise.all([
-        service.getPost("code-review-team-of-three", locale),
-        service.getCaseStudy("passe", locale),
-        service.getAbout(locale),
+  it("serves translated documents in German and says which languages exist", async () => {
+    const [post, study, about] = await Promise.all([
+      service.getPost("code-review-team-of-three", "de"),
+      service.getCaseStudy("passe", "de"),
+      service.getAbout("de"),
+    ]);
+    for (const dto of [post, study, about]) {
+      expect(dto?.contentLocale).toBe("de");
+      expect(dto?.availableLocales).toEqual(["en", "de"]);
+    }
+    expect(post?.toc.map((t) => t.text)[0]).toBe("Reviews sind Gespräche");
+    expect(study?.lede).toMatch(/^Ein standardmäßig privates Reisetagebuch/);
+    expect(about.about.facts[0]?.label).toBe("Jetzt");
+  });
+
+  it("keeps English for English readers", async () => {
+    const post = await service.getPost("code-review-team-of-three", "en");
+    expect(post?.contentLocale).toBe("en");
+    expect(post?.availableLocales).toEqual(["en", "de"]);
+    expect(post?.title).toMatch(/^What leading/);
+  });
+
+  it("translates field-level content, falling back to English per field", async () => {
+    const work = await service.getWorkPage("de");
+    const passe = work.featured.find((p) => p.slug === "passe");
+    expect(passe?.kind).toBe("iOS-App");
+    expect(passe?.status).toEqual({
+      label: "Im App Store verfügbar",
+      isNew: true,
+    });
+    // Archetype's kind ("Backend") has no German value: it stays English.
+    expect(work.others.find((p) => p.slug === "archetype")?.kind).toBe(
+      "Backend",
+    );
+    const about = await service.getAbout("de");
+    expect(about.skills.map((s) => s.title)).toEqual([
+      "Frontend",
+      "Backend",
+      "Datenbanken",
+      "DevOps & Tools",
+    ]);
+    // A role without a German value keeps the English one.
+    expect(about.experience[0]?.role).toBe("Software Engineer");
+    expect(about.experience[1]?.role).toBe("Teamleiter");
+  });
+
+  it("numbers German case-study sections after dropping the same empty ones", async () => {
+    for (const slug of ["passe", "elliesnote"]) {
+      const [en, de] = await Promise.all([
+        service.getCaseStudy(slug, "en"),
+        service.getCaseStudy(slug, "de"),
       ]);
-      for (const dto of [post, study, about]) {
-        expect(dto?.contentLocale).toBe("en");
-        expect(dto?.availableLocales).toEqual(["en"]);
-      }
+      expect(de?.sections.map((s) => [s.type, s.number])).toEqual(
+        en?.sections.map((s) => [s.type, s.number]),
+      );
     }
   });
 });
