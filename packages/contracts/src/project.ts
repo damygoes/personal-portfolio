@@ -1,8 +1,9 @@
 import { z } from "zod";
 import {
-  EditTargetSchema,
+  EditAttrsSchema,
   ImageSchema,
   LinkSchema,
+  LocalizedContentFields,
   ParagraphSchema,
 } from "./common";
 
@@ -36,7 +37,7 @@ export const ProjectCardSchema = z.object({
   externalLink: LinkSchema.optional(),
   hasCaseStudy: z.boolean(),
   featured: z.boolean(),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type ProjectCardDTO = z.infer<typeof ProjectCardSchema>;
 
@@ -45,7 +46,7 @@ const sectionBase = {
   /** "01" — computed after empty sections are dropped. */
   number: z.string(),
   heading: z.string().optional(),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 };
 
 const ItemSchema = z.object({
@@ -140,6 +141,7 @@ export const CaseStudySchema = z.object({
       total: z.number().int(),
     }),
   ]),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
+  ...LocalizedContentFields,
 });
 export type CaseStudyDTO = z.infer<typeof CaseStudySchema>;

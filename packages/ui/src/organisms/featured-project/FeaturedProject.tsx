@@ -38,7 +38,7 @@ function FeaturedProject({
   return (
     <article
       data-slot="featured-project"
-      data-sanity={project.editTarget}
+      {...project.editAttrs}
       className={cn("group g12 relative items-stretch", className)}
     >
       <ImageFrame

@@ -28,7 +28,7 @@ function PostHeader({
   return (
     <section
       data-slot="post-header"
-      data-sanity={post.editTarget}
+      {...post.editAttrs}
       aria-labelledby="post-title"
       className="wrap flex flex-col gap-7 pt-6 pb-10 sm:gap-10 sm:pt-10 sm:pb-16"
     >

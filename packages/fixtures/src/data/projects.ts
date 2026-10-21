@@ -1,28 +1,11 @@
-import type { ProjectTone } from "@portfolio/contracts";
-
-type RawProject = {
-  order: number;
-  slug: string;
-  title: string;
-  kind: string;
-  /** Hero "New work —" line; from reference-html/home.html ("Passe., a travel journal"). */
-  teaser?: string;
-  coverTag?: string;
-  status?: { label: string; isNew: boolean };
-  summary: string;
-  tech: string[];
-  links: { live?: string; github?: string; appStoreId?: string };
-  coverTone: ProjectTone;
-  featured: boolean;
-  caseStudy?: string;
-};
+import type { ProjectRecord } from "@portfolio/content-core";
 
 /**
  * spec/content-seed.json `projects`. The seed's status "New · Live on the App Store"
  * is stored as label + isNew: cards prefix "New ·", the case-study pill does not.
  * GitHub links point at the profile until the repo URLs exist (seed note).
  */
-export const projects: RawProject[] = [
+export const projects: ProjectRecord[] = [
   {
     order: 1,
     slug: "passe",

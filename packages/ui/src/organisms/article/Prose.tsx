@@ -17,19 +17,37 @@ const linkClass = "text-primary underline underline-offset-[3px]";
  * Post body renderer. Figures are numbered in order. `gallery` is reserved for the
  * photography layout (not designed yet) and falls back to one standard figure per image.
  */
+/** First figure number of each figure / gallery block, counting in document order. */
+function numberFigures(blocks: BodyBlock[]): Map<string, number> {
+  const numbers = new Map<string, number>();
+  let next = 1;
+  for (const block of blocks) {
+    if (block._type === "figure") {
+      numbers.set(block._key, next);
+      next += 1;
+    } else if (block._type === "gallery") {
+      numbers.set(block._key, next);
+      next += block.images.length;
+    }
+  }
+  return numbers;
+}
+
 function Prose({ blocks, figLabel, className }: ProseProps) {
-  let figure = 0;
-  const renderFigure = (key: string, image: ImageDTO, caption?: string) => {
-    figure += 1;
-    return (
-      <Figure
-        key={key}
-        image={image}
-        caption={caption}
-        numberLabel={formatMessage(figLabel, { n: pad2(figure) })}
-      />
-    );
-  };
+  const figureNumbers = numberFigures(blocks);
+  const renderFigure = (
+    key: string,
+    n: number,
+    image: ImageDTO,
+    caption?: string,
+  ) => (
+    <Figure
+      key={key}
+      image={image}
+      caption={caption}
+      numberLabel={formatMessage(figLabel, { n: pad2(n) })}
+    />
+  );
 
   return (
     <article
@@ -91,11 +109,17 @@ function Prose({ blocks, figLabel, className }: ProseProps) {
           case "code":
             return <CodeBlock key={block._key} block={block} />;
           case "figure":
-            return renderFigure(block._key, block.image, block.caption);
+            return renderFigure(
+              block._key,
+              figureNumbers.get(block._key) ?? 1,
+              block.image,
+              block.caption,
+            );
           case "gallery":
             return block.images.map((image, i) =>
               renderFigure(
                 `${block._key}-${i}`,
+                (figureNumbers.get(block._key) ?? 1) + i,
                 image,
                 i === 0 ? block.caption : undefined,
               ),

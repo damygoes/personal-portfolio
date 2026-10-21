@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LocaleSchema } from "./locales";
 
 /**
  * Shared building blocks for every DTO.
@@ -6,12 +7,26 @@ import { z } from "zod";
  * resolved for the requested locale, with placeholders removed.
  */
 
-export const LocaleSchema = z.enum(["en", "de"]);
-export type Locale = z.infer<typeof LocaleSchema>;
-export const LOCALES = LocaleSchema.options;
+export * from "./locales";
 
-/** Opaque `data-sanity` value for Visual Editing overlays. Only set in draft mode. */
-export const EditTargetSchema = z.string().optional();
+/**
+ * Visual-editing attributes the frontend spreads onto an element as-is
+ * (e.g. `{ "data-sanity": "…" }`). Filled by the CMS adapter, only in draft
+ * mode, so the UI never knows which CMS is behind it.
+ */
+export const EditAttrsSchema = z.record(z.string(), z.string()).optional();
+export type EditAttrs = z.infer<typeof EditAttrsSchema>;
+
+/**
+ * For documents translated as a whole (post, case study, about): which
+ * language was actually served, and which translations exist. When
+ * `contentLocale` differs from the requested locale, the page is showing the
+ * default-locale fallback.
+ */
+export const LocalizedContentFields = {
+  contentLocale: LocaleSchema,
+  availableLocales: z.array(LocaleSchema).min(1),
+};
 
 /** ISO 8601 date ("2026-08-30") or month ("2025-11"). */
 export const IsoDateSchema = z.string();
@@ -26,7 +41,7 @@ export const ImageSchema = z.object({
   width: z.number().int(),
   height: z.number().int(),
   blurDataURL: z.string().optional(),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type ImageDTO = z.infer<typeof ImageSchema>;
 

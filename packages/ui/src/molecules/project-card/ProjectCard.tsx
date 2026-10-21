@@ -21,7 +21,7 @@ function ProjectCard({ project, labels, className }: ProjectCardProps) {
   return (
     <article
       data-slot="project-card"
-      data-sanity={project.editTarget}
+      {...project.editAttrs}
       className={cn(
         "group relative flex flex-col gap-4 border-t border-divider pt-10 sm:grid sm:grid-cols-2 sm:items-start sm:gap-6 sm:border-t-0 sm:pt-0 lg:flex lg:flex-col lg:items-stretch lg:gap-6",
         className,

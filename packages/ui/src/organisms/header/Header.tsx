@@ -2,7 +2,10 @@ import { formatMessage } from "@portfolio/utils";
 import { Brand } from "../../atoms/brand/Brand";
 import { TalkButton } from "../../atoms/talk-button/TalkButton";
 import { pagePaths, type ChromeProps, type NavKey } from "../../lib/types";
-import { LangSwitch } from "../../molecules/lang-switch/LangSwitch";
+import {
+  LangSwitch,
+  localeOptions,
+} from "../../molecules/lang-switch/LangSwitch";
 import { NavLinks } from "../../molecules/nav-links/NavLinks";
 import { ThemeToggle } from "../../molecules/theme-toggle/ThemeToggle";
 import { MenuDialog } from "../menu-dialog/MenuDialog";
@@ -43,9 +46,9 @@ function Header({
       />
       <div className="flex items-center gap-2 sm:gap-4">
         <LangSwitch
-          locale={locale}
-          alternates={alternates}
-          labels={dict.lang}
+          current={locale}
+          options={localeOptions(alternates)}
+          label={dict.lang.label}
           className="hidden sm:flex"
         />
         <ThemeToggle labels={dict.theme} />

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { AboutSchema, ExperienceSchema, SkillGroupSchema } from "./about";
 import { PostCardSchema } from "./blog";
+import { LocalizedContentFields } from "./common";
 import { ProjectCardSchema } from "./project";
 
 export const HomeSchema = z.object({
@@ -29,5 +30,7 @@ export const AboutPageSchema = z.object({
   experienceSince: z.number().int().optional(),
   skills: z.array(SkillGroupSchema),
   skillsIntro: z.string().optional(),
+  /** Language of the About document (translated as a whole). */
+  ...LocalizedContentFields,
 });
 export type AboutPageDTO = z.infer<typeof AboutPageSchema>;

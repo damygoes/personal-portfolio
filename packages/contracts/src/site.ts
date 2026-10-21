@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EditTargetSchema, LinkSchema } from "./common";
+import { EditAttrsSchema, LinkSchema } from "./common";
 
 export const MarqueeItemSchema = z.object({
   text: z.string(),
@@ -31,6 +31,6 @@ export const SiteSettingsSchema = z.object({
   currentRole: z.object({ title: z.string(), company: z.string() }),
   marqueeItems: z.array(MarqueeItemSchema),
   author: AuthorSchema,
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type SiteSettingsDTO = z.infer<typeof SiteSettingsSchema>;

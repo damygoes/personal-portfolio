@@ -6,10 +6,15 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@portfolio/typescript-config": "workspace:*",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "dependencies": {
+    "@portfolio/contracts": "workspace:*"
   }
 }

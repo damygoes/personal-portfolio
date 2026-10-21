@@ -39,3 +39,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 damilolabada-redesign-handoff
+
+# Sanity
+.sanity
+apps/studio/schema.json

@@ -1,7 +1,8 @@
 import { z } from "zod";
 import {
-  EditTargetSchema,
+  EditAttrsSchema,
   ImageSchema,
+  LocalizedContentFields,
   IsoDateSchema,
   ToneSchema,
 } from "./common";
@@ -39,7 +40,7 @@ export const PostCardSchema = z.object({
   ghost: z.string(),
   /** Layout sample from the design — never in production. */
   sample: z.boolean().optional(),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type PostCardDTO = z.infer<typeof PostCardSchema>;
 
@@ -49,6 +50,7 @@ export const PostSchema = PostCardSchema.extend({
   author: AuthorSchema,
   /** Same category first, then latest; max 3. */
   related: z.array(PostCardSchema).max(3),
+  ...LocalizedContentFields,
 });
 export type PostDTO = z.infer<typeof PostSchema>;
 

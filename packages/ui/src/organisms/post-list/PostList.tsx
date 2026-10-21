@@ -51,7 +51,7 @@ function FeaturedPost({ post, dict }: { post: PostCardDTO; dict: Dictionary }) {
   return (
     <article
       data-slot="featured-post"
-      data-sanity={post.editTarget}
+      {...post.editAttrs}
       className="group g12 relative mb-16 items-stretch gap-y-8 sm:mb-24"
     >
       <ImageFrame
