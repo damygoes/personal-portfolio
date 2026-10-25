@@ -68,6 +68,26 @@ export const de: LocaleContent = {
       role: "Softwareingenieur",
       summary:
         "Ich entwickle maßgeschneiderte Softwarelösungen bei einem der führenden IT-Dienstleister Europas – und helfe Unternehmen und öffentlichen Organisationen, ihre Kernprozesse zu stärken und digitale Exzellenz zu erreichen.",
+      projects: [
+        {
+          title: "Kundenprojekt: Website für Logistik & Lagerverwaltung",
+          stack: "Magnolia CMS · Next.js · React · Team von ca. 20",
+          bullets: [
+            "Entwickle Magnolia Light Modules mit passenden React-UI-Komponenten und pflege die gemeinsame Komponentenbibliothek.",
+            "Verantworte Performance-Tracking und Barrierefreiheit der Website; schreibe Jira-Tickets und organisiere das Team-Board.",
+          ],
+        },
+        {
+          title: "Internes Produkt: KI-gestütztes Projektmanagement-Tool",
+          stack:
+            "Next.js · React · TypeScript · TailwindCSS · PostgreSQL · LLMs",
+          bullets: [
+            "Das Tool von Grund auf entwickelt (UI, Architektur, LLM-Integration) – für Scrum Master, Projektmanager und Product Owner.",
+            "Erstellt aus einem einzigen Prompt detaillierte Jira-Tickets (Bugs, Features, Stories, Epics), optimiert für die Umsetzung durch Menschen oder KI-Agenten, und zerlegt hochgeladene Projektspezifikationen in Epics, Sprints und Tickets.",
+            "Multi-Provider-LLM-Schicht (OpenAI, Anthropic, interne Modelle) mit Token-Verbrauch und Kosten pro Workflow in der Währung des Nutzers; Analyse-Dashboard für Ticket-Status und rollenbasierte Zugriffskontrolle.",
+          ],
+        },
+      ],
     },
     "apomap GmbH|2025-01": {
       role: "Teamleiter",
@@ -151,7 +171,7 @@ export const de: LocaleContent = {
       ],
       [
         {
-          text: "Heute arbeite ich als Software Engineer bei adesso und entwickle maßgeschneiderte Software für Unternehmen und öffentliche Organisationen. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
+          text: "Heute arbeite ich als Software Engineer bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
         },
       ],
       [
@@ -176,7 +196,7 @@ export const de: LocaleContent = {
     teaserParagraphs: [
       [
         {
-          text: "Heute arbeite ich als Software Engineer bei adesso und entwickle maßgeschneiderte Software für Unternehmen und öffentliche Organisationen. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
+          text: "Heute arbeite ich als Software Engineer bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
         },
       ],
       [

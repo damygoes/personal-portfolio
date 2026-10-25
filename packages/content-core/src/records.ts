@@ -83,6 +83,14 @@ export interface ExperienceRecord extends Editable {
   end: string | null;
   summary?: string | null;
   bullets?: (string | null)[];
+  /** Workstreams within the role, shown as titled groups of bullets. */
+  projects?: ExperienceProjectRecord[];
+}
+
+export interface ExperienceProjectRecord {
+  title: string;
+  stack?: string | null;
+  bullets?: (string | null)[];
 }
 
 export interface SkillGroupRecord extends Editable {
@@ -276,7 +284,10 @@ export interface LocaleContent {
   /** By `experienceKey`. */
   experience?: Record<
     string,
-    Partial<Pick<ExperienceRecord, "role" | "summary" | "bullets">>
+    Partial<Pick<ExperienceRecord, "role" | "summary" | "bullets">> & {
+      /** By index into the default-locale `projects`. */
+      projects?: Partial<ExperienceProjectRecord>[];
+    }
   >;
   /** By skill group order. */
   skillGroups?: Record<number, { title?: string }>;

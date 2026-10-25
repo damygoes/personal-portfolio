@@ -70,6 +70,29 @@ export const fr: LocaleContent = {
       role: "Ingénieur logiciel",
       summary:
         "Je développe des solutions logicielles sur mesure chez l’un des principaux prestataires de services informatiques en Europe — pour aider les entreprises et les organisations publiques à renforcer leurs processus métier essentiels et à atteindre l’excellence numérique.",
+      projects: [
+        {
+          title:
+            "Projet client : site web de logistique et de gestion d’entrepôt",
+          stack:
+            "Magnolia CMS · Next.js · React · équipe d’environ 20 personnes",
+          bullets: [
+            "Je développe des light modules Magnolia avec les composants d’interface React correspondants et maintiens la bibliothèque de composants partagée.",
+            "Je suis responsable du suivi des performances et de l’accessibilité du site ; je rédige les tickets Jira et organise le tableau de l’équipe.",
+          ],
+        },
+        {
+          title:
+            "Produit interne : outil de gestion de projet assisté par l’IA",
+          stack:
+            "Next.js · React · TypeScript · TailwindCSS · PostgreSQL · LLM",
+          bullets: [
+            "Conception et développement de l’outil de bout en bout (interface, architecture, intégration des LLM) pour les scrum masters, chefs de projet et product owners.",
+            "Génère des tickets Jira détaillés (bugs, fonctionnalités, stories, epics) à partir d’un seul prompt, optimisés pour une exécution par des humains ou des agents IA, et découpe les spécifications de projet importées en epics, sprints et tickets.",
+            "Couche LLM multi-fournisseurs (OpenAI, Anthropic, modèles internes) avec consommation de tokens et coût par workflow dans la devise de l’utilisateur ; tableau de bord analytique de l’état des tickets et contrôle d’accès basé sur les rôles.",
+          ],
+        },
+      ],
     },
     "apomap GmbH|2025-01": {
       role: "Chef d’équipe",
@@ -153,7 +176,7 @@ export const fr: LocaleContent = {
       ],
       [
         {
-          text: "Aujourd'hui, je travaille comme ingénieur logiciel chez adesso, en développant des logiciels sur mesure pour des entreprises et des organisations publiques. Avant cela, j'ai dirigé une petite équipe d'ingénierie chez apomap — où j'ai appris que le code clair et la communication claire sont également importants.",
+          text: "Aujourd'hui, je travaille comme ingénieur logiciel chez adesso, sur le site web d'un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l'IA. Avant cela, j'ai dirigé une petite équipe d'ingénierie chez apomap — où j'ai appris que le code clair et la communication claire sont également importants.",
         },
       ],
       [
@@ -178,7 +201,7 @@ export const fr: LocaleContent = {
     teaserParagraphs: [
       [
         {
-          text: "Ces jours-ci, je travaille comme ingénieur logiciel chez adesso, en développant des logiciels sur mesure pour des entreprises et des organisations publiques. Avant cela, j’ai dirigé une petite équipe d’ingénierie chez apomap — où j’ai appris que le code clair et la communication claire sont tout aussi importants.",
+          text: "Aujourd’hui, je travaille comme ingénieur logiciel chez adesso, sur le site web d’un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l’IA. Avant cela, j’ai dirigé une petite équipe d’ingénierie chez apomap — où j’ai appris que le code clair et la communication claire sont tout aussi importants.",
         },
       ],
       [

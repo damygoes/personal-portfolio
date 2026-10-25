@@ -275,6 +275,13 @@ export type Experience = {
   endDate?: string;
   summary?: InternationalizedArrayText;
   bullets?: InternationalizedArrayStringList;
+  projects?: Array<{
+    title: InternationalizedArrayString;
+    stack?: InternationalizedArrayString;
+    bullets?: InternationalizedArrayStringList;
+    _type: "experienceProject";
+    _key: string;
+  }>;
   order: number;
 };
 
@@ -816,7 +823,7 @@ export type ABOUT_QUERY_RESULT = Array<{
 
 // Source: ../../packages/sanity/src/queries.ts
 // Variable: EXPERIENCE_QUERY
-// Query: *[_type == "experience"] | order(order asc){  _id,  _type,  order,  role,  company,  location,  workMode,  startDate,  endDate,  summary,  bullets}
+// Query: *[_type == "experience"] | order(order asc){  _id,  _type,  order,  role,  company,  location,  workMode,  startDate,  endDate,  summary,  bullets,  projects[]{ _key, title, stack, bullets }}
 export type EXPERIENCE_QUERY_RESULT = Array<{
   _id: string;
   _type: "experience";
@@ -829,6 +836,12 @@ export type EXPERIENCE_QUERY_RESULT = Array<{
   endDate: string | null;
   summary: InternationalizedArrayText | null;
   bullets: InternationalizedArrayStringList | null;
+  projects: Array<{
+    _key: string;
+    title: InternationalizedArrayString;
+    stack: InternationalizedArrayString | null;
+    bullets: InternationalizedArrayStringList | null;
+  }> | null;
 }>;
 
 // Source: ../../packages/sanity/src/queries.ts
@@ -1207,7 +1220,7 @@ declare global {
   interface SanityQueries {
     '*[_type == "siteSettings" && _id == "siteSettings"][0]{\n  _id,\n  _type,\n  name,\n  initials,\n  tagline,\n  email,\n  socials[]{ label, url },\n  "cvFile": cvFile[]{ _key, language, "value": value.asset->url },\n  cvUrl,\n  location,\n  timezone,\n  yearsExperienceLabel,\n  heroMeta,\n  currentRole{ title, company },\n  marqueeItems[]{ text, outlined },\n  authorBio\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "about" && language in $chain]{\n  _id,\n  _type,\n  language,\n  statement,\n  lede,\n  bio,\n  teaserParagraphs,\n  portrait{\n  alt,\n  crop,\n  hotspot,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n},\n  facts[]{\n    _key,\n    label,\n    value,\n    "projects": projects[]->slug.current,\n    aboutPageOnly\n  },\n  skillsIntro,\n  "availableLocales": *[_type == "about" && defined(language)].language\n}': ABOUT_QUERY_RESULT;
-    '*[_type == "experience"] | order(order asc){\n  _id,\n  _type,\n  order,\n  role,\n  company,\n  location,\n  workMode,\n  startDate,\n  endDate,\n  summary,\n  bullets\n}': EXPERIENCE_QUERY_RESULT;
+    '*[_type == "experience"] | order(order asc){\n  _id,\n  _type,\n  order,\n  role,\n  company,\n  location,\n  workMode,\n  startDate,\n  endDate,\n  summary,\n  bullets,\n  projects[]{ _key, title, stack, bullets }\n}': EXPERIENCE_QUERY_RESULT;
     '*[_type == "skillGroup"] | order(order asc){\n  _id,\n  _type,\n  order,\n  title,\n  items\n}': SKILL_GROUPS_QUERY_RESULT;
     '*[_type == "project" && defined(slug.current)] | order(order asc){\n  _id,\n  _type,\n  order,\n  title,\n  "slug": slug.current,\n  kind,\n  teaser,\n  coverTag,\n  status{ label, isNew },\n  summary,\n  tech,\n  links{ live, github, appStoreId },\n  coverTone,\n  cover{\n  alt,\n  crop,\n  hotspot,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n},\n  featured,\n  "hasCaseStudy": count(*[_type == "caseStudy" && project._ref == ^._id]) > 0\n}': PROJECTS_QUERY_RESULT;
     '*[\n  _type == "caseStudy" &&\n  language in $chain &&\n  project._ref == *[_type == "project" && slug.current == $slug][0]._id\n]{\n  _id,\n  _type,\n  language,\n  "project": project->slug.current,\n  "screens": project->screens[]{\n  alt,\n  crop,\n  hotspot,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n},\n  titleSplit{ solid, outlined },\n  lede,\n  meta[]{ label, value },\n  sections[]{\n    _key,\n    _type,\n    label,\n    heading,\n    body,\n    steps[]{ title, text },\n    features[]{ title, text },\n    plans[]{ name, price, period, features },\n    note,\n    core[]{ eyebrow, title, sub, isCore },\n    sub[]{ eyebrow, title, sub },\n    notes,\n    text,\n    attribution\n  },\n  "availableLocales": *[\n    _type == "caseStudy" && defined(language) && project._ref == ^.project._ref\n  ].language\n}': CASE_STUDY_QUERY_RESULT;

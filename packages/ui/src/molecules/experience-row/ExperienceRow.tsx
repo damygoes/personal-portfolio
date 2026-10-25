@@ -11,6 +11,7 @@ export interface ExperienceRowProps {
 /**
  * One role (`.xp-row`): when | role | body on a 3/4/5 grid. On desktop the row lifts
  * to --card on hover and a spark arrow slides in. Date spans the row on tablet.
+ * The body is a summary, bullets, or titled project groups (stack + bullets).
  */
 function ExperienceRow({ item, labels, className }: ExperienceRowProps) {
   const place = [
@@ -45,23 +46,56 @@ function ExperienceRow({ item, labels, className }: ExperienceRowProps) {
         </h3>
         <p className="label text-muted">{place}</p>
       </div>
-      {item.summary ? (
+      {item.projects.length > 0 ? (
+        <div className="col-span-12 flex flex-col gap-6 sm:col-span-7 lg:col-span-5">
+          {item.summary && <p className="t-body">{item.summary}</p>}
+          {item.projects.map((project) => (
+            <div key={project.title} className="flex flex-col gap-2">
+              <h4 className="t-body font-medium">{project.title}</h4>
+              {project.stack && (
+                <p className="label text-muted">{project.stack}</p>
+              )}
+              <BulletList bullets={project.bullets} />
+            </div>
+          ))}
+        </div>
+      ) : item.summary ? (
         <p className="t-body col-span-12 sm:col-span-7 lg:col-span-5">
           {item.summary}
         </p>
       ) : (
-        <ul className="col-span-12 flex flex-col gap-1.5 text-[15px] leading-[1.6] text-fg-soft sm:col-span-7 sm:text-base lg:col-span-5">
-          {item.bullets.map((bullet) => (
-            <li
-              key={bullet}
-              className="flex gap-3 before:shrink-0 before:text-spark-text before:content-['—']"
-            >
-              {bullet}
-            </li>
-          ))}
-        </ul>
+        <BulletList
+          bullets={item.bullets}
+          className="col-span-12 sm:col-span-7 lg:col-span-5"
+        />
       )}
     </li>
+  );
+}
+
+function BulletList({
+  bullets,
+  className,
+}: {
+  bullets: string[];
+  className?: string;
+}) {
+  return (
+    <ul
+      className={cn(
+        "flex flex-col gap-1.5 text-[15px] leading-[1.6] text-fg-soft sm:text-base",
+        className,
+      )}
+    >
+      {bullets.map((bullet) => (
+        <li
+          key={bullet}
+          className="flex gap-3 before:shrink-0 before:text-spark-text before:content-['—']"
+        >
+          {bullet}
+        </li>
+      ))}
+    </ul>
   );
 }
 

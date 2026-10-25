@@ -233,6 +233,11 @@ function toExperience(
     workMode: e.workMode ?? undefined,
     summary: text(e.summary),
     bullets: compact(e.bullets),
+    projects: (e.projects ?? []).map((p) => ({
+      title: p.title,
+      stack: text(p.stack),
+      bullets: compact(p.bullets),
+    })),
     editAttrs: e.editAttrs,
   }));
 }

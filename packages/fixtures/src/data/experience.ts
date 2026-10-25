@@ -12,6 +12,25 @@ export const experience: ExperienceRecord[] = [
     end: null,
     summary:
       "Building tailored software solutions at one of Europe's leading IT service providers — helping companies and public organisations strengthen their core business processes and achieve digital excellence.",
+    projects: [
+      {
+        title: "Client project: logistics & warehouse-management website",
+        stack: "Magnolia CMS · Next.js · React · team of ~20",
+        bullets: [
+          "Build Magnolia light modules with matching React UI components and maintain the shared component library.",
+          "Own performance tracking and accessibility for the site; write Jira tickets and organise the team board.",
+        ],
+      },
+      {
+        title: "Internal product: AI-assisted project management tool",
+        stack: "Next.js · React · TypeScript · TailwindCSS · PostgreSQL · LLMs",
+        bullets: [
+          "Built the tool end to end (UI, architecture, LLM integration) for scrum masters, project managers and product owners.",
+          "Generates detailed Jira tickets (bugs, features, stories, epics) from a single prompt, optimised for human or AI-agent execution, and breaks uploaded project specs into epics, sprints and tickets.",
+          "Multi-provider LLM layer (OpenAI, Anthropic, in-house models) with per-workflow token usage and cost in the user's currency; ticket-state analytics dashboard and role-based access control.",
+        ],
+      },
+    ],
   },
   {
     order: 2,

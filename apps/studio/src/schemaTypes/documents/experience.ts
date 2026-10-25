@@ -1,5 +1,5 @@
 import { CaseIcon } from "@sanity/icons/Case";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import {
   I18N_STRING,
   I18N_STRING_LIST,
@@ -54,9 +54,42 @@ export const experience = defineType({
     defineField({
       name: "summary",
       type: I18N_TEXT,
-      description: "Either a summary or bullets.",
+      description:
+        "Either a summary or bullets. A summary also shows above projects.",
     }),
     defineField({ name: "bullets", type: I18N_STRING_LIST }),
+    defineField({
+      name: "projects",
+      type: "array",
+      description:
+        "Workstreams within the role (client project, internal product…), each with its own stack and bullets.",
+      of: [
+        defineArrayMember({
+          name: "experienceProject",
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              type: I18N_STRING,
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "stack",
+              type: I18N_STRING,
+              description: "e.g. Magnolia CMS · Next.js · React · team of ~20",
+            }),
+            defineField({ name: "bullets", type: I18N_STRING_LIST }),
+          ],
+          preview: {
+            select: { title: "title", stack: "stack" },
+            prepare: ({ title, stack }) => ({
+              title: (title as { value?: string }[] | undefined)?.[0]?.value,
+              subtitle: (stack as { value?: string }[] | undefined)?.[0]?.value,
+            }),
+          },
+        }),
+      ],
+    }),
     orderField,
   ],
   orderings: [

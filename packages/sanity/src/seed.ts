@@ -478,6 +478,33 @@ export function seedDocuments(
         bullets(e.bullets),
         each((t) => bullets(t.experience?.[key]?.bullets)),
       ),
+      projects: e.projects?.length
+        ? keyed(
+            e.projects.map((p, i) => {
+              const tr = (t: LocaleContent) =>
+                t.experience?.[key]?.projects?.[i];
+              return {
+                _type: "experienceProject",
+                title: i18n(
+                  "String",
+                  p.title,
+                  each((t) => tr(t)?.title),
+                ),
+                stack: i18n(
+                  "String",
+                  p.stack,
+                  each((t) => tr(t)?.stack),
+                ),
+                bullets: i18n(
+                  "StringList",
+                  bullets(p.bullets),
+                  each((t) => bullets(tr(t)?.bullets)),
+                ),
+              };
+            }),
+            "pr",
+          )
+        : undefined,
       order: e.order,
     });
   }

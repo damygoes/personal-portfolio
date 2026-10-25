@@ -31,6 +31,15 @@ export type AboutDTO = z.infer<typeof AboutSchema>;
 export const WorkModeSchema = z.enum(["onsite", "hybrid", "remote"]);
 export type WorkMode = z.infer<typeof WorkModeSchema>;
 
+/** A workstream within a role: client project, internal product… */
+export const ExperienceProjectSchema = z.object({
+  title: z.string(),
+  /** "Magnolia CMS · Next.js · React · team of ~20" */
+  stack: z.string().optional(),
+  bullets: z.array(z.string()),
+});
+export type ExperienceProjectDTO = z.infer<typeof ExperienceProjectSchema>;
+
 export const ExperienceSchema = z.object({
   start: IsoDateSchema,
   end: IsoDateSchema.nullable(),
@@ -43,6 +52,7 @@ export const ExperienceSchema = z.object({
   workMode: WorkModeSchema.optional(),
   summary: z.string().optional(),
   bullets: z.array(z.string()),
+  projects: z.array(ExperienceProjectSchema),
   editAttrs: EditAttrsSchema,
 });
 export type ExperienceDTO = z.infer<typeof ExperienceSchema>;

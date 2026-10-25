@@ -16,6 +16,7 @@ const base = {
   location: "Winterberg",
   workMode: "hybrid" as const,
   bullets: ["Mentor and conduct code reviews for a team of 3 developers"],
+  projects: [],
 };
 
 describe("ExperienceRow", () => {
@@ -51,5 +52,43 @@ describe("ExperienceRow", () => {
     expect(screen.getByText("Now")).toBeInTheDocument();
     expect(screen.getByText("Building tailored software.")).toBeInTheDocument();
     expect(screen.getByText("apomap GmbH · Winterberg")).toBeInTheDocument();
+  });
+
+  it("renders project groups with their stack and bullets", () => {
+    render(
+      <ol>
+        <ExperienceRow
+          item={{
+            ...base,
+            bullets: [],
+            projects: [
+              {
+                title: "Client project: logistics website",
+                stack: "Magnolia CMS · Next.js · React",
+                bullets: ["Build Magnolia light modules"],
+              },
+              {
+                title: "Internal product: AI-assisted PM tool",
+                bullets: ["Built the tool end to end"],
+              },
+            ],
+          }}
+          labels={labels}
+        />
+      </ol>,
+    );
+    expect(
+      screen.getByRole("heading", {
+        name: "Client project: logistics website",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Magnolia CMS · Next.js · React"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Build Magnolia light modules"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Built the tool end to end")).toBeInTheDocument();
+    expect(screen.queryByText(/Mentor and conduct/)).toBeNull();
   });
 });

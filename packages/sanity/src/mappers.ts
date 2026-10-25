@@ -172,6 +172,11 @@ export function toExperienceRecord(
     end: raw.endDate,
     summary: optStr(ctx, raw.summary),
     bullets: pickLocale(raw.bullets, ctx.chain) ?? [],
+    projects: (raw.projects ?? []).map((p) => ({
+      title: str(ctx, p.title),
+      stack: optStr(ctx, p.stack),
+      bullets: pickLocale(p.bullets, ctx.chain) ?? [],
+    })),
     editAttrs: ctx.edit(raw),
   };
 }

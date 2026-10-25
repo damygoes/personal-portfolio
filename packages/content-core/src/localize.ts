@@ -90,9 +90,17 @@ export function localizeContent(
       currentRole: { ...content.site.currentRole, title: roleTitle },
     },
     about: document(content.about, (t) => t.about),
-    experience: content.experience.map((e) =>
-      fields(e, (t) => t.experience?.[experienceKey(e)]),
-    ),
+    experience: content.experience.map((e) => {
+      const key = experienceKey(e);
+      const row = fields(e, (t) => {
+        const { projects: _projects, ...rest } = t.experience?.[key] ?? {};
+        return rest;
+      });
+      const projects = e.projects?.map((p, i) =>
+        fields(p, (t) => t.experience?.[key]?.projects?.[i]),
+      );
+      return projects ? { ...row, projects } : row;
+    }),
     skillGroups: content.skillGroups.map((g) =>
       fields(g, (t) => t.skillGroups?.[g.order]),
     ),

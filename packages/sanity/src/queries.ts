@@ -69,7 +69,8 @@ export const EXPERIENCE_QUERY =
   startDate,
   endDate,
   summary,
-  bullets
+  bullets,
+  projects[]{ _key, title, stack, bullets }
 }`);
 
 export const SKILL_GROUPS_QUERY =
