@@ -4,7 +4,7 @@ import type { ExperienceRecord } from "@portfolio/content-core";
 export const experience: ExperienceRecord[] = [
   {
     order: 1,
-    role: "Software Engineer",
+    role: "Software Developer",
     company: "adesso SE",
     location: "Karlsruhe, Germany",
     workMode: null,

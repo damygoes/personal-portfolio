@@ -5,7 +5,7 @@ const meta = {
   title: "Molecules/Badge",
   component: Badge,
   args: {
-    text: "FULLSTACK DEVELOPER ✦ WEB & MOBILE ✦ ",
+    text: "SOFTWARE DEVELOPER ✦ WEB & MOBILE ✦ ",
     href: "#work",
     label: "Jump to selected work",
     size: "lg",
@@ -18,5 +18,5 @@ type Story = StoryObj<typeof meta>;
 /** 176px on desktop, 120px on tablet. The ring rotates in 28s (off with reduced motion). */
 export const Large: Story = {};
 export const Small: Story = {
-  args: { size: "sm", text: "FULLSTACK ✦ WEB & MOBILE ✦ " },
+  args: { size: "sm", text: "DEVELOPER ✦ WEB & MOBILE ✦ " },
 };

@@ -5,7 +5,7 @@ const meta = {
   title: "Molecules/MetaList",
   component: MetaList,
   args: {
-    items: ["Based in Germany", "Fullstack Developer", "4+ yrs experience"],
+    items: ["Based in Germany", "Software Developer", "4+ yrs experience"],
   },
 } satisfies Meta<typeof MetaList>;
 

@@ -68,7 +68,7 @@ export const fr: Dictionary = {
     dropALine: "Écrivez-moi",
     // added
     introLabel: "Intro",
-    badge: "DÉVELOPPEUR DE LOGICIEL ✦ WEB & MOBILE ✦ ",
+    badge: "DÉVELOPPEUR LOGICIEL ✦ WEB & MOBILE ✦ ",
     badgeShort: "DÉVELOPPEUR ✦ WEB & MOBILE ✦ ",
     jumpToWork: "Aller aux projets sélectionnés",
   },

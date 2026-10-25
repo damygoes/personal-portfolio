@@ -1,7 +1,7 @@
 import { cn } from "@portfolio/utils";
 import { Fragment } from "react";
 
-/** "Based in Germany · Fullstack Developer · 4+ yrs experience" — stacks on mobile. */
+/** "Based in Germany · Software Developer · 4+ yrs experience" — stacks on mobile. */
 function MetaList({
   items,
   className,

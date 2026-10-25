@@ -23,11 +23,12 @@ export const de: LocaleContent = {
     yearsExperienceLabel: "4+ Jahre Erfahrung",
     heroMeta: [
       "Lebt in Deutschland",
-      "Fullstack-Entwickler",
+      "Softwareentwickler",
       "4+ Jahre Erfahrung",
     ],
     authorBio:
-      "Software Engineer bei adesso SE. Ich entwickle Web- und Mobile-Apps und schreibe über Code, Radfahren und Fotografie.",
+      "Softwareentwickler bei adesso SE. Ich entwickle Web- und Mobile-Apps und schreibe über Code, Radfahren und Fotografie.",
+    currentRoleTitle: "Softwareentwickler",
   },
 
   projects: {
@@ -65,7 +66,7 @@ export const de: LocaleContent = {
 
   experience: {
     "adesso SE|2025-11": {
-      role: "Softwareingenieur",
+      role: "Softwareentwickler",
       summary:
         "Ich entwickle maßgeschneiderte Softwarelösungen bei einem der führenden IT-Dienstleister Europas – und helfe Unternehmen und öffentlichen Organisationen, ihre Kernprozesse zu stärken und digitale Exzellenz zu erreichen.",
       projects: [
@@ -158,11 +159,11 @@ export const de: LocaleContent = {
   about: {
     statement: [
       {
-        text: "Ich bin zur Fullstack-Entwicklung gekommen, weil ich Dinge bauen wollte, die ",
+        text: "Ich bin zur Softwareentwicklung gekommen, weil ich Dinge bauen wollte, die ",
       },
       { text: "Menschen wirklich helfen", highlight: true },
     ],
-    lede: "Fullstack-Entwickler aus Deutschland. Ich entwickle Web- und Mobile-Apps, die einfach funktionieren – klar, schnell und leicht zu bedienen.",
+    lede: "Softwareentwickler aus Deutschland. Ich entwickle Web- und Mobile-Apps, die einfach funktionieren – klar, schnell und leicht zu bedienen.",
     bio: [
       [
         {
@@ -171,7 +172,7 @@ export const de: LocaleContent = {
       ],
       [
         {
-          text: "Heute arbeite ich als Software Engineer bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
+          text: "Heute arbeite ich als Softwareentwickler bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
         },
       ],
       [
@@ -196,7 +197,7 @@ export const de: LocaleContent = {
     teaserParagraphs: [
       [
         {
-          text: "Heute arbeite ich als Software Engineer bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
+          text: "Heute arbeite ich als Softwareentwickler bei adesso – an der Website eines Logistikkunden auf Basis von Magnolia und Next.js sowie an einem internen, KI-gestützten Projektmanagement-Tool. Davor habe ich bei apomap ein kleines Entwicklungsteam geleitet – und dabei gelernt, dass klarer Code und klare Kommunikation gleich wichtig sind.",
         },
       ],
       [
@@ -212,7 +213,7 @@ export const de: LocaleContent = {
       ],
     ],
     facts: [
-      { label: "Jetzt", value: "Software Engineer, adesso SE" },
+      { label: "Jetzt", value: "Softwareentwickler, adesso SE" },
       {
         label: "Eigene Produkte",
         value: "Passe. & ElliesNote",

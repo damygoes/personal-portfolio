@@ -7,7 +7,7 @@ import type { Paragraph, TextRun } from "@portfolio/contracts";
 export const about = {
   statement: [
     {
-      text: "I got into fullstack development because I wanted to build things that ",
+      text: "I got into software development because I wanted to build things that ",
     },
     { text: "actually help people", highlight: true },
   ] satisfies TextRun[],
@@ -19,7 +19,7 @@ export const about = {
     ],
     [
       {
-        text: "These days I work as a Software Engineer at adesso, building tailored software for companies and public organisations. Before that I led a small engineering team at apomap — where I learned that clear code and clear communication matter equally.",
+        text: "These days I work as a Software Developer at adesso, building tailored software for companies and public organisations. Before that I led a small engineering team at apomap — where I learned that clear code and clear communication matter equally.",
       },
     ],
     [
@@ -44,7 +44,7 @@ export const about = {
   teaserParagraphs: [
     [
       {
-        text: "These days I work as a Software Engineer at adesso, building tailored software for companies and public organisations. Before that I led a small engineering team at apomap — where I learned that clear code and clear communication matter equally.",
+        text: "These days I work as a Software Developer at adesso, building tailored software for companies and public organisations. Before that I led a small engineering team at apomap — where I learned that clear code and clear communication matter equally.",
       },
     ],
     [
@@ -59,9 +59,9 @@ export const about = {
       },
     ],
   ] satisfies Paragraph[],
-  lede: "Fullstack developer based in Germany. I build web and mobile apps that just work — clean, fast, and easy to use.",
+  lede: "Software developer based in Germany. I build web and mobile apps that just work — clean, fast, and easy to use.",
   facts: [
-    { label: "Now", value: "Software Engineer, adesso SE" },
+    { label: "Now", value: "Software Developer, adesso SE" },
     {
       label: "Building",
       value: "Passe. & ElliesNote",

@@ -32,7 +32,7 @@ export const Highlight: Story = {
   args: {
     runs: [
       {
-        text: "I got into fullstack development because I wanted to build things that ",
+        text: "I got into software development because I wanted to build things that ",
       },
       { text: "actually help people", highlight: true },
     ],

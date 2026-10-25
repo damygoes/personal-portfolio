@@ -2,7 +2,7 @@ import { cn } from "@portfolio/utils";
 import { useId } from "react";
 
 export interface BadgeProps {
-  /** Ring text, e.g. "FULLSTACK DEVELOPER ✦ WEB & MOBILE ✦ ". */
+  /** Ring text, e.g. "SOFTWARE DEVELOPER ✦ WEB & MOBILE ✦ ". */
   text: string;
   href: string;
   /** Accessible name of the core link. */

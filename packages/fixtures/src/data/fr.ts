@@ -24,12 +24,12 @@ export const fr: LocaleContent = {
     yearsExperienceLabel: "Plus de 3 ans d’expérience",
     heroMeta: [
       "Basé en Allemagne",
-      "Développeur de logiciels",
+      "Développeur logiciel",
       "Plus de 3 ans d’expérience",
     ],
     authorBio:
-      "Ingénieur logiciel chez adesso SE. Je développe des applications web et mobiles, et j'écris sur le code, le cyclisme et la photographie.",
-    currentRoleTitle: "Ingénieur logiciel",
+      "Développeur logiciel chez adesso SE. Je développe des applications web et mobiles, et j'écris sur le code, le cyclisme et la photographie.",
+    currentRoleTitle: "Développeur logiciel",
   },
 
   projects: {
@@ -67,7 +67,7 @@ export const fr: LocaleContent = {
 
   experience: {
     "adesso SE|2025-11": {
-      role: "Ingénieur logiciel",
+      role: "Développeur logiciel",
       summary:
         "Je développe des solutions logicielles sur mesure chez l’un des principaux prestataires de services informatiques en Europe — pour aider les entreprises et les organisations publiques à renforcer leurs processus métier essentiels et à atteindre l’excellence numérique.",
       projects: [
@@ -167,7 +167,7 @@ export const fr: LocaleContent = {
       },
       { text: "aident réellement les gens", highlight: true },
     ],
-    lede: "Développeur de logiciels basé en Allemagne. Je crée des applications web et mobiles qui fonctionnent simplement — propres, rapides et faciles à utiliser.",
+    lede: "Développeur logiciel basé en Allemagne. Je crée des applications web et mobiles qui fonctionnent simplement — propres, rapides et faciles à utiliser.",
     bio: [
       [
         {
@@ -176,7 +176,7 @@ export const fr: LocaleContent = {
       ],
       [
         {
-          text: "Aujourd'hui, je travaille comme ingénieur logiciel chez adesso, sur le site web d'un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l'IA. Avant cela, j'ai dirigé une petite équipe d'ingénierie chez apomap — où j'ai appris que le code clair et la communication claire sont également importants.",
+          text: "Aujourd'hui, je travaille comme développeur logiciel chez adesso, sur le site web d'un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l'IA. Avant cela, j'ai dirigé une petite équipe d'ingénierie chez apomap — où j'ai appris que le code clair et la communication claire sont également importants.",
         },
       ],
       [
@@ -201,7 +201,7 @@ export const fr: LocaleContent = {
     teaserParagraphs: [
       [
         {
-          text: "Aujourd’hui, je travaille comme ingénieur logiciel chez adesso, sur le site web d’un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l’IA. Avant cela, j’ai dirigé une petite équipe d’ingénierie chez apomap — où j’ai appris que le code clair et la communication claire sont tout aussi importants.",
+          text: "Aujourd’hui, je travaille comme développeur logiciel chez adesso, sur le site web d’un client du secteur logistique avec Magnolia et Next.js, ainsi que sur un outil interne de gestion de projet assisté par l’IA. Avant cela, j’ai dirigé une petite équipe d’ingénierie chez apomap — où j’ai appris que le code clair et la communication claire sont tout aussi importants.",
         },
       ],
       [
@@ -217,7 +217,7 @@ export const fr: LocaleContent = {
       ],
     ],
     facts: [
-      { label: "Maintenant", value: "Ingénieur logiciel, adesso SE" },
+      { label: "Maintenant", value: "Développeur logiciel, adesso SE" },
       {
         label: "Construction",
         value: "Passe. & ElliesNote",

@@ -5,7 +5,7 @@ import { Facts } from "./Facts";
 const facts = [
   {
     label: "Now",
-    value: [{ text: "Software Engineer, adesso SE" }],
+    value: [{ text: "Software Developer, adesso SE" }],
     onHome: true,
   },
   {

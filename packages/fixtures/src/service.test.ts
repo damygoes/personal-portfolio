@@ -239,11 +239,10 @@ describe("localized documents", () => {
       "Datenbanken",
       "DevOps & Tools",
     ]);
-    expect(about.experience[0]?.role).toBe("Softwareingenieur");
+    expect(about.experience[0]?.role).toBe("Softwareentwickler");
     expect(about.experience[1]?.role).toBe("Teamleiter");
-    // The current role title has no German value: it stays English.
     const settings = await service.getSiteSettings("de");
-    expect(settings.currentRole.title).toBe("Software Engineer");
+    expect(settings.currentRole.title).toBe("Softwareentwickler");
   });
 
   it("serves French documents and field-level content", async () => {
