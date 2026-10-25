@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { LangSwitch, localeOptions, type LangOption } from "./LangSwitch";
 
-const alternates = { en: "/en/about", de: "/de/about" };
+const alternates = { en: "/en/about", de: "/de/about", fr: "/fr/about" };
 
 describe("LangSwitch", () => {
   it("links to the same route in each locale", () => {

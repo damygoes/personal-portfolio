@@ -26,8 +26,8 @@ export interface LocaleMeta {
 
 export const LOCALE_META: Record<Locale, LocaleMeta> = {
   en: { label: "EN", name: "English", intl: "en-US" },
-  de: { label: "DE", name: "German", intl: "de-DE" },
-  fr: { label: "FR", name: "French", intl: "fr-FR" },
+  de: { label: "DE", name: "Deutsch", intl: "de-DE" },
+  fr: { label: "FR", name: "Français", intl: "fr-FR" },
 };
 
 export function isLocale(value: string): value is Locale {

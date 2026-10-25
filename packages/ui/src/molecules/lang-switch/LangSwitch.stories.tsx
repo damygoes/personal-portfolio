@@ -2,7 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { LangSwitch, localeOptions, type LangOption } from "./LangSwitch";
 
-const twoLocales = localeOptions({ en: "/en/work", de: "/de/work" });
+const twoLocales = localeOptions({
+  en: "/en/work",
+  de: "/de/work",
+  fr: "/fr/work",
+});
 
 /** A hypothetical third locale, to preview the 3+ menu before one ships. */
 const threeLocales: LangOption[] = [
