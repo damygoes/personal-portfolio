@@ -3,7 +3,7 @@ export { Anchor, Picture, UiAdapterProvider } from "./lib/adapters";
 export type { ImageComponentProps, LinkComponentProps } from "./lib/adapters";
 export { ThemeControllerProvider, useTheme } from "./lib/theme";
 export { useLocalTime } from "./lib/use-local-time";
-export { localeAlternates, pagePaths } from "./lib/types";
+export { BLOG_ENABLED, localeAlternates, pagePaths } from "./lib/types";
 export type { ChromeProps, NavKey } from "./lib/types";
 
 // Atoms

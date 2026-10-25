@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getDictionary } from "@portfolio/i18n";
-import { BlogPage } from "@portfolio/ui";
+import { notFound } from "next/navigation";
+import { BLOG_ENABLED, BlogPage } from "@portfolio/ui";
 import { content } from "@/lib/content";
 import { pageChrome, resolveLocale } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /** `?category=` filters on the server, so the filter links work without JS. */
 export default async function Blog({ params, searchParams }: Props) {
+  if (!BLOG_ENABLED) notFound();
   const locale = resolveLocale((await params).locale);
   const { category } = await searchParams;
   const [chrome, blog] = await Promise.all([

@@ -11,7 +11,7 @@ import { formatMessage, pad2 } from "@portfolio/utils";
 import type { ReactNode } from "react";
 import { SectionLabel } from "../../atoms/section-label/SectionLabel";
 import { SweepLink } from "../../atoms/sweep-link/SweepLink";
-import { pagePaths, type ChromeProps } from "../../lib/types";
+import { BLOG_ENABLED, pagePaths, type ChromeProps } from "../../lib/types";
 import { CategoryFilter } from "../../molecules/category-filter/CategoryFilter";
 import { SectionHead } from "../../molecules/section-head/SectionHead";
 import { TitleLines } from "../../molecules/title-lines/TitleLines";
@@ -81,7 +81,7 @@ export function HomePage({ home, ...chrome }: PageChrome & { home: HomeDTO }) {
   const { dict, site, locale } = chrome;
   const paths = pagePaths(locale);
   const hasWork = home.featured.length + home.more.length > 0;
-  const hasPosts = home.latestPosts.length > 0;
+  const hasPosts = BLOG_ENABLED && home.latestPosts.length > 0;
   const n = numbering(
     [hasWork && "work", "about", hasPosts && "blog", "contact"].filter(
       Boolean,

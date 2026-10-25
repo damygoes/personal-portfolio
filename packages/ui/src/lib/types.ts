@@ -5,6 +5,9 @@ import {
 } from "@portfolio/contracts";
 import type { Dictionary } from "@portfolio/i18n";
 
+/** Flip to `true` to bring back the blog nav links, home section, routes and sitemap entries. */
+export const BLOG_ENABLED = false;
+
 export type NavKey = "work" | "about" | "blog";
 
 /** What every page chrome component needs. */

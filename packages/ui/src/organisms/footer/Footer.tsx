@@ -6,7 +6,7 @@ import { Dot, OutlineText } from "../../atoms/outline-text/OutlineText";
 import { LiveDot } from "../../atoms/pill/Pill";
 import { SweepLink } from "../../atoms/sweep-link/SweepLink";
 import { Anchor } from "../../lib/adapters";
-import { pagePaths, type ChromeProps } from "../../lib/types";
+import { BLOG_ENABLED, pagePaths, type ChromeProps } from "../../lib/types";
 
 export interface FooterProps extends Omit<ChromeProps, "alternates"> {
   /** Copyright year; defaults to the current year. */
@@ -52,7 +52,7 @@ function Footer({
     { label: dict.nav.home, href: paths.home },
     { label: dict.nav.work, href: paths.work },
     { label: dict.nav.about, href: paths.about },
-    { label: dict.nav.blog, href: paths.blog },
+    ...(BLOG_ENABLED ? [{ label: dict.nav.blog, href: paths.blog }] : []),
     { label: dict.footer.contact, href: "#contact" },
   ];
   return (

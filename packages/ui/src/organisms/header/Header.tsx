@@ -1,7 +1,12 @@
 import { formatMessage } from "@portfolio/utils";
 import { Brand } from "../../atoms/brand/Brand";
 import { TalkButton } from "../../atoms/talk-button/TalkButton";
-import { pagePaths, type ChromeProps, type NavKey } from "../../lib/types";
+import {
+  BLOG_ENABLED,
+  pagePaths,
+  type ChromeProps,
+  type NavKey,
+} from "../../lib/types";
 import {
   LangSwitch,
   localeOptions,
@@ -41,7 +46,9 @@ function Header({
         items={[
           { key: "work", label: dict.nav.work, href: paths.work },
           { key: "about", label: dict.nav.about, href: paths.about },
-          { key: "blog", label: dict.nav.blog, href: paths.blog },
+          ...(BLOG_ENABLED
+            ? [{ key: "blog" as const, label: dict.nav.blog, href: paths.blog }]
+            : []),
         ]}
       />
       <div className="flex items-center gap-2 sm:gap-4">

@@ -7,7 +7,12 @@ import { Arrow } from "../../atoms/arrow/Arrow";
 import { Brand } from "../../atoms/brand/Brand";
 import { LocalClock } from "../../atoms/local-clock/LocalClock";
 import { Anchor } from "../../lib/adapters";
-import { pagePaths, type ChromeProps, type NavKey } from "../../lib/types";
+import {
+  BLOG_ENABLED,
+  pagePaths,
+  type ChromeProps,
+  type NavKey,
+} from "../../lib/types";
 import {
   LangSwitch,
   localeOptions,
@@ -38,7 +43,9 @@ function MenuDialog({
     { key: "home", label: dict.nav.home, href: paths.home },
     { key: "work", label: dict.nav.work, href: paths.work },
     { key: "about", label: dict.nav.about, href: paths.about },
-    { key: "blog", label: dict.nav.blog, href: paths.blog },
+    ...(BLOG_ENABLED
+      ? [{ key: "blog" as const, label: dict.nav.blog, href: paths.blog }]
+      : []),
   ];
 
   return (

@@ -1,4 +1,5 @@
 import { LOCALES } from "@portfolio/contracts";
+import { BLOG_ENABLED } from "@portfolio/ui";
 import type { MetadataRoute } from "next";
 import { content } from "@/lib/content";
 import { SITE_URL } from "@/lib/seo";
@@ -10,9 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/work",
     "/about",
-    "/blog",
     ...caseStudies.map((slug) => `/work/${slug}`),
-    ...posts.map((slug) => `/blog/${slug}`),
+    ...(BLOG_ENABLED ? ["/blog", ...posts.map((slug) => `/blog/${slug}`)] : []),
   ];
   return paths.flatMap((path) => {
     const languages = Object.fromEntries(

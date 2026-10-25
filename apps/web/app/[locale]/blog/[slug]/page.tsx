@@ -2,7 +2,7 @@ import type { Locale } from "@portfolio/contracts";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { BlogPostPage } from "@portfolio/ui";
+import { BLOG_ENABLED, BlogPostPage } from "@portfolio/ui";
 import { content } from "@/lib/content";
 import { highlightCodeBlocks } from "@/lib/highlight";
 import { pageChrome, resolveLocale } from "@/lib/page";
@@ -11,6 +11,7 @@ import { pageMetadata, SITE_URL } from "@/lib/seo";
 type Props = PageProps<"/[locale]/blog/[slug]">;
 
 export async function generateStaticParams() {
+  if (!BLOG_ENABLED) return [];
   const { posts } = await content.getRoutes();
   return posts.map((slug) => ({ slug }));
 }
@@ -21,6 +22,7 @@ const getPost = cache((slug: string, locale: Locale) =>
 );
 
 async function load({ params }: Props) {
+  if (!BLOG_ENABLED) notFound();
   const { locale: value, slug } = await params;
   const locale = resolveLocale(value);
   const post = await getPost(slug, locale);
