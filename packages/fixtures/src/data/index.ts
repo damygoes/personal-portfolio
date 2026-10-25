@@ -4,6 +4,7 @@ import { caseStudies } from "./case-studies";
 import { categories } from "./categories";
 import { de } from "./de";
 import { experience } from "./experience";
+import { fr } from "./fr";
 import { posts } from "./posts";
 import { projects } from "./projects";
 import { site } from "./site";
@@ -22,4 +23,4 @@ export const content: ContentSet = {
 };
 
 /** Translations of `content`, per locale. Adding a locale = adding its file here. */
-export const translations: Translations = { de };
+export const translations: Translations = { de, fr };

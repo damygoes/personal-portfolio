@@ -57,6 +57,7 @@ export const de: LocaleContent = {
         "Ein SaaS-Dashboard, das sich mit Stripe-Konten verbindet und Abo-Kennzahlen wie MRR, ARR und Churn-Rate in Echtzeit visualisiert.",
     },
     archetype: {
+      kind: "Backend",
       summary:
         "Eine skalierbare Microservice-Architektur mit Node.js – mit gemeinsamen TypeORM-Modellen, modularem Monorepo-Setup und unabhängigem Deployment der Services. Entwickelt mit Docker, Express und Lerna.",
     },
@@ -64,6 +65,7 @@ export const de: LocaleContent = {
 
   experience: {
     "adesso SE|2025-11": {
+      role: "Softwareingenieur",
       summary:
         "Ich entwickle maßgeschneiderte Softwarelösungen bei einem der führenden IT-Dienstleister Europas – und helfe Unternehmen und öffentlichen Organisationen, ihre Kernprozesse zu stärken und digitale Exzellenz zu erreichen.",
     },
@@ -120,7 +122,10 @@ export const de: LocaleContent = {
   },
 
   skillGroups: {
+    1: { title: "Frontend" },
+    2: { title: "Backend" },
     3: { title: "Datenbanken" },
+    4: { title: "DevOps & Tools" },
   },
 
   categories: {

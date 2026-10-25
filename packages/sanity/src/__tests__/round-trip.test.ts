@@ -145,7 +145,7 @@ describe("Sanity adapter round trip", () => {
     const post = await service.getPost(codeReview, "de");
     expect(post?.title).toBe(de.posts?.[codeReview]?.title);
     expect(post?.contentLocale).toBe("de");
-    expect(post?.availableLocales.sort()).toEqual(["de", "en"]);
+    expect(post?.availableLocales.sort()).toEqual(["de", "en", "fr"]);
     expect(post?.toc[0]?.text).toBe("Reviews sind Gespräche");
     expect(post?.href).toBe(`/de/blog/${codeReview}`);
 
@@ -214,7 +214,7 @@ describe("Sanity adapter round trip", () => {
     );
     expect(
       (post?.translations as { language: string }[]).map((t) => t.language),
-    ).toEqual(["en", "de"]);
+    ).toEqual(["en", "de", "fr"]);
   });
 });
 
