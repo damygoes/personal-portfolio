@@ -1,10 +1,10 @@
 import { documentInternationalization } from "@sanity/document-internationalization";
 import { visionTool } from "@sanity/vision";
-import { defineConfig, defineSingleton } from "sanity";
+import { defineConfig, defineSingleton, type WorkspaceOptions } from "sanity";
 import { defineLocations, presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { internationalizedArray } from "sanity-plugin-internationalized-array";
-import { apiVersion, dataset, previewUrl, projectId } from "./src/env";
+import { apiVersion, previewUrls, projectId } from "./src/env";
 import {
   baseLanguage,
   fieldTranslatedDocumentTypes,
@@ -20,9 +20,21 @@ const siteSettingsSingleton = defineSingleton({
   title: "Site settings",
 });
 
-export default defineConfig({
-  name: "default",
-  title: "Damilola Bada",
+/** One workspace per dataset: same schema and plugins, its own preview site. */
+const workspace = ({
+  name,
+  title,
+  dataset,
+  previewUrl,
+}: {
+  name: string;
+  title: string;
+  dataset: string;
+  previewUrl: string;
+}): WorkspaceOptions => ({
+  name,
+  title,
+  basePath: `/${name}`,
   projectId,
   dataset,
 
@@ -105,3 +117,18 @@ export default defineConfig({
         : prev,
   },
 });
+
+export default defineConfig([
+  workspace({
+    name: "production",
+    title: "Damilola Bada",
+    dataset: "production",
+    previewUrl: previewUrls.production,
+  }),
+  workspace({
+    name: "development",
+    title: "Damilola Bada (development)",
+    dataset: "development",
+    previewUrl: previewUrls.development,
+  }),
+]);

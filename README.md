@@ -61,7 +61,9 @@ Without Sanity env vars the site runs on the fixtures. Force them anytime with `
 | `NEXT_PUBLIC_SITE_URL`                                        | Canonical URLs, sitemap, share links (default: the Vercel URL, then `http://localhost:3000`) |
 | `CONTENT_SOURCE=fixtures`                                     | Forcing static content                                                                       |
 
-`apps/studio/.env.local`: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET`, `SANITY_STUDIO_PREVIEW_URL` (the site's origin, for the Presentation tool).
+`apps/studio/.env.local`: `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET` (the CLI default for typegen and seed), and `SANITY_STUDIO_PREVIEW_URL` / `SANITY_STUDIO_PREVIEW_URL_PRODUCTION` (the site origin each workspace's Presentation tool previews).
+
+The Studio has two workspaces, `/production` and `/development`, one per dataset. Use the switcher at the top left.
 
 ## Content
 
@@ -81,13 +83,35 @@ Everything except Vercel itself runs against the `development` dataset:
 2. **Draft mode:** run `pnpm --filter web dev` and `pnpm --filter studio dev`, then open the Studio's Presentation tool. Click a card or section to open its document; unpublished edits show in the preview only.
 3. **Caching and the webhook:** run `pnpm --filter web build && pnpm --filter web start`. Publish a change, and the page stays cached. Sanity can't reach `localhost`, so send a signed fake webhook with `pnpm --filter web revalidate:local` (expect `200`), then reload.
 
-## Deploying (Vercel)
+## Deploying
 
-1. Create a Vercel project with root directory `apps/web` and set the env vars above, with `NEXT_PUBLIC_SANITY_DATASET=production` and `NEXT_PUBLIC_SITE_URL=https://www.damilolabada.com`.
-2. In Sanity (Manage → API):
+Once per environment, in this order:
+
+1. **Production dataset.** In sanity.io/manage → Datasets, create `production`. Seed it with `pnpm --filter studio seed --dataset production --with-translations` (run with `--dry-run` first).
+2. **Vercel.** Create a project with root directory `apps/web` and set the env vars above:
+   - `NEXT_PUBLIC_SANITY_DATASET=production`
+   - `NEXT_PUBLIC_SITE_URL=https://www.damilolabada.com`
+   - `NEXT_PUBLIC_SANITY_STUDIO_URL=https://<host>.sanity.studio/production`
+   - a fresh `SANITY_REVALIDATE_SECRET`
+
+   Preview deployments can point at `development`.
+
+3. **Sanity (Manage → API):**
    - add the site origin to **CORS origins** with credentials
    - add a **webhook**: URL `https://www.damilolabada.com/api/revalidate`, dataset `production`, trigger on create / update / delete, HTTP POST, and the same secret as `SANITY_REVALIDATE_SECRET`
-3. Set `SANITY_STUDIO_PREVIEW_URL` to the site's URL and deploy the Studio (`pnpm --filter studio deploy`).
+   - create a robot token with the **Deploy Studio** role
+4. **Studio.**
+   - Deploy once by hand with `pnpm --filter studio deploy` and pick the hostname.
+   - Paste the `appId` it prints into `deployment` in `apps/studio/sanity.cli.ts`, so later deploys don't prompt.
+5. **GitHub (Settings → Secrets and variables → Actions):**
+   - secret `SANITY_AUTH_TOKEN`: the robot token
+   - variable `SANITY_STUDIO_PREVIEW_URL_PRODUCTION`: the site URL
+
+### CI/CD
+
+- `.github/workflows/ci.yml` runs lint, types, tests and build on every PR and every push to `main`. It needs no secrets, because without Sanity env vars the site builds from fixtures.
+- `.github/workflows/deploy-studio.yml` redeploys the Studio when `apps/studio`, `packages/contracts` or the lockfile change on `main`. It can also be run by hand.
+- Vercel deploys `apps/web` from its Git integration.
 
 Published pages are static. A publish calls the webhook, which expires the `sanity` cache tag, and the next visit renders fresh content. The Presentation tool turns on draft mode (`/api/draft-mode/enable`), which shows drafts with click-to-edit overlays.
 

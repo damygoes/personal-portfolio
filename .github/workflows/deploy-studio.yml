@@ -1,0 +1,31 @@
+name: Deploy Studio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/studio/**
+      - packages/contracts/**
+      - pnpm-lock.yaml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-studio
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Robot token with the "Deploy Studio" role (sanity.io/manage → API → Tokens).
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+      SANITY_STUDIO_PREVIEW_URL_PRODUCTION: ${{ vars.SANITY_STUDIO_PREVIEW_URL_PRODUCTION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter studio deploy -y
