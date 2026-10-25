@@ -8,7 +8,7 @@ import { z } from "zod";
  * Adding a locale: add it to `LOCALES` and `LOCALE_META`, then add its UI
  * dictionary to `@portfolio/i18n` (type-checking fails until you do).
  */
-export const LOCALES = ["en", "de"] as const;
+export const LOCALES = ["en", "de", "fr"] as const;
 
 export const LocaleSchema = z.enum(LOCALES);
 export type Locale = z.infer<typeof LocaleSchema>;
@@ -26,7 +26,8 @@ export interface LocaleMeta {
 
 export const LOCALE_META: Record<Locale, LocaleMeta> = {
   en: { label: "EN", name: "English", intl: "en-US" },
-  de: { label: "DE", name: "Deutsch", intl: "de-DE" },
+  de: { label: "DE", name: "German", intl: "de-DE" },
+  fr: { label: "FR", name: "French", intl: "fr-FR" },
 };
 
 export function isLocale(value: string): value is Locale {
