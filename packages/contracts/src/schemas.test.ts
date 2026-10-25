@@ -151,6 +151,7 @@ describe("locale registry", () => {
 
   it("narrows unknown strings", () => {
     expect(isLocale("de")).toBe(true);
-    expect(isLocale("fr")).toBe(false);
+    expect(isLocale("fr")).toBe(true);
+    expect(isLocale("es")).toBe(false);
   });
 });
