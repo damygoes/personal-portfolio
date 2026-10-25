@@ -129,6 +129,13 @@ export const de: Dictionary = {
     eyebrow: "Ein Projekt im Kopf?",
     title: ["Lass uns", "zusammenarbeiten"],
   },
+  // added: not designed in the handoff; uses the page-hero layout
+  notFound: {
+    title: ["Seite", "nicht gefunden"],
+    lede: "Diese Seite gibt es nicht, oder sie ist umgezogen.",
+    home: "Zur Startseite",
+    metaTitle: "Seite nicht gefunden",
+  },
   footer: {
     sitemap: "Sitemap",
     elsewhere: "Anderswo",

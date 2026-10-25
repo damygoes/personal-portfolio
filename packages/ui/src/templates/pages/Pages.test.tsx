@@ -7,6 +7,7 @@ import {
   BlogPostPage,
   CaseStudyPage,
   HomePage,
+  NotFoundPage,
   WorkPage,
 } from "./Pages";
 
@@ -49,5 +50,26 @@ describe.each(["en", "de"] as const)("pages (%s)", (locale) => {
     expect(
       screen.getAllByRole("link", { name: d.dict.nav.letsTalk })[0],
     ).toHaveAttribute("href", "#contact");
+  });
+
+  it("renders the 404 in the site chrome with a link home", async () => {
+    const d = await storyData(locale);
+    const { container } = render(<NotFoundPage {...d.chrome("")} />);
+    expect(container.querySelectorAll("h1")).toHaveLength(1);
+    expect(
+      screen.getByRole("link", { name: d.dict.notFound.home }),
+    ).toHaveAttribute("href", `/${locale}`);
+  });
+
+  it("marks fallback-language content with its own lang", async () => {
+    const d = await storyData(locale);
+    const other = locale === "en" ? "de" : "en";
+    const { container } = render(
+      <BlogPostPage
+        {...d.chrome("/blog/x")}
+        post={{ ...d.post, contentLocale: other }}
+      />,
+    );
+    expect(container.querySelector(`[lang="${other}"]`)).not.toBeNull();
   });
 });

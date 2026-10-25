@@ -80,6 +80,7 @@ export {
   BlogPostPage,
   CaseStudyPage,
   HomePage,
+  NotFoundPage,
   WorkPage,
 } from "./templates/pages/Pages";
 export { SiteShell } from "./templates/site-shell/SiteShell";

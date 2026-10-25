@@ -1,10 +1,10 @@
 # Project history and Sanity: a learning note
 
-This note explains how the portfolio was built, commit by commit (grouped by phase), and then goes deep on the most recent commit, which introduced Sanity.
+This note explains how the portfolio was built, commit by commit (grouped by phase). It then goes deep on two steps: the commit that introduced Sanity (Part 2), and Phase 3, which turned `apps/web` into the real site (Part 3).
 
 Read it top to bottom once. After that, use the glossary and the study order at the end.
 
-**The project in one paragraph.** This is a monorepo (many packages in one repo, managed with pnpm and Turborepo). `packages/ui` holds the visual components, previewed in Storybook. `packages/contracts` defines the shapes of data (DTOs) the UI expects. `apps/web` is the Next.js site. Until recently, content came from hard-coded TypeScript files ("fixtures"). The latest commit adds a real CMS, Sanity, so content can be edited in a browser.
+**The project in one paragraph.** This is a monorepo (many packages in one repo, managed with pnpm and Turborepo). `packages/ui` holds the visual components, previewed in Storybook. `packages/contracts` defines the shapes of data (DTOs) the UI expects. Content comes from Sanity, a CMS edited in the browser, or from hard-coded TypeScript files ("fixtures") when Sanity isn't configured. `apps/web` is the Next.js site. It serves every page under a language prefix (`/en/work`, `/de/work`), and it can show unpublished drafts to an editor inside the Sanity Studio.
 
 Commit hashes are in parentheses so you can run `git show <hash>` to see the real change.
 
@@ -55,6 +55,22 @@ This commit is named "implemented sanity packages", but it mostly prepared the g
 - **LangSwitch**: becomes a toggle for 2 or fewer locales and a menu for 3 or more.
 - **`packages/i18n`**: UI string dictionaries (English and German) now have tests.
 
+### Phase G: Readiness check before Phase 3 (2026-10-25)
+
+Before building the site, we checked that the earlier phases were really finished. Starting on a shaky base would mean debugging three layers at once.
+
+- **What was checked:**
+  - Phase 1 (components and Storybook) was marked done on 2026-09-27.
+  - Phase 2 (Studio and adapter) was built, and seeded into the `development` dataset with German translations, on 2026-10-21.
+  - `pnpm check-types` and `pnpm test` were green.
+- **Which plan to follow:** the plan has two copies. An older copy, attached in chat, still mentioned `packages/content`, `editTarget` and fixed document ids. The copy in the repo (`damilolabada-redesign-handoff/IMPLEMENTATION_PLAN.md`) has later amendments, so it wins. Its "Amendment: localisation and CMS decoupling" section overrides the original Phase 3 text where they differ.
+- **Decisions taken:**
+  - host on **Vercel**
+  - build **all of Phase 3 in one pass**, including preview and the publish webhook
+  - work on the branch `feat/phase-3-web`
+- **What was missing:** `apps/web/.env.local` had the Sanity token but not the project ID and dataset, so the site still served fixtures. That's a setting, not code, so it didn't block the work.
+- **Why this way:** a short checklist (status notes, green checks, which document is current) is cheaper than finding out halfway through that a dependency isn't done.
+
 ---
 
 ## Part 2: The Sanity commit in depth (24d35f5)
@@ -91,7 +107,7 @@ This commit sets up the Studio, a bridge from the Content Lake to your site, and
 
 - **[sanity.config.ts](../../apps/studio/sanity.config.ts)** is the Studio's entry point. It sets the project ID and dataset, then lists plugins:
   - `structureTool`: the sidebar and document lists.
-  - `presentationTool`: a live preview of the site inside the Studio. The route it needs in `apps/web` doesn't exist yet (Phase 3).
+  - `presentationTool`: a live preview of the site inside the Studio. The route it needs in `apps/web` arrived in Phase 3 (Part 3, section 6).
   - `visionTool`: a playground for testing GROQ, Sanity's query language.
   - Two translation plugins (see below).
 - **[sanity.cli.ts](../../apps/studio/sanity.cli.ts)** configures the `sanity` command line, including **TypeGen**, which turns your schema and queries into TypeScript types.
@@ -145,7 +161,7 @@ Other pieces:
 
 - `images.ts` builds image URLs and blur placeholders.
 - `seed.ts` builds the documents for seeding.
-- `next.ts` is an empty placeholder for Phase 3's preview glue.
+- `next.ts` was an empty placeholder in this commit; Phase 3 filled it with the preview glue (see Part 3, section 6).
 - `sanity.types.ts` is generated. Never edit it by hand.
 
 ### 6. `packages/content-core` and the fixtures refactor
@@ -167,17 +183,135 @@ Logic that shouldn't depend on any CMS (fallback rules, numbering, reading time)
 
 ---
 
-## Part 3: Why this way and not another?
+## Part 3: Phase 3 in depth: `apps/web` (branch `feat/phase-3-web`)
 
-| Decision                              | Alternative                         | Why this one                                                                                | Trade-off                          |
-| ------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------- |
-| Studio is its own app (`apps/studio`) | Embed the Studio in the Next.js app | Deploys and upgrades independently; a Studio problem can't break the site                   | One more app to maintain           |
-| `ContentService` adapter interface    | Run GROQ queries inside pages       | Pages never import Sanity, so swapping CMS means rewriting one package (ESLint enforces it) | An extra layer of mapping code     |
-| Queries separate from mappers         | Query and transform in one function | Queries stay plain and type-checkable by TypeGen; logic is unit-testable                    | More files                         |
-| Two translation plugins               | One approach for everything         | Each fits its content (long documents vs short labels)                                      | Editors learn two models           |
-| TypeGen for types                     | Hand-written types                  | A query that doesn't match the schema becomes a compile error                               | A generate step to remember        |
-| Seed from fixtures                    | Type content into the Studio        | Storybook and CMS start identical; the dataset can be rebuilt any time                      | Seed script to maintain            |
-| Locale registry in `contracts`        | Hard-code languages in each place   | Add a locale in one place                                                                   | Everything depends on that package |
+Phase 3 connects the pieces. The ui templates already existed (Storybook), and so did the content services (fixtures and Sanity). Phase 3 adds the Next.js routes that fetch content and render templates, plus everything a real website needs: languages, SEO, caching, and a way for an editor to preview drafts.
+
+### The request flow
+
+```text
+browser ──► proxy.ts ── no /en or /de? redirect using Accept-Language
+               │
+               ▼
+        app/[locale]/…/page.tsx   (thin: resolve locale → fetch DTOs → render template)
+               │
+               ▼
+        src/lib/content.ts  ── the only file that knows the CMS
+          │                      │
+   fixtures (no env)      @portfolio/sanity/next
+                            ├─ published reads: cached, tag "sanity"
+                            └─ draft mode: drafts + click-to-edit attributes
+               │
+               ▼
+        @portfolio/ui templates (HomePage, WorkPage, …)
+
+Sanity publish ──webhook──► /api/revalidate ── expires tag "sanity"
+Studio Presentation ──────► /api/draft-mode/enable ── sets the draft cookie
+```
+
+### 1. Locale routing: `proxy.ts` and `app/[locale]`
+
+- **What:** every page lives under a language prefix: `/en/work`, `/de/work`. [proxy.ts](../../apps/web/proxy.ts) runs before each request. If the path has no known locale, it redirects to one picked from the browser's `Accept-Language` header (German browsers go to `/de`, everyone else to `/en`).
+- **How:**
+  - `proxy.ts` is Next 16's new name for middleware.
+  - The [layout](../../apps/web/app/[locale]/layout.tsx) sits inside `app/[locale]/`, so `locale` reaches every page as a route parameter.
+  - `generateStaticParams` lists the locales from `LOCALES`, and `dynamicParams = false` makes any other value a 404.
+- **Why every locale is prefixed, even English:** a URL then always says which language it is. Caching and hreflang stay simple, and the language switch only swaps the prefix (slugs are shared between languages).
+- **Unknown pages:** `app/[locale]/[...rest]/page.tsx` catches unmatched paths and calls `notFound()`, so the localised [not-found.tsx](../../apps/web/app/[locale]/not-found.tsx) renders inside the site chrome. A 404 page doesn't receive route parameters, so it reads the locale with `next/root-params`, a Next 16 feature for exactly this.
+
+### 2. The layout, providers and theme
+
+- **What:** [providers.tsx](../../apps/web/src/components/providers.tsx) is a small client component that wraps the page in:
+  - **next-themes**, which remembers light or dark mode and runs a tiny script before the page paints, so there's no flash of the wrong theme
+  - a **bridge** that passes next-themes' state into the ui's `ThemeControllerProvider`, so the existing `ThemeToggle` controls it
+  - **`UiAdapterProvider`**, which hands `next/link` and `next/image` to the ui package
+- **Why the bridge:** `packages/ui` must not depend on Next or next-themes; that's how Storybook can render it. The ui defines a tiny interface (`isDark`, `toggle`), and the app plugs a real implementation into it.
+- **A detail worth knowing:** on the server, the stored theme is unknown. The bridge reports "light" until hydration finishes, which avoids a hydration mismatch on the toggle's `aria-pressed`.
+
+### 3. Thin routes
+
+Each page file does three things: check the locale, fetch DTOs from `content`, and render one template. For example, [work/page.tsx](../../apps/web/app/[locale]/work/page.tsx):
+
+```tsx
+const locale = resolveLocale((await params).locale);
+const [chrome, work] = await Promise.all([
+  pageChrome(locale, "/work"),
+  content.getWorkPage(locale),
+]);
+return <WorkPage {...chrome} work={work} />;
+```
+
+- [page.ts](../../apps/web/src/lib/page.ts) holds the two shared helpers: `resolveLocale` and `pageChrome` (site settings, dictionary and language-switch URLs).
+- **Static generation:** `generateStaticParams` in `work/[slug]` and `blog/[slug]` asks `content.getRoutes()` for the slugs, so every case study and post is pre-rendered at build time. The blog index is the one dynamic page, because it reads `?category=`.
+- **No-JS filter:** the category filter is plain links (`?category=cycling`) filtered on the server, so it works without JavaScript.
+- **`cache()`:** `generateMetadata` and the page both need the same post. Wrapping the fetch in React's `cache()` means one request serves both.
+
+### 4. Server-side code highlighting
+
+[highlight.ts](../../apps/web/src/lib/highlight.ts) runs Shiki on the server for code blocks that come without pre-rendered HTML (Sanity's). Shiki normally outputs inline colours from a theme. Instead, we read each token's scope (comment, string, keyword, heading) and output only the design's three classes, `.k`, `.s` and `.c`. Colours then come from the design tokens, so they follow light and dark mode.
+
+### 5. SEO and metadata
+
+[seo.ts](../../apps/web/src/lib/seo.ts) builds each page's metadata in one place:
+
+- **Title template:** `%s — Damilola Bada`. The home page sets its own full title.
+- **hreflang:** tells search engines "this page exists in these languages". It lists only languages that actually have the content, plus `x-default` (English).
+- **Canonical fallback:** if a German page shows English content (no translation yet), its canonical URL points to the English page, so search engines don't index duplicates.
+- **Open Graph:**
+  - a post or case study with a cover image shares that image
+  - other pages get a generated brand card from [/api/og](../../apps/web/app/api/og/route.tsx)
+  - posts add `article:published_time`
+- **Sitemap and robots:** [sitemap.ts](../../apps/web/app/sitemap.ts) lists every page in every language with its alternates. [robots.ts](../../apps/web/app/robots.ts) points crawlers to it.
+
+The ui templates also wrap fallback-language content in `<div lang="en">` (`ContentLang` in [Pages.tsx](../../packages/ui/src/templates/pages/Pages.tsx)). Screen readers and hyphenation then use the right language, even on a `/de` page.
+
+### 6. `@portfolio/sanity/next`: preview and caching
+
+[next.ts](../../packages/sanity/src/next.ts) fills the placeholder from Phase 2. It returns two things.
+
+**`content`: a draft-aware `ContentService`.** Every method first checks `draftMode()`:
+
+- **Normal visitors** get published content.
+  - Each fetch carries `{ next: { tags: ["sanity"] } }`, so Next caches it until that tag is revalidated.
+  - These reads skip Sanity's API CDN: Next already caches them, and after a publish the CDN could briefly serve the old copy.
+- **Editors in draft mode** get the `drafts` perspective (unpublished changes), uncached, plus `data-sanity` attributes. Those attributes let the Studio's overlay know which document each card or section came from.
+
+**`preview`: the `PreviewAdapter`** from `@portfolio/contracts`:
+
+- `enable`: Sanity's Presentation tool opens `/api/draft-mode/enable` with a one-time secret. We validate it with Sanity, turn on draft mode (a cookie), and redirect to the page. Inside the Studio the site runs in a cross-site iframe, so the cookie is set `SameSite=None; Partitioned`, or browsers would drop it.
+- `disable`: turns draft mode off.
+- `revalidate`: Sanity calls `/api/revalidate` after each publish. We check the webhook's signature (proof that Sanity sent it), then expire the `sanity` tag. The next visitor gets a freshly rendered page.
+- `Overlay`: the click-to-edit layer, loaded only in the browser and only in draft mode. It also keeps the Studio's document panel in sync with the page you're viewing.
+
+The [route files](../../apps/web/app/api/) are one line each (`export const GET = preview.enable`), so no Sanity code lives in `app/`.
+
+**Why no stega:** Sanity can hide invisible characters inside every string ("stega") so any text becomes clickable. But `content-core` inspects strings, for example splitting "Passe." into a title and a dot, and the hidden characters would break that. So click-to-edit works on cards, sections, the about block and the post header (via `data-sanity`), not on every single word.
+
+**Why not `next-sanity`:** it's the usual package, but it requires the full `sanity` Studio package as a peer, which would be installed into the website. We use the same building blocks it uses (`@sanity/visual-editing`, `@sanity/preview-url-secret`, `@sanity/webhook`) directly. That's about 150 lines in `next.ts` and `overlay-client.tsx`.
+
+### 7. Two small fixes found by testing
+
+- **The oversized arrow.** In the header, "Let's talk →" drew its arrow too large. Geist Mono has no → glyph. Next's font loader adds a fallback face (Arial scaled to 135% to match Geist's metrics), and the arrow came from that face. The layout now sets the mono variable without the fallback face, so the arrow comes from the system monospace font, as in the design. (`adjustFontFallback: false` should do this, but Turbopack currently ignores it.)
+- **Mobile performance.** Lighthouse scored 86–89 because the hero headline (the largest element) waited for its font while three fonts downloaded at once. Preloading only Bricolage, the headline font, brought performance to 90–92.
+
+---
+
+## Part 4: Why this way and not another?
+
+| Decision                              | Alternative                         | Why this one                                                                                | Trade-off                            |
+| ------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------ |
+| Studio is its own app (`apps/studio`) | Embed the Studio in the Next.js app | Deploys and upgrades independently; a Studio problem can't break the site                   | One more app to maintain             |
+| `ContentService` adapter interface    | Run GROQ queries inside pages       | Pages never import Sanity, so swapping CMS means rewriting one package (ESLint enforces it) | An extra layer of mapping code       |
+| Queries separate from mappers         | Query and transform in one function | Queries stay plain and type-checkable by TypeGen; logic is unit-testable                    | More files                           |
+| Two translation plugins               | One approach for everything         | Each fits its content (long documents vs short labels)                                      | Editors learn two models             |
+| TypeGen for types                     | Hand-written types                  | A query that doesn't match the schema becomes a compile error                               | A generate step to remember          |
+| Seed from fixtures                    | Type content into the Studio        | Storybook and CMS start identical; the dataset can be rebuilt any time                      | Seed script to maintain              |
+| Locale registry in `contracts`        | Hard-code languages in each place   | Add a locale in one place                                                                   | Everything depends on that package   |
+| Prefix every locale (`/en/…`)         | Unprefixed default language         | Every URL names its language; the switch only swaps the prefix                              | `/` always redirects once            |
+| Adapter provides the route handlers   | Sanity code in `app/api/*`          | `app/` stays CMS-neutral; a new CMS brings its own handlers                                 | One more indirection to follow       |
+| One cache tag + webhook               | Time-based revalidation             | Edits appear on the next visit, not after a timer                                           | Every publish refreshes every page   |
+| next-themes bridged into the ui       | ui stores the theme itself          | No-flash script and persistence for free; Storybook keeps working without it                | A small bridge component             |
+| `data-sanity` attributes, no stega    | Stega on every string               | Content logic keeps working on clean strings                                                | Only blocks are clickable, not words |
 
 ---
 
@@ -197,6 +331,15 @@ Logic that shouldn't depend on any CMS (fallback rules, numbering, reading time)
 - **Seeding**: filling a dataset with initial content from a script.
 - **DTO**: a plain data shape passed between layers (defined in `@portfolio/contracts`).
 - **Fixture**: hard-coded sample content used before the CMS existed.
+- **Proxy**: Next 16's name for middleware; code that runs before a request reaches a page.
+- **`generateStaticParams`**: tells Next which dynamic pages (locales, slugs) to build ahead of time.
+- **Draft mode**: a cookie that makes Next skip its caches and render fresh, unpublished content for one browser.
+- **Visual Editing / Presentation tool**: the Studio view that shows the site in an iframe with click-to-edit overlays.
+- **Stega**: invisible characters Sanity can hide in strings to map text back to its field.
+- **ISR / cache tag**: Next keeps rendered pages and fetched data; a tag names a group of cached data that can be expired at once.
+- **Webhook**: an HTTP request Sanity sends to the site when content changes.
+- **hreflang**: a link tag telling search engines which URL holds the same page in another language.
+- **Canonical URL**: the one URL search engines should index when several show the same content.
 
 ## Suggested study order
 
@@ -205,6 +348,10 @@ Logic that shouldn't depend on any CMS (fallback rules, numbering, reading time)
 3. Read [languages.ts](../../apps/studio/src/languages.ts) and [locales.ts](../../packages/contracts/src/locales.ts).
 4. Read [queries.ts](../../packages/sanity/src/queries.ts), then one mapper in [mappers.ts](../../packages/sanity/src/mappers.ts).
 5. Try a query in the Studio's Vision tool, for example `*[_type == "project"]{title, "slug": slug.current}`.
+6. Run `pnpm --filter web dev`, open `http://localhost:3000`, and watch the redirect to `/en` or `/de`. Switch language on a case study and note that only the prefix changes.
+7. Read [proxy.ts](../../apps/web/proxy.ts), then [layout.tsx](../../apps/web/app/[locale]/layout.tsx), then one page such as [blog/[slug]/page.tsx](../../apps/web/app/[locale]/blog/[slug]/page.tsx).
+8. Read [content.ts](../../apps/web/src/lib/content.ts) and [next.ts](../../packages/sanity/src/next.ts) together: that's the whole CMS boundary.
+9. Open the Studio's Presentation tool and click a project card: draft mode turns on and the card's document opens.
 
 ## Caveats
 
@@ -212,4 +359,8 @@ Logic that shouldn't depend on any CMS (fallback rules, numbering, reading time)
 - `packages/sanity/src/sanity.types.ts` is generated. Regenerate it with `pnpm --filter studio typegen`.
 - The `.agents/skills/sanity-best-practices` files are reference docs for AI tools, not app code.
 - The German content is a machine draft pending your review.
-- Preview and Visual Editing are configured in the Studio but inert until Phase 3 adds the web routes.
+- Part 3 describes code on the `feat/phase-3-web` branch, which isn't committed yet, so it has no commit hash.
+- **Not verified automatically in Phase 3:**
+  - the full draft-mode round trip in the Presentation tool (it needs a logged-in Studio session)
+  - a keyboard-only walkthrough and a screen-reader pass
+  - Lighthouse on the real Vercel deployment (the 90–92 scores are from a local production build)

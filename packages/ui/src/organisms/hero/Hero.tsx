@@ -16,7 +16,9 @@ export interface HeroProps {
 
 /**
  * Home hero. Desktop: 812px, the intro sits bottom-left over the second name line and
- * the badge top-right. Tablet: intro below. Mobile: small badge beside the lede.
+ * the badge top-right. Below the 1440 frame the name scales with the viewport (max 184px)
+ * and the intro and badge follow its line positions, so nothing collides.
+ * Tablet: intro below. Mobile: small badge beside the lede.
  */
 function Hero({ site, dict, newWork }: HeroProps) {
   const [first, ...rest] = site.name.split(" ");
@@ -45,8 +47,13 @@ function Hero({ site, dict, newWork }: HeroProps) {
         </p>
       </div>
 
-      <div className="relative">
-        <FitText as="h1" min={52} className="type-display t-hero flex flex-col">
+      {/* Desktop positions derive from the name size (line-height 0.86), matching the 1440 frame at 184px. */}
+      <div className="relative lg:[--hero-size:clamp(108px,13vw,184px)]">
+        <FitText
+          as="h1"
+          min={52}
+          className="type-display t-hero flex flex-col lg:text-(length:--hero-size)"
+        >
           <span className="num">{first}</span>
           <span className="flex justify-end">
             <OutlineText>{rest.join(" ")}</OutlineText>
@@ -58,9 +65,9 @@ function Hero({ site, dict, newWork }: HeroProps) {
           text={dict.home.badge}
           href="#work"
           label={dict.home.jumpToWork}
-          className="absolute -top-1 right-0 hidden sm:block lg:-top-2"
+          className="absolute -top-1 right-0 hidden sm:block lg:top-[calc(0.86*var(--hero-size)-166px)]"
         />
-        <div className="mt-10 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-x-5 gap-y-6 sm:flex sm:max-w-[560px] sm:flex-col sm:items-stretch sm:gap-4 lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 lg:w-[540px] lg:max-w-none">
+        <div className="mt-10 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-x-5 gap-y-6 sm:flex sm:max-w-[560px] sm:flex-col sm:items-stretch sm:gap-4 lg:absolute lg:top-[calc(0.86*var(--hero-size)+21px)] lg:left-0 lg:mt-0 lg:w-[540px] lg:max-w-none">
           <Badge
             size="sm"
             text={dict.home.badgeShort}

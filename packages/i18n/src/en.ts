@@ -127,6 +127,13 @@ export const en = {
     eyebrow: "Got a project in mind?",
     title: ["Let's work", "together"],
   },
+  // added: not designed in the handoff; uses the page-hero layout
+  notFound: {
+    title: ["Page", "not found"],
+    lede: "This page doesn't exist, or it has moved.",
+    home: "Back to home",
+    metaTitle: "Page not found",
+  },
   footer: {
     sitemap: "Sitemap",
     elsewhere: "Elsewhere",

@@ -1,5 +1,6 @@
 import type {
   AboutPageDTO,
+  Locale,
   BlogIndexDTO,
   CaseStudyDTO,
   HomeDTO,
@@ -7,6 +8,7 @@ import type {
   WorkPageDTO,
 } from "@portfolio/contracts";
 import { formatMessage, pad2 } from "@portfolio/utils";
+import type { ReactNode } from "react";
 import { SectionLabel } from "../../atoms/section-label/SectionLabel";
 import { SweepLink } from "../../atoms/sweep-link/SweepLink";
 import { pagePaths, type ChromeProps } from "../../lib/types";
@@ -44,6 +46,27 @@ import { SiteShell } from "../site-shell/SiteShell";
 interface PageChrome extends ChromeProps {
   menuOpen?: boolean;
   year?: number;
+}
+
+/**
+ * Wraps content served in the fallback language (a missing translation) with
+ * its own `lang`, so screen readers and hyphenation use the right language.
+ */
+function ContentLang({
+  locale,
+  contentLocale,
+  children,
+}: {
+  locale: Locale;
+  contentLocale: Locale;
+  children: ReactNode;
+}) {
+  if (contentLocale === locale) return children;
+  return (
+    <div lang={contentLocale} className="contents">
+      {children}
+    </div>
+  );
 }
 
 /** Numbers the home sections that actually render: 01, 02, … */
@@ -195,10 +218,12 @@ export function CaseStudyPage({
   const { dict, site, locale } = chrome;
   return (
     <SiteShell {...chrome} active="work">
-      <CaseHero study={study} dict={dict} workHref={pagePaths(locale).work} />
-      <CaseCover study={study} dict={dict} />
-      <CaseSections study={study} />
-      <NextProject study={study} dict={dict} />
+      <ContentLang locale={locale} contentLocale={study.contentLocale}>
+        <CaseHero study={study} dict={dict} workHref={pagePaths(locale).work} />
+        <CaseCover study={study} dict={dict} />
+        <CaseSections study={study} />
+        <NextProject study={study} dict={dict} />
+      </ContentLang>
       <ContactCTA site={site} dict={dict} />
     </SiteShell>
   );
@@ -229,7 +254,9 @@ export function AboutPage({
         lede={page.about.lede}
         count={site.yearsExperienceLabel}
       />
-      <AboutFull about={page.about} site={site} dict={dict} />
+      <ContentLang locale={locale} contentLocale={page.contentLocale}>
+        <AboutFull about={page.about} site={site} dict={dict} />
+      </ContentLang>
       <Marquee items={site.marqueeItems} />
       <ExperienceList
         items={page.experience}
@@ -306,17 +333,44 @@ export function BlogPostPage({
   const paths = pagePaths(locale);
   return (
     <SiteShell {...chrome} active="blog">
-      <PostHeader post={post} dict={dict} blogHref={paths.blog} />
-      <PostCover post={post} />
-      <ArticleLayout
-        post={post}
-        dict={dict}
-        site={site}
-        aboutHref={paths.about}
-        shareUrl={shareUrl}
-      />
+      <ContentLang locale={locale} contentLocale={post.contentLocale}>
+        <PostHeader post={post} dict={dict} blogHref={paths.blog} />
+        <PostCover post={post} />
+        <ArticleLayout
+          post={post}
+          dict={dict}
+          site={site}
+          aboutHref={paths.about}
+          shareUrl={shareUrl}
+        />
+      </ContentLang>
       <RelatedPosts post={post} dict={dict} blogHref={paths.blog} />
       <ContactCTA site={site} dict={dict} />
+    </SiteShell>
+  );
+}
+
+/** 404 inside the site chrome: page-hero layout and a link home. */
+export function NotFoundPage(chrome: PageChrome) {
+  const { dict, locale } = chrome;
+  const paths = pagePaths(locale);
+  return (
+    <SiteShell {...chrome} active={null}>
+      <PageHero
+        crumbsLabel={dict.nav.breadcrumb}
+        crumbs={[
+          { label: dict.nav.home, href: paths.home },
+          { label: dict.notFound.metaTitle },
+        ]}
+        title={dict.notFound.title}
+        titleId="not-found-title"
+        lede={dict.notFound.lede}
+      />
+      <section className="wrap pb-[160px]">
+        <SweepLink href={paths.home} arrow="right">
+          {dict.notFound.home}
+        </SweepLink>
+      </section>
     </SiteShell>
   );
 }
