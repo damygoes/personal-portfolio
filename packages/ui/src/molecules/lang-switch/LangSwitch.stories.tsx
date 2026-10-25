@@ -1,23 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { LangSwitch, localeOptions, type LangOption } from "./LangSwitch";
+import { LangSwitch, localeOptions } from "./LangSwitch";
 
-const twoLocales = localeOptions({
+const locales = localeOptions({
   en: "/en/work",
   de: "/de/work",
   fr: "/fr/work",
 });
 
-/** A hypothetical third locale, to preview the 3+ menu before one ships. */
-const threeLocales: LangOption[] = [
-  ...twoLocales,
-  { code: "fr", label: "FR", name: "Français", href: "/fr/work" },
-];
-
 const meta = {
   title: "Molecules/LangSwitch",
   component: LangSwitch,
-  args: { current: "en", options: twoLocales, label: "Language" },
+  args: { current: "en", options: locales, label: "Language" },
 } satisfies Meta<typeof LangSwitch>;
 
 export default meta;
@@ -26,9 +20,14 @@ type Story = StoryObj<typeof meta>;
 export const English: Story = {};
 export const German: Story = { args: { current: "de" } };
 
-/** 3+ locales: the toggle becomes a menu. Needs a design pass before a third locale ships. */
+/** Up to 2 locales: the designed "EN / DE" toggle. */
+export const TwoLocalesToggle: Story = {
+  args: { options: locales.slice(0, 2) },
+};
+
+/** 3+ locales: the toggle becomes a menu. */
 export const ThreeLocalesMenu: Story = {
-  args: { options: threeLocales },
+  args: { options: locales },
   // Right-aligned, as in the header's tools group.
   decorators: [
     (Story) => (
@@ -46,5 +45,5 @@ export const ThreeLocalesMenu: Story = {
 
 /** The menu dialog keeps the inline list regardless of count. */
 export const ThreeLocalesInline: Story = {
-  args: { options: threeLocales, variant: "inline" },
+  args: { options: locales, variant: "inline" },
 };

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { LangSwitch, localeOptions, type LangOption } from "./LangSwitch";
+import { LangSwitch, localeOptions } from "./LangSwitch";
 
 const alternates = { en: "/en/about", de: "/de/about", fr: "/fr/about" };
 
@@ -11,11 +11,16 @@ describe("LangSwitch", () => {
         current="de"
         options={localeOptions(alternates)}
         label="Sprache"
+        variant="inline"
       />,
     );
     expect(screen.getByRole("link", { name: "EN" })).toHaveAttribute(
       "href",
       "/en/about",
+    );
+    expect(screen.getByRole("link", { name: "FR" })).toHaveAttribute(
+      "href",
+      "/fr/about",
     );
     const de = screen.getByRole("link", { name: "DE" });
     expect(de).toHaveAttribute("aria-current", "true");
@@ -25,13 +30,25 @@ describe("LangSwitch", () => {
     ).toBeInTheDocument();
   });
 
-  it("switches to a menu from three locales", () => {
-    const options: LangOption[] = [
-      ...localeOptions(alternates),
-      { code: "fr", label: "FR", name: "Français", href: "/fr/about" },
-    ];
+  it("keeps the toggle for two locales", () => {
     const { container } = render(
-      <LangSwitch current="en" options={options} label="Language" />,
+      <LangSwitch
+        current="en"
+        options={localeOptions(alternates).slice(0, 2)}
+        label="Language"
+      />,
+    );
+    expect(container.querySelector("details")).toBeNull();
+    expect(screen.getAllByRole("link")).toHaveLength(2);
+  });
+
+  it("switches to a menu from three locales", () => {
+    const { container } = render(
+      <LangSwitch
+        current="en"
+        options={localeOptions(alternates)}
+        label="Language"
+      />,
     );
     expect(container.querySelector("details")).not.toBeNull();
     expect(screen.getByText("Français").closest("a")).toHaveAttribute(
@@ -41,14 +58,10 @@ describe("LangSwitch", () => {
   });
 
   it("stays inline with variant=inline", () => {
-    const options: LangOption[] = [
-      ...localeOptions(alternates),
-      { code: "fr", label: "FR", name: "Français", href: "/fr/about" },
-    ];
     const { container } = render(
       <LangSwitch
         current="en"
-        options={options}
+        options={localeOptions(alternates)}
         label="Language"
         variant="inline"
       />,
