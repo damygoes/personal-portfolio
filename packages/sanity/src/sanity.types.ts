@@ -290,13 +290,6 @@ export type InternationalizedArrayText = Array<
   } & InternationalizedArrayTextValue
 >;
 
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
-
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -328,12 +321,31 @@ export type SiteSettings = {
     _type: "social";
     _key: string;
   }>;
-  cvFile?: {
+  cvFile?: InternationalizedArrayFile;
+  cvUrl?: string;
+};
+
+export type InternationalizedArrayFile = Array<
+  {
+    _key: string;
+  } & InternationalizedArrayFileValue
+>;
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type InternationalizedArrayFileValue = {
+  _type: "internationalizedArrayFileValue";
+  value?: {
     asset?: SanityFileAssetReference;
     media?: unknown;
     _type: "file";
   };
-  cvUrl?: string;
+  language: string;
 };
 
 export type InternationalizedArrayStringListValue = {
@@ -699,8 +711,10 @@ export type AllSanitySchemaTypes =
   | Experience
   | InternationalizedArrayStringList
   | InternationalizedArrayText
-  | SanityFileAssetReference
   | SiteSettings
+  | InternationalizedArrayFile
+  | SanityFileAssetReference
+  | InternationalizedArrayFileValue
   | InternationalizedArrayStringListValue
   | InternationalizedArrayTextValue
   | InternationalizedArrayStringValue
@@ -729,7 +743,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../../packages/sanity/src/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{  _id,  _type,  name,  initials,  tagline,  email,  socials[]{ label, url },  "cvFileUrl": cvFile.asset->url,  cvUrl,  location,  timezone,  yearsExperienceLabel,  heroMeta,  currentRole{ title, company },  marqueeItems[]{ text, outlined },  authorBio}
+// Query: *[_type == "siteSettings" && _id == "siteSettings"][0]{  _id,  _type,  name,  initials,  tagline,  email,  socials[]{ label, url },  "cvFile": cvFile[]{ _key, language, "value": value.asset->url },  cvUrl,  location,  timezone,  yearsExperienceLabel,  heroMeta,  currentRole{ title, company },  marqueeItems[]{ text, outlined },  authorBio}
 export type SITE_SETTINGS_QUERY_RESULT = {
   _id: "siteSettings";
   _type: "siteSettings";
@@ -741,7 +755,11 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     label: string;
     url: string;
   }> | null;
-  cvFileUrl: string | null;
+  cvFile: Array<{
+    _key: string;
+    language: string;
+    value: string | null;
+  }> | null;
   cvUrl: string | null;
   location: InternationalizedArrayString | null;
   timezone: string;
@@ -1187,7 +1205,7 @@ export type ROUTES_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "siteSettings" && _id == "siteSettings"][0]{\n  _id,\n  _type,\n  name,\n  initials,\n  tagline,\n  email,\n  socials[]{ label, url },\n  "cvFileUrl": cvFile.asset->url,\n  cvUrl,\n  location,\n  timezone,\n  yearsExperienceLabel,\n  heroMeta,\n  currentRole{ title, company },\n  marqueeItems[]{ text, outlined },\n  authorBio\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_type == "siteSettings" && _id == "siteSettings"][0]{\n  _id,\n  _type,\n  name,\n  initials,\n  tagline,\n  email,\n  socials[]{ label, url },\n  "cvFile": cvFile[]{ _key, language, "value": value.asset->url },\n  cvUrl,\n  location,\n  timezone,\n  yearsExperienceLabel,\n  heroMeta,\n  currentRole{ title, company },\n  marqueeItems[]{ text, outlined },\n  authorBio\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "about" && language in $chain]{\n  _id,\n  _type,\n  language,\n  statement,\n  lede,\n  bio,\n  teaserParagraphs,\n  portrait{\n  alt,\n  crop,\n  hotspot,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n},\n  facts[]{\n    _key,\n    label,\n    value,\n    "projects": projects[]->slug.current,\n    aboutPageOnly\n  },\n  skillsIntro,\n  "availableLocales": *[_type == "about" && defined(language)].language\n}': ABOUT_QUERY_RESULT;
     '*[_type == "experience"] | order(order asc){\n  _id,\n  _type,\n  order,\n  role,\n  company,\n  location,\n  workMode,\n  startDate,\n  endDate,\n  summary,\n  bullets\n}': EXPERIENCE_QUERY_RESULT;
     '*[_type == "skillGroup"] | order(order asc){\n  _id,\n  _type,\n  order,\n  title,\n  items\n}': SKILL_GROUPS_QUERY_RESULT;

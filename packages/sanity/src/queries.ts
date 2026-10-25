@@ -25,7 +25,7 @@ export const SITE_SETTINGS_QUERY =
   tagline,
   email,
   socials[]{ label, url },
-  "cvFileUrl": cvFile.asset->url,
+  "cvFile": cvFile[]{ _key, language, "value": value.asset->url },
   cvUrl,
   location,
   timezone,

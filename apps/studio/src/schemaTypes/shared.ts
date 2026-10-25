@@ -12,6 +12,7 @@ import { apiVersion } from "../env";
 export const I18N_STRING = "internationalizedArrayString";
 export const I18N_TEXT = "internationalizedArrayText";
 export const I18N_STRING_LIST = "internationalizedArrayStringList";
+export const I18N_FILE = "internationalizedArrayFile";
 
 /** The language field the document-internationalization plugin writes. */
 export const languageField = defineField({

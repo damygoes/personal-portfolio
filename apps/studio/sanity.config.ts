@@ -1,6 +1,11 @@
 import { documentInternationalization } from "@sanity/document-internationalization";
 import { visionTool } from "@sanity/vision";
-import { defineConfig, defineSingleton, type WorkspaceOptions } from "sanity";
+import {
+  defineConfig,
+  defineField,
+  defineSingleton,
+  type WorkspaceOptions,
+} from "sanity";
 import { defineLocations, presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { internationalizedArray } from "sanity-plugin-internationalized-array";
@@ -94,7 +99,16 @@ const workspace = ({
     internationalizedArray({
       languages,
       defaultLanguages: [baseLanguage],
-      fieldTypes: ["string", "text", "stringList"],
+      fieldTypes: [
+        "string",
+        "text",
+        "stringList",
+        defineField({
+          name: "file",
+          type: "file",
+          options: { accept: "application/pdf" },
+        }),
+      ],
       buttonLocations: ["field", "document"],
       languageFilter: { documentTypes: fieldTranslatedDocumentTypes },
     }),

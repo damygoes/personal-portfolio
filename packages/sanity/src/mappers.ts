@@ -110,13 +110,15 @@ function localized(doc: {
 type Site = NonNullable<SITE_SETTINGS_QUERY_RESULT>;
 
 export function toSiteRecord(raw: Site, ctx: MapContext): SiteRecord {
+  const cvFile = optStr(ctx, raw.cvFile);
   return {
     name: raw.name ?? "",
     initials: raw.initials ?? "",
     tagline: str(ctx, raw.tagline),
     email: raw.email ?? "",
     socials: (raw.socials ?? []).map((s) => ({ label: s.label, url: s.url })),
-    cvUrl: raw.cvFileUrl ?? raw.cvUrl,
+    // ?dl= makes Sanity send the file as a download, under its upload name.
+    cvUrl: cvFile ? `${cvFile}?dl=` : raw.cvUrl,
     location: str(ctx, raw.location),
     timezone: raw.timezone ?? "Europe/Berlin",
     yearsExperienceLabel: str(ctx, raw.yearsExperienceLabel),

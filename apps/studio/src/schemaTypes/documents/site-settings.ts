@@ -1,6 +1,6 @@
 import { CogIcon } from "@sanity/icons/Cog";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { I18N_STRING, I18N_STRING_LIST, I18N_TEXT } from "../shared";
+import { I18N_FILE, I18N_STRING, I18N_STRING_LIST, I18N_TEXT } from "../shared";
 
 /** Site-wide settings: header, hero meta, contact, marquee, footer. Singleton. */
 export const siteSettings = defineType({
@@ -129,10 +129,10 @@ export const siteSettings = defineType({
     defineField({
       name: "cvFile",
       title: "CV (PDF)",
-      type: "file",
+      type: I18N_FILE,
       group: "contact",
-      options: { accept: "application/pdf" },
-      description: "Takes precedence over the CV URL.",
+      description:
+        "One PDF per language; missing languages use the English CV. Takes precedence over the CV URL.",
     }),
     defineField({
       name: "cvUrl",

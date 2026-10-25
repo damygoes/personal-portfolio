@@ -68,8 +68,8 @@ export const fr: Dictionary = {
     dropALine: "Écrivez-moi",
     // added
     introLabel: "Intro",
-    badge: "DÉVELOPPEUR FULL-STACK ✦ WEB & MOBILE ✦ ",
-    badgeShort: "FULL-STACK ✦ WEB & MOBILE ✦ ",
+    badge: "DÉVELOPPEUR DE LOGICIEL ✦ WEB & MOBILE ✦ ",
+    badgeShort: "DÉVELOPPEUR ✦ WEB & MOBILE ✦ ",
     jumpToWork: "Aller aux projets sélectionnés",
   },
   work: {

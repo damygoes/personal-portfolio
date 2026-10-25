@@ -65,8 +65,8 @@ export const en = {
     dropALine: "Drop me a line",
     // added
     introLabel: "Intro",
-    badge: "FULLSTACK DEVELOPER ✦ WEB & MOBILE ✦ ",
-    badgeShort: "FULLSTACK ✦ WEB & MOBILE ✦ ",
+    badge: "SOFTWARE DEVELOPER ✦ WEB & MOBILE ✦ ",
+    badgeShort: "DEVELOPER ✦ WEB & MOBILE ✦ ",
     jumpToWork: "Jump to selected work",
   },
   work: {
