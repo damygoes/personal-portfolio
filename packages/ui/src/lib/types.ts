@@ -1,4 +1,8 @@
-import type { Locale, SiteSettingsDTO } from "@portfolio/contracts";
+import {
+  LOCALES,
+  type Locale,
+  type SiteSettingsDTO,
+} from "@portfolio/contracts";
 import type { Dictionary } from "@portfolio/i18n";
 
 export type NavKey = "work" | "about" | "blog";
@@ -19,4 +23,12 @@ export function pagePaths(locale: Locale) {
     about: `/${locale}/about`,
     blog: `/${locale}/blog`,
   };
+}
+
+/** A locale-less path ("/work") in every registry locale: `{ en: "/en/work", … }`. */
+export function localeAlternates(path: string): Record<Locale, string> {
+  return Object.fromEntries(LOCALES.map((l) => [l, `/${l}${path}`])) as Record<
+    Locale,
+    string
+  >;
 }

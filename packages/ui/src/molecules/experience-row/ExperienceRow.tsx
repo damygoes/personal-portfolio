@@ -23,7 +23,7 @@ function ExperienceRow({ item, labels, className }: ExperienceRowProps) {
   return (
     <li
       data-slot="experience-row"
-      data-sanity={item.editTarget}
+      {...item.editAttrs}
       className={cn(
         "group g12 gap-y-3 border-b border-divider py-7 transition-colors duration-150 sm:py-8 lg:px-4 lg:py-10 lg:hover:bg-card",
         className,

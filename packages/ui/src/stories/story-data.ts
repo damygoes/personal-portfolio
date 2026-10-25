@@ -1,8 +1,8 @@
-import type { Locale } from "@portfolio/contracts";
+import { isLocale, type Locale } from "@portfolio/contracts";
 import type { ReactElement } from "react";
 import { FixtureContentService } from "@portfolio/fixtures";
 import { getDictionary } from "@portfolio/i18n";
-import type { ChromeProps } from "../lib/types";
+import { localeAlternates, type ChromeProps } from "../lib/types";
 
 const service = new FixtureContentService();
 
@@ -26,7 +26,7 @@ export async function storyData(locale: Locale = "en") {
     site,
     dict,
     locale,
-    alternates: { en: `/en${path}`, de: `/de${path}` },
+    alternates: localeAlternates(path),
     year: 2026,
   });
   return {
@@ -53,7 +53,9 @@ export const loadStoryData = async ({
 }: {
   globals: { locale?: string };
 }) => ({
-  data: await storyData(globals.locale === "de" ? "de" : "en"),
+  data: await storyData(
+    globals.locale && isLocale(globals.locale) ? globals.locale : "en",
+  ),
 });
 
 /** Story render that receives the loaded fixture data. */

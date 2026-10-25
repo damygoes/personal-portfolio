@@ -1,15 +1,21 @@
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  LOCALE_META,
+  isLocale,
+} from "@portfolio/contracts";
 import type { Decorator, Preview } from "@storybook/react-vite";
-import { useEffect } from "react";
 import "./preview.css";
 
 /** Mirrors production: `.dark` on <html>, `lang` follows the locale. */
 const withDocument: Decorator = (Story, context) => {
   const dark = context.globals.theme === "dark";
-  const locale = context.globals.locale === "de" ? "de" : "en";
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    document.documentElement.lang = locale;
-  }, [dark, locale]);
+  const locale = isLocale(context.globals.locale ?? "")
+    ? context.globals.locale
+    : DEFAULT_LOCALE;
+  // A decorator is not a component, so no hooks: sync <html> on each render.
+  document.documentElement.classList.toggle("dark", dark);
+  document.documentElement.lang = locale;
   const fullscreen = context.parameters.layout === "fullscreen";
   return fullscreen ? (
     <Story />
@@ -39,10 +45,10 @@ const preview: Preview = {
       toolbar: {
         title: "Locale",
         icon: "globe",
-        items: [
-          { value: "en", title: "EN" },
-          { value: "de", title: "DE" },
-        ],
+        items: LOCALES.map((value) => ({
+          value,
+          title: LOCALE_META[value].label,
+        })),
         dynamicTitle: true,
       },
     },

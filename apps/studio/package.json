@@ -1,0 +1,32 @@
+{
+  "name": "studio",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "check-types": "tsc --noEmit",
+    "typegen": "sanity schemas extract --force --enforce-required-fields && sanity typegen generate",
+    "seed": "sanity exec scripts/seed.ts --with-user-token --"
+  },
+  "dependencies": {
+    "@portfolio/contracts": "workspace:*",
+    "@sanity/document-internationalization": "^6.2.43",
+    "@sanity/icons": "^5.2.3",
+    "@sanity/language-filter": "^5.0.23",
+    "@sanity/vision": "^6.20.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sanity": "^6.20.0",
+    "sanity-plugin-internationalized-array": "^5.3.6",
+    "styled-components": "^6.6.0"
+  },
+  "devDependencies": {
+    "@portfolio/fixtures": "workspace:*",
+    "@portfolio/sanity": "workspace:*",
+    "@portfolio/typescript-config": "workspace:*",
+    "typescript": "7.0.2"
+  }
+}

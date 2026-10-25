@@ -12,7 +12,7 @@ function SkillCol({
   return (
     <div
       data-slot="skill-col"
-      data-sanity={group.editTarget}
+      {...group.editAttrs}
       className={cn(
         "flex flex-col gap-4 border-t border-band-line pt-4 sm:gap-6 sm:pt-6",
         className,

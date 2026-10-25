@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  EditTargetSchema,
+  EditAttrsSchema,
   ImageSchema,
   IsoDateSchema,
   ParagraphSchema,
@@ -24,7 +24,7 @@ export const AboutSchema = z.object({
   lede: z.string(),
   portrait: ImageSchema.optional(),
   facts: z.array(FactSchema),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type AboutDTO = z.infer<typeof AboutSchema>;
 
@@ -43,7 +43,7 @@ export const ExperienceSchema = z.object({
   workMode: WorkModeSchema.optional(),
   summary: z.string().optional(),
   bullets: z.array(z.string()),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type ExperienceDTO = z.infer<typeof ExperienceSchema>;
 
@@ -52,6 +52,6 @@ export const SkillGroupSchema = z.object({
   items: z.array(z.string()),
   /** "(05)" */
   count: z.string(),
-  editTarget: EditTargetSchema,
+  editAttrs: EditAttrsSchema,
 });
 export type SkillGroupDTO = z.infer<typeof SkillGroupSchema>;

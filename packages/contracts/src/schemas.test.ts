@@ -7,6 +7,8 @@ import {
   PostCardSchema,
   ProjectCardSchema,
   SiteSettingsSchema,
+  fallbackChain,
+  isLocale,
 } from "./index";
 
 const project = {
@@ -96,8 +98,22 @@ describe("contracts", () => {
       screens: [],
       sections: [],
       next: { kind: "allWork", href: "/en/work", from: 3, total: 5 },
+      contentLocale: "en",
+      availableLocales: ["en"],
     });
     expect(result.success).toBe(true);
+  });
+
+  it("carries opaque, CMS-neutral edit attributes", () => {
+    expect(
+      ProjectCardSchema.safeParse({
+        ...project,
+        editAttrs: { "data-sanity": "id=project.passe;path=title" },
+      }).success,
+    ).toBe(true);
+    expect(
+      ProjectCardSchema.safeParse({ ...project, editAttrs: "id=x" }).success,
+    ).toBe(false);
   });
 
   it("parses post cards, body blocks and the blog index", () => {
@@ -124,5 +140,17 @@ describe("contracts", () => {
     expect(
       SiteSettingsSchema.safeParse({ name: "Damilola Bada" }).success,
     ).toBe(false);
+  });
+});
+
+describe("locale registry", () => {
+  it("falls back to the default locale", () => {
+    expect(fallbackChain("de")).toEqual(["de", "en"]);
+    expect(fallbackChain("en")).toEqual(["en"]);
+  });
+
+  it("narrows unknown strings", () => {
+    expect(isLocale("de")).toBe(true);
+    expect(isLocale("fr")).toBe(false);
   });
 });

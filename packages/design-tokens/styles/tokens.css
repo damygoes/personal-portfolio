@@ -141,7 +141,8 @@
   --animate-marquee: marquee 48s linear infinite;
   --animate-spin-slow: spin 28s linear infinite;
   --animate-pulse: pulse 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  --animate-scroll-line: scroll-line 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  --animate-scroll-line: scroll-line 2.4s cubic-bezier(0.65, 0, 0.35, 1)
+    infinite;
 
   @keyframes marquee {
     to {
@@ -207,9 +208,13 @@
   --color-stone-fg: var(--stone-fg);
   --color-stone-ghost: var(--stone-ghost);
 
-  --font-display: var(--font-bricolage, "Bricolage Grotesque"), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-bricolage, "Bricolage Grotesque"), ui-sans-serif, system-ui,
+    sans-serif;
   --font-sans: var(--font-inter, "Inter"), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono, "Geist Mono"), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono:
+    var(--font-geist-mono, "Geist Mono"), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 }
 
 :root {
@@ -750,6 +755,15 @@
   ::after,
   ::before {
     border-color: var(--border);
+  }
+  /* Long German compounds (interactions.md §German): hyphenate running text and
+     sentence-case headings so narrow columns never overflow. Uppercase display
+     type is never hyphenated (FitText scales it instead). */
+  :lang(de)
+    :is(p, li, h2, h3, h4, blockquote):not(.type-display, .type-display *) {
+    hyphens: auto;
+    /* Only long words (10+ letters, 4 either side): compounds, not "Sekun-den". */
+    hyphenate-limit-chars: 10 4 4;
   }
   a:focus-visible,
   button:focus-visible,

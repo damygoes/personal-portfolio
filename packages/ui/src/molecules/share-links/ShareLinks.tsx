@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@portfolio/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Arrow } from "../../atoms/arrow/Arrow";
 import { SweepLink } from "../../atoms/sweep-link/SweepLink";
 
@@ -12,14 +12,18 @@ export interface ShareLinksProps {
   className?: string;
 }
 
+const subscribeNever = () => () => {};
+
 /** "Share": LinkedIn + Copy link (label swaps to "Link copied" for 2s, announced politely). */
 function ShareLinks({ url, labels, className }: ShareLinksProps) {
   const [copied, setCopied] = useState(false);
-  const [href, setHref] = useState(url ?? "");
-
-  useEffect(() => {
-    if (!url) setHref(window.location.href);
-  }, [url]);
+  // The page URL, read on the client only (empty during server render).
+  const location = useSyncExternalStore(
+    subscribeNever,
+    () => window.location.href,
+    () => "",
+  );
+  const href = url ?? location;
 
   useEffect(() => {
     if (!copied) return;

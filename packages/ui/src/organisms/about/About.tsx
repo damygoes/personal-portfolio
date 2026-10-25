@@ -86,7 +86,7 @@ function AboutTeaser({
     <section
       id="about"
       data-slot="about-teaser"
-      data-sanity={about.editTarget}
+      {...about.editAttrs}
       aria-labelledby="about-title"
       className="sec wrap rule"
     >
@@ -134,7 +134,7 @@ function AboutFull({ about, site, dict }: AboutProps) {
   return (
     <section
       data-slot="about-full"
-      data-sanity={about.editTarget}
+      {...about.editAttrs}
       aria-label={dict.about.bioLabel}
       className="wrap pb-[160px]"
     >

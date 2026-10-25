@@ -54,7 +54,7 @@ function ImageFrame({
     <div
       data-slot="image-frame"
       data-vd="media"
-      data-sanity={image?.editTarget}
+      {...image?.editAttrs}
       role={label ? "img" : undefined}
       aria-label={label}
       className={cn("relative overflow-hidden", className)}

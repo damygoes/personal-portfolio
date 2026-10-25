@@ -1,64 +1,10 @@
+import type { CaseStudyRecord, Localized } from "@portfolio/content-core";
+
 /**
  * spec/content-seed.json `caseStudies`. `null` = placeholder for Damilola to fill:
  * the service drops it, and a section left with no content is skipped entirely.
  */
-
-type Box = {
-  eyebrow: string;
-  title: string;
-  sub: string | null;
-  isCore?: boolean;
-};
-type Item = { title: string; text?: string | null };
-
-export type RawSection =
-  | {
-      type: "textBlock";
-      label: string;
-      heading: string | null;
-      body: (string | null)[];
-    }
-  | { type: "stepsGrid"; label: string; heading: string | null; steps: Item[] }
-  | {
-      type: "featureGrid";
-      label: string;
-      heading: string | null;
-      features: Item[];
-    }
-  | {
-      type: "plans";
-      label: string;
-      heading: string | null;
-      plans: {
-        name: string;
-        price: string;
-        period: string;
-        features: string[];
-      }[];
-      note: string | null;
-    }
-  | {
-      type: "architecture";
-      label: string;
-      heading: string | null;
-      core: Box[];
-      sub: Box[];
-      notes: (string | null)[];
-    }
-  | {
-      type: "quote";
-      label: string;
-      text: string | null;
-      attribution: string | null;
-    };
-
-export type RawCaseStudy = {
-  project: string;
-  titleSplit?: [string, string];
-  lede: string;
-  meta: { label: string; value: string | null }[];
-  sections: RawSection[];
-};
+export type RawCaseStudy = Omit<CaseStudyRecord, keyof Localized>;
 
 export const caseStudies: RawCaseStudy[] = [
   {

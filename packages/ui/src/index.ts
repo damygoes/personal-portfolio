@@ -3,7 +3,7 @@ export { Anchor, Picture, UiAdapterProvider } from "./lib/adapters";
 export type { ImageComponentProps, LinkComponentProps } from "./lib/adapters";
 export { ThemeControllerProvider, useTheme } from "./lib/theme";
 export { useLocalTime } from "./lib/use-local-time";
-export { pagePaths } from "./lib/types";
+export { localeAlternates, pagePaths } from "./lib/types";
 export type { ChromeProps, NavKey } from "./lib/types";
 
 // Atoms
@@ -30,7 +30,11 @@ export { Crumbs } from "./molecules/crumbs/Crumbs";
 export { ExperienceRow } from "./molecules/experience-row/ExperienceRow";
 export { Facts } from "./molecules/facts/Facts";
 export { Figure, PullQuote } from "./molecules/figure/Figure";
-export { LangSwitch } from "./molecules/lang-switch/LangSwitch";
+export {
+  LangSwitch,
+  localeOptions,
+  type LangOption,
+} from "./molecules/lang-switch/LangSwitch";
 export { MetaList } from "./molecules/meta-list/MetaList";
 export { NavLinks } from "./molecules/nav-links/NavLinks";
 export { PostCard, PostMeta } from "./molecules/post-card/PostCard";
