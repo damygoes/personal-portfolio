@@ -6,6 +6,7 @@ import {
   BlogPostPage,
   CaseStudyPage,
   HomePage,
+  NotFoundPage,
   WorkPage,
 } from "./Pages";
 
@@ -104,3 +105,8 @@ export const CaseStudyPasseDE: Story = {
 export const AboutDE: Story = { ...About, ...de, name: "About (DE)" };
 export const BlogDE: Story = { ...Blog, ...de, name: "Blog (DE)" };
 export const BlogPostDE: Story = { ...BlogPost, ...de, name: "Blog post (DE)" };
+
+export const NotFound: Story = {
+  name: "Not found",
+  render: withData((data) => <NotFoundPage {...data.chrome("/missing")} />),
+};

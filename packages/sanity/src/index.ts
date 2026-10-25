@@ -1,6 +1,10 @@
 import { createContentService } from "@portfolio/content-core";
 import type { ContentService, EditAttrs } from "@portfolio/contracts";
-import { createClient, type SanityClient } from "@sanity/client";
+import {
+  createClient,
+  type FilteredResponseQueryOptions,
+  type SanityClient,
+} from "@sanity/client";
 import { imageMapper } from "./images";
 import { sanityRecordSource } from "./source";
 
@@ -23,6 +27,8 @@ export interface SanityContentConfig {
   editAttrs?: (doc: { id: string; type: string }, path?: string) => EditAttrs;
   /** Inject a client (tests, or a framework-specific fetch wrapper). */
   client?: SanityClient;
+  /** Options for every fetch, e.g. Next.js `{ next: { tags } }` or `{ cache: "no-store" }`. */
+  fetchOptions?: FilteredResponseQueryOptions;
 }
 
 export function createSanityClient(config: SanityContentConfig): SanityClient {
@@ -45,11 +51,15 @@ export function createSanityContentService(
 ): ContentService {
   const client = createSanityClient(config);
   return createContentService(
-    sanityRecordSource(client, {
-      image: imageMapper(config),
-      edit: (doc, path) =>
-        config.editAttrs?.({ id: doc._id, type: doc._type }, path),
-    }),
+    sanityRecordSource(
+      client,
+      {
+        image: imageMapper(config),
+        edit: (doc, path) =>
+          config.editAttrs?.({ id: doc._id, type: doc._type }, path),
+      },
+      config.fetchOptions,
+    ),
   );
 }
 

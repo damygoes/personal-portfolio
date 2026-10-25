@@ -1,7 +1,7 @@
 import { documentInternationalization } from "@sanity/document-internationalization";
 import { visionTool } from "@sanity/vision";
 import { defineConfig, defineSingleton } from "sanity";
-import { presentationTool } from "sanity/presentation";
+import { defineLocations, presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { internationalizedArray } from "sanity-plugin-internationalized-array";
 import { apiVersion, dataset, previewUrl, projectId } from "./src/env";
@@ -29,10 +29,48 @@ export default defineConfig({
   plugins: [
     structureTool({ structure }),
     presentationTool({
-      // Phase 3 adds this route to apps/web.
       previewUrl: {
         initial: previewUrl,
-        previewMode: { enable: "/api/draft-mode/enable" },
+        previewMode: {
+          enable: "/api/draft-mode/enable",
+          disable: "/api/draft-mode/disable",
+        },
+      },
+      // "Used on" links in the document panel (slugs are shared per language).
+      resolve: {
+        locations: {
+          post: defineLocations({
+            select: {
+              title: "title",
+              slug: "slug.current",
+              language: "language",
+            },
+            resolve: (doc) => ({
+              locations: doc?.slug
+                ? [
+                    {
+                      title: doc.title ?? "Post",
+                      href: `/${doc.language ?? "en"}/blog/${doc.slug}`,
+                    },
+                    { title: "Blog", href: `/${doc.language ?? "en"}/blog` },
+                  ]
+                : [],
+            }),
+          }),
+          caseStudy: defineLocations({
+            select: { slug: "project.slug.current", language: "language" },
+            resolve: (doc) => ({
+              locations: doc?.slug
+                ? [
+                    {
+                      title: "Case study",
+                      href: `/${doc.language ?? "en"}/work/${doc.slug}`,
+                    },
+                  ]
+                : [],
+            }),
+          }),
+        },
       },
     }),
     documentInternationalization({
