@@ -58,8 +58,12 @@ export function createSanityNext(config: SanityNextConfig): SanityNext {
     token,
     // Next's data cache holds published reads; skipping the API CDN means a
     // webhook-triggered refetch never sees the CDN's not-yet-updated copy.
+    // No webhook reaches localhost, so dev reads fresh on every request.
     useCdn: false,
-    fetchOptions: { next: { tags: [SANITY_CACHE_TAG], revalidate: false } },
+    fetchOptions:
+      process.env.NODE_ENV === "development"
+        ? { cache: "no-store" }
+        : { next: { tags: [SANITY_CACHE_TAG], revalidate: false } },
   });
   // Drafts need the token; without one, draft mode shows published content.
   const drafts = token
